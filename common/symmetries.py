@@ -119,9 +119,13 @@ class Symmetries:
                       basis.append(basisls)
           return basis
 
+      def getDimention(self):
+          return self.getNumberLinearSymmetry()
+
+
       def getEZ(self):
           qf = self.getQuadraticForm({"I", "Z"})
-          d = 2*self.getSize()
+          d =  self.getDimention()
           EZ = 0
           for f in qf:
               norm = len(f)
