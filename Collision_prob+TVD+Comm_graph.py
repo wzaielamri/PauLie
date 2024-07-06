@@ -6,6 +6,7 @@ from numpy.random import uniform
 import itertools
 import networkx as nx
 from tabulate import tabulate
+import pandas as pd
 
 I = np.array([[1,0],[0,1]])
 X = np.array([[0,1],[1,0]])
