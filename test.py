@@ -16,7 +16,8 @@ def testGraph(algebraName, size):
 
     print("Subgraphs commutators")
     #printSubgraphs(store)
-    printCommutators(store)
+    printEdges(algebraName, size, store)
+    #printCommutators(store)
     #findDublicate(store)
 
     print("****************************************")
@@ -34,4 +35,4 @@ def testGraph(algebraName, size):
     print("Subgraphs commutators")
     printCommutators(subgraphs)
 
-testGraph("a0", 3)
+testGraph("a5", 2)
