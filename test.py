@@ -18,9 +18,9 @@ def testGraph(algebraName, size):
     print(f'time excexution {end_time - start_time: 0.4f} sec.')
     print(f"{sizes}")
 
-    print("Subgraphs commutators")
+    #print("Subgraphs commutators")
     #printSubgraphs(store)
-    printEdges(algebraName, size, store)
+    # printEdges(algebraName, size, store)
     #printCommutators(store)
     #findDublicate(store)
 
@@ -37,8 +37,8 @@ def testGraph(algebraName, size):
     end_time = perf_counter()
     print(f'time excexution graph {end_time - start_time: 0.4f} sec.')
     print("Subgraphs commutators")
-    printCommutators(subgraphs)
+    # printCommutators(subgraphs)
 
-testGraph("a12", 2)
+testGraph("a0", 4)
 # testGraph("a5", 2)
 # testGraph("a12", 2)

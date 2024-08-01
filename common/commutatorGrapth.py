@@ -71,14 +71,14 @@ def buildCommutatorTree(nameAlgebra, n, storage = EdgeStorage()):
         #b = "IZ"
         for current, pos in generatorAllBase(n, a):
 
-            if isIncluded(current, edges, index):
-               continue
+            # if isIncluded(current, edges, index):
+            #    continue
             pair = replaceGetes(pos, current, b)
-            if isIncluded(pair, edges, index):
-               continue
+            # if isIncluded(pair, edges, index):
+            #    continue
 
-            if isIncludedInOther(n, current, pos, edges, index, comutators):
-                continue
+            # if isIncludedInOther(n, current, pos, edges, index, comutators):
+            #     continue
  
             if testInStorage(storage, getPauliString(current)):
                 continue
