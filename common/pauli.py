@@ -17,9 +17,13 @@ Z = bitarray([0,1])
 codec = {'I':I, 'X':X, 'Y':Y, 'Z':Z}
 
 def setIString(n):
+    if n == 0:
+        return bitarray()
     return bitarray(2*n)
 
 def getAllOne(n):
+    if n == 0:
+        return bitarray()
     onePauliArray = setIString(n)
     onePauliArray.setall(1)
     return onePauliArray
@@ -126,3 +130,256 @@ def nest_commutator(nest, p):
 
 def generateCommutator(aString, b):
     return nest_commutator({aString}, b)
+
+
+def generatorIBase(n, pauliString):
+    np = n - len(pauliString)
+    k = 0
+    aGates = getPauliArray(pauliString)
+    while(k <= np):
+       left = setIString(k)
+       left.extend(aGates)
+       right = setIString(np-k)
+       left.extend(right)
+       k = k + 1
+       yield left
+
+def generatorAllComutators(n, arrayGeneratorString):
+    for pauliString in arrayGeneratorString:
+        yield from generatorIBase(n, pauliString)
+
+def getAllComutators(n, arrayGeneratorString):
+    comutators = []
+    for comutator in generatorAllComutators(n, arrayGeneratorString):
+         comutators.append(comutator)
+    return comutators
+
+def generatorSecondAllComutators(n, arrayGeneratorString):
+    for pauliString in arrayGeneratorString:
+        yield from generatorIBase(n, pauliString)
+
+def generatorAllBase(n, pauliString):
+    np = n - len(pauliString)
+    k = 0
+    aGates = getPauliArray(pauliString)
+    while(k <= np):
+        left = setIString(k)
+        left_one = getAllOne(k)
+        full_left = left == left_one
+        right = setIString(np-k)
+        right_one = getAllOne(np-k)
+        isFinish = False  
+        while isFinish is False:
+             gen = setIString(0)
+             gen.extend(left)
+             gen.extend(aGates)
+             gen.extend(right)
+             if right == right_one:
+                 if left == left_one:
+                     isFinish = True
+                 else:  
+                     left = IncPauliArray(left)
+             else:
+                right = IncPauliArray(right)
+
+             yield gen, k
+             
+        k = k + 1
+
+def replaceGetes(pos, pauliArray, pauliString):
+    pArray = pauliArray.copy()
+    aGates = getPauliArray(pauliString)
+    pos *= 2
+    for bit in aGates:
+        pArray[pos] = bit
+        pos += 1
+    return pArray
+
+def isInArray(a, b, position=0):
+
+    pos = a.find(b, position)
+    # print(f" pos {pos}")
+    if pos > -1:
+        if pos % 2 == 0:
+            return True
+        else:    
+            return isInArray(a, b, position=pos+1)
+    return False
+
+def getEdgesInArray(a, arrayEdges):
+    #if index >= len(arrayEdges):
+    #    return []
+    edges = []
+    for edge_index in range(0, len(arrayEdges)):
+        edge = list(arrayEdges[edge_index])
+        #print(f"condidat {edge}")
+        # b1 = replaceGetes(pos, a, edge[0])
+        b1 = getPauliArray(edge[0])
+        if isInArray(a, b1):
+            #print(f"condidat 1 {edge[0]}")
+            #if isIncluded(b1, arrayEdges, index) is False:
+            edges.append([edge[0], edge[1]])
+        else:
+            #b2 = replaceGetes(pos, a, edge[1])
+            b2 = getPauliArray(edge[1])
+            if isInArray(a, b2):
+                #print(f"condidat 2 {edge[1]}")
+                # if isIncluded(b2, arrayEdges, index) is False:
+                edges.append([edge[1], edge[0]])
+
+    return edges
+
+
+
+def isIncluded(a, arrayEdges, index):
+    for edge_index in range(0, index):
+        edge = list(arrayEdges[edge_index])
+        b1 = getPauliArray(edge[0])
+        if isInArray(a, b1):
+            return True
+        else:
+            b2 = getPauliArray(edge[1])
+            if isInArray(a, b2):
+                return True
+    return False
+
+def isNodeIncluded(n, pauliString, arrayEdges, index, node, start, item, pair):
+    # 
+    if start == item:
+        return True
+    if pauliString == node:
+        if start > item:
+            return True
+        else:
+            return False
+    if pauliString in arrayEdges[index]:
+        if pair > item:
+            return True
+        else:
+            return False
+    if n > 3:
+        return True
+    if n == 2:
+        for edge_index in range(0, index):
+            edge = list(arrayEdges[edge_index])
+            if pauliString == edge[0] or pauliString == edge[1]:
+                return True
+    if n == 3:
+        for edge_index in range(0, index):
+            edge = list(arrayEdges[edge_index])
+            if edge[0].find(pauliString[1]) == 0 or edge[1].find(pauliString[1]) == 0:
+                return True
+            if edge[0].find(pauliString[0]) == 1 or edge[1].find(pauliString[0]) == 1:
+                return True
+       
+    return False    
+
+def findInArray(a, b, position = 0):
+    pos = a.find(b, position)
+    if pos == -1:
+        return -1
+    if pos % 2 == 0:
+        return pos
+    return  findInArray(a, b, position = pos+1)
+
+def castExtention(a, edge):
+    ext = []
+    l_edge = list(edge)
+    b1 = getPauliArray(l_edge[0])
+    #b2 = getPauliArray(l_edge[1])
+    pos = findInArray(a, b1)
+    #print(f"pos = {pos//2} of {l_edge[0]} in {getPauliString(a)}")
+    while(pos >= 0):
+        
+        b2 = replaceGetes(pos//2, a, l_edge[1])
+        ext.append(getPauliString(b2))
+        pos = findInArray(a, b1, position = pos+1)
+    return ext
+
+def cmpPauliArrays(pos, current, pauliArray, node):
+    if current == pauliArray:
+        return 0
+    posInArra = findInArray(pauliArray, node)
+    if posInArra < pos:
+        return -1
+    if posInArra > pos:
+        return 1
+    II = setIString(2)
+    c = replaceGetes(pos, current, "II")
+    p = replaceGetes(pos, pauliArray, "II")
+    if  p < c:
+        return -1
+    return 1
+
+
+
+class CoordinationInTree:
+    def __init__(self):
+        self.level = bitarray(1)
+        self.position = bitarray(1)
+    
+    def incBitArray(self, bitarr):
+        size = len(bitarr)
+        bitOne = bitarray(size)
+        bitOne.setall(1)
+        if bitOne == bitarr:
+            bitarr = bitarray(size + 1)
+            bitarr[0] = 1
+            return bitarr
+
+        n = size - 1
+        stop = False
+        while stop is not True:
+           if bitarr[n] == 0:
+               bitarr[n] = 1
+               break
+           if bitarr[n] == 1:
+               bitarr[n] = 0
+               n = n - 1
+        return bitarr
+ 
+
+    def incLevel(self):
+        self.level = incBitArray(self.level)
+        self.position = bitarray(1)
+
+    def incPosition(self):
+        self.position = incBitArray(self.position)
+
+    def getLevel(self):
+        return self.level
+
+    def getPosition(self):
+        return self.position
+
+    def cmpWidth(self, coord):
+        if coord.getLevel() == self.getLevel() and coord.getPosition() == self.getPosition():
+            return 0
+        if coord.getLevel() == self.getLevel():
+           if coord.getPosition() > self.getPosition():
+               return 1
+           else: 
+              return -1
+        if coord.getLevel() > self.getLevel():
+            return 1
+        else:
+            return -1
+
+#    def cmpDepth(self, coord):
+#        if coord.getLevel() == self.getLevel() and coord.getPosition() == self.getPosition():
+#            return 0
+#        if coord.getPosition() == self.getPosition():
+#           if coord.getLevel() < self.getLevel():
+#               return 1
+#           else:
+#               return -1
+
+#        if coord.getPosition() > self.getPosition():
+#            return 1
+#        else:
+#            return -1
+
+
+
+
+

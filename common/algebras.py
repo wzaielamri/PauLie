@@ -25,7 +25,7 @@ G_lie = { 'a0': ["XX"], #0
       'b1': [ "XX", "XI", "IX"], #b1
       'b2': [ "XY", "XI", "IX"],#b2
       'b3': [ "XI", "YI", "IX", "IY"], #b3
-      'b4': [ "XX", "XY", "XZ", "XI", "IX", "IY", "IZ"] #b4
+      'b4': [ "XX", "XY", "XZ", "XI", "IX", "IY", "IZ"], #b4
      }
 
 def getAlgebra(name):
