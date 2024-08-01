@@ -118,6 +118,18 @@ def printCommutators(subgraphs):
                 if a != b:
                     c = multiPauliString(a, b) 
                     print(f"[{a}, {b}] = {c}")
+
+def printEdges(algebraName, n, subgraphs):
+    commutators = getAllComutators(n, getAlgebra(algebraName))
+
+    for subgraph in subgraphs:
+        print(f"subgraph {subgraph}")
+        for a in subgraph:
+            for b in subgraph:
+                if a != b:
+                    c = multiPauliString(a, b)
+                    if getPauliArray(c) in commutators:
+                        print(f"[{a}, {b}] = {c}")
  
 def findDublicate(subgraphs):
     for index, subgraph in enumerate(subgraphs):

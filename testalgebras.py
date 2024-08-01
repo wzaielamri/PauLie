@@ -17,8 +17,10 @@ def testGraph(algebraName, size):
     end_time = perf_counter()
     print(f'time excexution {end_time - start_time: 0.4f} sec.')
     print(f"{sizes}")
-    print("commutators")
-    printCommutators(store)
+    # print("commutators")
+    # printCommutators(store)
+    print("edges")
+    printEdges(algebraName, size, store)
 
     print("****************************************")
     print(" static graph")
