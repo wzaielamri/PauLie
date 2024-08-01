@@ -5,6 +5,10 @@ from time import perf_counter
 
 
 def testGraph(algebraName, size):
+    print("============================================")
+    print(f" algebra {algebraName} size {size}")
+    print("============================================")
+
     store = EdgeStorageArray()
     start_time = perf_counter()
     sizes = buildCommutatorTree(algebraName, size, store)
@@ -35,4 +39,6 @@ def testGraph(algebraName, size):
     print("Subgraphs commutators")
     printCommutators(subgraphs)
 
-testGraph("a5", 2)
+testGraph("a12", 2)
+# testGraph("a5", 2)
+# testGraph("a12", 2)

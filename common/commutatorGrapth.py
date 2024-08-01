@@ -17,6 +17,8 @@ def geteratorNodeByComutators(n, pauliArray, comutators):
         current = q.get()
         # print(f"current {getPauliString(current)}")
         for comutator in comutators:
+            if isCommutate(comutator, current):
+                continue
             next = multiPauliArrays(comutator, current)
             if next != I and getPauliString(next) not in store: # and next not in comutators:
                # print(f"{getPauliString(current)} * {getPauliString(comutator)} next {getPauliString(next)}")

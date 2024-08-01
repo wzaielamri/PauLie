@@ -22,13 +22,14 @@ def genarateGroupNodesByPauliString(aString):
     isFinishB = False
     listNest = []
     while isFinishB is False:
+#        print(f"b = {getPauliString(b)}")
         if b == last:
             isFinishB = True
         nest = generateCommutator(aString, b)
         nest.remove(aString)
         if len(nest) > 0:
             listNest = mergeGraph(listNest, nest)
-           #print(f"algebra {aString} {getPauliString(b)} -> {nest}")
+#            print(f"generator {aString} {getPauliString(b)} -> {nest}")
 
         if isFinishB is False:
             b = IncPauliArray(b)

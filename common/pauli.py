@@ -117,12 +117,13 @@ def multiPauliString(a, b):
     return getPauliString(multiPauliStringToArray(a, b))
 
 def nest_commutator(nest, p):
+#    print(f"nest {nest} {getPauliString(p)}")
     for aString in list(nest):
         a = getPauliArray(aString)
         if isCommutate(a, p) is False:
             c = multiPauliArrays(a, p)
             cString = getPauliString(c)
-
+#            print(f"{aString} * {getPauliString(p)} = {cString}")
             if cString not in nest:
                 nest.add(cString)
                 nest_commutator(nest, c)

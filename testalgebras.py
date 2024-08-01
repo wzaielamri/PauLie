@@ -20,7 +20,7 @@ def testGraph(algebraName, size):
     # print("commutators")
     # printCommutators(store)
     print("edges")
-    printEdges(algebraName, size, store)
+#    printEdges(algebraName, size, store)
 
     print("****************************************")
     print(" static graph")
