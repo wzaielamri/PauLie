@@ -28,6 +28,16 @@ def getAllOne(n):
     onePauliArray.setall(1)
     return onePauliArray
 
+def getAllZ(n):
+    if n == 0:
+        return bitarray()
+    zetPauliArray = setIString(n)
+    i = 1
+    while(i < 2*n):
+        zetPauliArray[i] = 1
+        i += 2
+    return zetPauliArray
+
 def getPauliString(bitString):
     return ''.join(bitString.decode(codec))
 
@@ -48,6 +58,18 @@ def IncPauliArray(pauliArray):
         if pauliArray[n] == 1:
            pauliArray[n] = 0
            n = n - 1
+    return pauliArray
+
+def IncIZPauliArray(pauliArray):
+    n = len(pauliArray) - 1
+    stop = False
+    while stop is not True:
+        if pauliArray[n] == 0:
+           pauliArray[n] = 1
+           break
+        if pauliArray[n] == 1:
+           pauliArray[n] = 0
+           n = n - 2
     return pauliArray
 
 
@@ -145,17 +167,48 @@ def generatorIBase(n, pauliString):
        k = k + 1
        yield left
 
-def generatorAllComutators(n, arrayGeneratorString):
+def generatorAllCommutators(n, arrayGeneratorString):
     for pauliString in arrayGeneratorString:
         yield from generatorIBase(n, pauliString)
 
-def getAllComutators(n, arrayGeneratorString):
-    comutators = []
-    for comutator in generatorAllComutators(n, arrayGeneratorString):
-         comutators.append(comutator)
-    return comutators
+def generatorAllPauliStrings(n):
+    pauliArray = setIString(n)
+    yield pauliArray
+    lastPauliArray = getAllOne(n)
+    while True:
+        pauliArray = IncPauliArray(pauliArray)
+        yield pauliArray
+        if pauliArray == lastPauliArray:
+            break
 
-def generatorSecondAllComutators(n, arrayGeneratorString):
+
+def isIZString(a):
+    i = 0
+    size = len(a)
+    while(i < size):
+        if a[i] != 0:
+            return False
+        i += 2
+    return True
+
+def generatorAllIZPauliString(n):
+    pauliArray = setIString(n)
+    yield pauliArray
+    lastPauliArray = getAllZ(n)
+    while True:
+        pauliArray = IncIZPauliArray(pauliArray)
+        yield pauliArray
+        if pauliArray == lastPauliArray:
+            break
+ 
+
+def getAllCommutators(n, arrayGeneratorString):
+    commutators = []
+    for commutator in generatorAllCommutators(n, arrayGeneratorString):
+         commutators.append(commutator)
+    return commutators
+
+def generatorSecondAllCommutators(n, arrayGeneratorString):
     for pauliString in arrayGeneratorString:
         yield from generatorIBase(n, pauliString)
 
