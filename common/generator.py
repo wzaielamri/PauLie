@@ -1,5 +1,6 @@
 from common.pauli import *
-from common.symmetries import Symmetries
+from common.algebras import *
+import queue
 
 
 def mergeGraph(listNest, nest):
@@ -50,16 +51,143 @@ def generateEdgeByAlgebraName(G, algebra):
 
 
 
+def nest_commutator(nest, p):
+#    print(f"nest {nest} {getPauliString(p)}")
+    for aString in list(nest):
+        a = getPauliArray(aString)
+        if isCommutate(a, p) is False:
+            c = multiPauliArrays(a, p)
+            cString = getPauliString(c)
+#            print(f"{aString} * {getPauliString(p)} = {cString}")
+            if cString not in nest:
+                nest.add(cString)
+                nest_commutator(nest, c)
+    return nest
 
-def getSubGroupsOfAlgebra(algebra):
-    subgroups = Symmetries()
-    for a in algebra:
-        edges = genarateGroupNodesByPauliString(a)
-        subgroups.add(edges)
-    return subgroups
+def generateCommutator(aString, b):
+    return nest_commutator({aString}, b)
 
-def getSubGroupsOfAlgebraByName(G, algebra):
-    if algebra not in G:
-        raise ValueError(f"invalid algebra: {algebra}")
 
-    return getSubGroupsOfAlgebra(G[algebra])
+def generatorIBase(n, pauliString):
+    np = n - len(pauliString)
+    k = 0
+    aGates = getPauliArray(pauliString)
+    while(k <= np):
+       left = setIString(k)
+       left.extend(aGates)
+       right = setIString(np-k)
+       left.extend(right)
+       k = k + 1
+       yield left
+
+def generatorAllCommutators(n, arrayGeneratorString):
+    for pauliString in arrayGeneratorString:
+        yield from generatorIBase(n, pauliString)
+
+def generatorAllPauliStrings(n):
+    pauliArray = setIString(n)
+    yield pauliArray
+    lastPauliArray = getAllOne(n)
+    while True:
+        pauliArray = IncPauliArray(pauliArray)
+        yield pauliArray
+        if pauliArray == lastPauliArray:
+            break
+
+def generatorAllIZPauliString(n):
+    pauliArray = setIString(n)
+    yield pauliArray
+    lastPauliArray = getAllZ(n)
+    while True:
+        pauliArray = IncIZPauliArray(pauliArray)
+        yield pauliArray
+        if pauliArray == lastPauliArray:
+            break
+ 
+
+def getAllCommutators(n, arrayGeneratorString):
+    commutators = []
+    for commutator in generatorAllCommutators(n, arrayGeneratorString):
+         commutators.append(commutator)
+    return commutators
+
+def generatorSecondAllCommutators(n, arrayGeneratorString):
+    for pauliString in arrayGeneratorString:
+        yield from generatorIBase(n, pauliString)
+
+def generatorAllBase(n, pauliString):
+    np = n - len(pauliString)
+    k = 0
+    aGates = getPauliArray(pauliString)
+    while(k <= np):
+        left = setIString(k)
+        left_one = getAllOne(k)
+        full_left = left == left_one
+        right = setIString(np-k)
+        right_one = getAllOne(np-k)
+        isFinish = False  
+        while isFinish is False:
+             gen = setIString(0)
+             gen.extend(left)
+             gen.extend(aGates)
+             gen.extend(right)
+             if right == right_one:
+                 if left == left_one:
+                     isFinish = True
+                 else:  
+                     left = IncPauliArray(left)
+             else:
+                right = IncPauliArray(right)
+
+             yield gen, k
+             
+        k = k + 1
+
+def geteratorNodeByCommutators(n, pauliArray, commutators):
+    I = setIString(n)
+    q = queue.Queue()
+    q.put(pauliArray)
+    ql = queue.Queue()
+    store = {getPauliString(pauliArray)}
+    while q.empty() is False:
+        current = q.get()
+        # print(f"current {getPauliString(current)}")
+        for commutator in commutators:
+            if isCommutate(commutator, current):
+                continue
+            next = multiPauliArrays(commutator, current)
+            if next != I and getPauliString(next) not in store: # and next not in comutators:
+               # print(f"{getPauliString(current)} * {getPauliString(comutator)} next {getPauliString(next)}")
+               store.add(getPauliString(next))
+               q.put(next)
+               yield next
+
+def generatorLinearBasis(algebraName, n):
+    commutators = getAllCommutators(n, getAlgebra(algebraName))
+    for current in generatorAllPauliStrings(n):
+        isNotCommutate = False
+
+        for commutator in commutators:
+            if isCommutate(commutator, current) is False:
+                isNotCommutate = True
+                break
+        if isNotCommutate is False:
+            yield current
+
+def generatorIZConnectedVertex(algebraName, n):
+    commutators = getAllCommutators(n, getAlgebra(algebraName))
+    for current in generatorAllIZPauliString(n):
+        isIZCommutate = False
+        for commutator in commutators:
+            if isCommutate(commutator, current) is False:
+                for linear in generatorLinearBasis(algebraName, n):
+                    c = multiPauliArrays(linear, current)
+                    # print(f"ALL {getPauliString(current)} - linear - {getPauliString(linear)} = {getPauliString(c)}")
+                    if isIZString(c):
+                        isIZCommutate = True
+                        # print(f"{getPauliString(current)} - linear - {getPauliString(linear)} = {getPauliString(c)}")
+                        break
+            if isIZCommutate:
+                break
+        if isIZCommutate:
+            yield current

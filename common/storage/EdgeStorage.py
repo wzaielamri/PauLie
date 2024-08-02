@@ -14,20 +14,3 @@ class EdgeStorage:
     def printSubgroup(self):
         pass
 
-    def initRoute(self):
-        pass
-
-    def addToRoute(self, pauliString):
-        pass
-    
-    def printRoute(self):
-        pass
-
-    def initMeetingRoute(self):
-        pass
-
-    def addToMeetingRoute(self, pauliString):
-        pass
-
-    def printMeetingRoute(self):
-        pass

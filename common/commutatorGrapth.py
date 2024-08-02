@@ -2,29 +2,11 @@ from common.pauli import *
 from common.algebras import *
 from common.generator import *
 from common.storage.EdgeStorage import *
-import queue
+
 
 ######################################
 ###  Graph by commutator
 #####################################
-def geteratorNodeByCommutators(n, pauliArray, commutators):
-    I = setIString(n)
-    q = queue.Queue()
-    q.put(pauliArray)
-    ql = queue.Queue()
-    store = {getPauliString(pauliArray)}
-    while q.empty() is False:
-        current = q.get()
-        # print(f"current {getPauliString(current)}")
-        for commutator in commutators:
-            if isCommutate(commutator, current):
-                continue
-            next = multiPauliArrays(commutator, current)
-            if next != I and getPauliString(next) not in store: # and next not in comutators:
-               # print(f"{getPauliString(current)} * {getPauliString(comutator)} next {getPauliString(next)}")
-               store.add(getPauliString(next))
-               q.put(next)
-               yield next
 
 def isIncludedInOther(n, current, pos, edges, index, commutators):
 
@@ -88,7 +70,6 @@ def buildCommutatorTree(algebraName, n, storage = EdgeStorage()):
             level = 0
             maxLevel = 2
             storage.create()
-            storage.initRoute()
             storage.add(getPauliString(current))
 
 #            print("*****commutators********")
@@ -114,48 +95,16 @@ def buildCommutatorTree(algebraName, n, storage = EdgeStorage()):
     return sizesOfSubgraph
 
 
-def generatorLinearBasis(algebraName, n):
-    commutators = getAllCommutators(n, getAlgebra(algebraName))
-    for current in generatorAllPauliStrings(n):
-        isNotCommutate = False
-
-        for commutator in commutators:
-            if isCommutate(commutator, current) is False:
-                isNotCommutate = True
-                break
-        if isNotCommutate is False:
-            yield current
-
 
 def printLinearBasis(algebraName, n):
     for current in generatorLinearBasis(algebraName, n):
         print(f"{getPauliString(current)}")
          
-def generatorIZConnectedVertex(algebraName, n):
-    commutators = getAllCommutators(n, getAlgebra(algebraName))
-    for current in generatorAllIZPauliString(n):
-        isIZCommutate = False
-        for commutator in commutators:
-            if isCommutate(commutator, current) is False:
-                for linear in generatorLinearBasis(algebraName, n):
-                    c = multiPauliArrays(linear, current)
-                    # print(f"ALL {getPauliString(current)} - linear - {getPauliString(linear)} = {getPauliString(c)}")
-                    if isIZString(c):
-                        isIZCommutate = True
-                        # print(f"{getPauliString(current)} - linear - {getPauliString(linear)} = {getPauliString(c)}")
-                        break
-            if isIZCommutate:
-                break
-        if isIZCommutate:
-            yield current
 
 def printAllIZ(algebraName, n):
     for current in generatorIZConnectedVertex(algebraName, n):
         print(f"{getPauliString(current)}")
-    
-
-
-
+  
 
 def printCommutators(subgraphs):
     for subgraph in subgraphs:
@@ -230,3 +179,128 @@ def buildIZGraph(algebraName, n, storage = EdgeStorage()):
             storage.store()
 
     return sizesOfSubgraph
+
+def replaceGetes(pos, pauliArray, pauliString):
+    pArray = pauliArray.copy()
+    aGates = getPauliArray(pauliString)
+    pos *= 2
+    for bit in aGates:
+        pArray[pos] = bit
+        pos += 1
+    return pArray
+
+def isInArray(a, b, position=0):
+
+    pos = a.find(b, position)
+    # print(f" pos {pos}")
+    if pos > -1:
+        if pos % 2 == 0:
+            return True
+        else:    
+            return isInArray(a, b, position=pos+1)
+    return False
+
+def getEdgesInArray(a, arrayEdges):
+    #if index >= len(arrayEdges):
+    #    return []
+    edges = []
+    for edge_index in range(0, len(arrayEdges)):
+        edge = list(arrayEdges[edge_index])
+        #print(f"condidat {edge}")
+        # b1 = replaceGetes(pos, a, edge[0])
+        b1 = getPauliArray(edge[0])
+        if isInArray(a, b1):
+            #print(f"condidat 1 {edge[0]}")
+            #if isIncluded(b1, arrayEdges, index) is False:
+            edges.append([edge[0], edge[1]])
+        else:
+            #b2 = replaceGetes(pos, a, edge[1])
+            b2 = getPauliArray(edge[1])
+            if isInArray(a, b2):
+                #print(f"condidat 2 {edge[1]}")
+                # if isIncluded(b2, arrayEdges, index) is False:
+                edges.append([edge[1], edge[0]])
+
+    return edges
+
+
+
+def isIncluded(a, arrayEdges, index):
+    for edge_index in range(0, index):
+        edge = list(arrayEdges[edge_index])
+        b1 = getPauliArray(edge[0])
+        if isInArray(a, b1):
+            return True
+        else:
+            b2 = getPauliArray(edge[1])
+            if isInArray(a, b2):
+                return True
+    return False
+
+def isNodeIncluded(n, pauliString, arrayEdges, index, node, start, item, pair):
+    # 
+    if start == item:
+        return True
+    if pauliString == node:
+        if start > item:
+            return True
+        else:
+            return False
+    if pauliString in arrayEdges[index]:
+        if pair > item:
+            return True
+        else:
+            return False
+    if n > 3:
+        return True
+    if n == 2:
+        for edge_index in range(0, index):
+            edge = list(arrayEdges[edge_index])
+            if pauliString == edge[0] or pauliString == edge[1]:
+                return True
+    if n == 3:
+        for edge_index in range(0, index):
+            edge = list(arrayEdges[edge_index])
+            if edge[0].find(pauliString[1]) == 0 or edge[1].find(pauliString[1]) == 0:
+                return True
+            if edge[0].find(pauliString[0]) == 1 or edge[1].find(pauliString[0]) == 1:
+                return True
+       
+    return False    
+
+def findInArray(a, b, position = 0):
+    pos = a.find(b, position)
+    if pos == -1:
+        return -1
+    if pos % 2 == 0:
+        return pos
+    return  findInArray(a, b, position = pos+1)
+
+def castExtention(a, edge):
+    ext = []
+    l_edge = list(edge)
+    b1 = getPauliArray(l_edge[0])
+    #b2 = getPauliArray(l_edge[1])
+    pos = findInArray(a, b1)
+    #print(f"pos = {pos//2} of {l_edge[0]} in {getPauliString(a)}")
+    while(pos >= 0):
+        
+        b2 = replaceGetes(pos//2, a, l_edge[1])
+        ext.append(getPauliString(b2))
+        pos = findInArray(a, b1, position = pos+1)
+    return ext
+
+def cmpPauliArrays(pos, current, pauliArray, node):
+    if current == pauliArray:
+        return 0
+    posInArra = findInArray(pauliArray, node)
+    if posInArra < pos:
+        return -1
+    if posInArra > pos:
+        return 1
+    II = setIString(2)
+    c = replaceGetes(pos, current, "II")
+    p = replaceGetes(pos, pauliArray, "II")
+    if  p < c:
+        return -1
+    return 1
