@@ -113,6 +113,17 @@ def multiPauliStringToArray(a, b):
 def multiPauliString(a, b):
     return getPauliString(multiPauliStringToArray(a, b))
 
+def commutator(a, b):
+    if isCommutate(a, b):
+        return bitarray(len(a))
+    return multiPauliArrays(a, b)
+
+def commutatorPauliString(a, b):
+    aArray = getPauliArray(a)
+    bArray = getPauliArray(b)
+    cArray = commutator(aArray, bArray)
+    return getPauliString(cArray)
+
 
 def isIZString(a):
     i = 0

@@ -35,7 +35,7 @@ def testInStorage(storage, pauliString):
             return True
     return False
 
-def buildCommutatorTree(algebraName, n, storage = EdgeStorage()):
+def buildCommutatorGraph(algebraName, n, storage = EdgeStorage()):
     edges = generateEdgeByAlgebraName(getAlgebras(), algebraName)
     commutators = getAllCommutators(n, getAlgebra(algebraName))
     print("commutators")

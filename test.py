@@ -37,6 +37,7 @@ def testAlgebra(algebraName, size):
 def testAllAlgebra(size):
     for algebraName in getAlgebras():
         testAlgebra(algebraName, size)
+
 testAllAlgebra(5)
 testAlgebra("a0", 8)
 testGraph("a0", 10)
