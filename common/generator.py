@@ -111,6 +111,12 @@ def getAllCommutators(n, arrayGeneratorString):
          commutators.append(commutator)
     return commutators
 
+def getSetAllCommutators(n, arrayGeneratorString):
+    commutators = {}
+    for commutator in generatorAllCommutators(n, arrayGeneratorString):
+         commutators.add(commutator)
+    return commutators
+
 def generatorSecondAllCommutators(n, arrayGeneratorString):
     for pauliString in arrayGeneratorString:
         yield from generatorIBase(n, pauliString)

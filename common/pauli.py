@@ -134,6 +134,32 @@ def isIZString(a):
         i += 2
     return True
 
+def isIm(a):
+    lenString = len(a)
+    i = 0
+    numbY = 0
+    while i < lenString:
+        if a[i] == 1 and a[i + 1] == 1:
+           numbY += 1
+        i += 2
+    return numbY%2 == 1
 
+def selectPauliString(a, b):
+    if isCommutate(a, b):
+       return b
+
+    c = commutator(a, b)
+    imA = isIm(a)
+    imB = isIm(b)
+    imC = isIm(c)
+    if imA and imB and imC:
+        return c
+    if imA and not imB and not imC:
+        return c
+    if not imA and imB and not imC:
+        return c
+    if not imA and not imB and imC:
+        return c
+    return b
 
 
