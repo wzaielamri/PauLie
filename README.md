@@ -11,13 +11,13 @@ pip install -r requirements.txt
 #### 1. momentumAlgebras.py
 Calculations, for all algebra generators it calculates EZ with sizes from 2 to 5
 
-#### 2. classifyAlgebras.oy
+#### 2. classifyAlgebras.py
 Classification of all algebras of size 8.
 
-#### 3. plotCanonic.oy
+#### 3. plotCanonic.py
 Reducing the algebra a6 generator graph of size 8 and plotting the result
 
-#### 4. animationCanonic.oy
+#### 4. animationCanonic.py
 Reducing the algebra a6 generator graph of size 8 and animating its construction
 
 #### 7. common/pauli.py
