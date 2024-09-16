@@ -10,8 +10,6 @@ from classifier.recording import *
 def buildAndAnimate(nodes):
     record = RecordGraph()
     canonics = transformToCanonics(nodes, record = record)
-    nodes = mergeCanonics(canonics)
-    vertices, edges, edge_labels =  getGraphView(nodes)
     animationGraph(record)
 
 generators = getAllCommutators(8, getAlgebra("a6"))
