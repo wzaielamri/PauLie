@@ -13,7 +13,7 @@ def buildAndPlot(nodes):
     plotGraph(vertices, edges, edge_labels)
 
 
-generators = getAllCommutators(8, getAlgebra("a6"))
+generators = getAllCommutators(4, getAlgebra("a3"))
 buildAndPlot(generators)
 
 

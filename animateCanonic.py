@@ -9,10 +9,10 @@ from classifier.recording import *
 
 def buildAndAnimate(nodes):
     record = RecordGraph()
-    canonics = transformToCanonics(nodes, record = record)
+    canonics = transformToCanonics(nodes, record = record, debug=True)
     animationGraph(record)
 
-generators = getAllCommutators(8, getAlgebra("a6"))
+generators = getAllCommutators(8, getAlgebra("a9"))
 buildAndAnimate(generators)
 
 

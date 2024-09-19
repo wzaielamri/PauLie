@@ -16,22 +16,22 @@ Z = bitarray([0,1])
 
 codec = {'I':I, 'X':X, 'Y':Y, 'Z':Z}
 
-def setIString(n):
+def getI(n):
     if n == 0:
         return bitarray()
     return bitarray(2*n)
 
-def getAllOne(n):
+def getY(n):
     if n == 0:
         return bitarray()
-    onePauliArray = setIString(n)
+    onePauliArray = getI(n)
     onePauliArray.setall(1)
     return onePauliArray
 
-def getAllZ(n):
+def getZ(n):
     if n == 0:
         return bitarray()
-    zetPauliArray = setIString(n)
+    zetPauliArray = getI(n)
     i = 1
     while(i < 2*n):
         zetPauliArray[i] = 1
@@ -77,18 +77,13 @@ def IncIZPauliArray(pauliArray):
 def isCommutate(a, b):
     if len(a) != len(b):
         raise ValueError("gates must have the same length")
-    i = 0
-    lenString = len(a)
     a_dot_b = 0
     b_dot_a = 0
+    i = 0
 
-    while i < lenString:
-       bitOneA = a[i]
-       bitTwoA = a[i + 1]
-       bitOneB = b[i]
-       bitTwoB = b[i + 1]
-       a_dot_b += 1 if bitOneA and bitTwoB else 0
-       b_dot_a += 1 if bitTwoA and bitOneB else 0
+    while i < len(a):
+       a_dot_b += 1 if a[i] and  b[i + 1] else 0
+       b_dot_a += 1 if a[i + 1] and b[i] else 0
        i = i + 2
 
     a_dot_b %= 2
@@ -96,6 +91,8 @@ def isCommutate(a, b):
     return a_dot_b == b_dot_a
 
 def multiPauliArrays(a, b):
+    if len(a) != len(b):
+        raise ValueError("gates must have the same length")
     c = bitarray(len(a))
     lenString = len(c)
     i = 0
@@ -134,32 +131,21 @@ def isIZString(a):
         i += 2
     return True
 
-def isIm(a):
-    lenString = len(a)
-    i = 0
-    numbY = 0
-    while i < lenString:
-        if a[i] == 1 and a[i + 1] == 1:
-           numbY += 1
-        i += 2
-    return numbY%2 == 1
+def genAllNodes(n):
+    a = getI(n)
+    last = getY(n)
+    isLast = False
+    nodes = []
+    while isLast is False:
+        if a == last:
+            isLast = True
+        yield a
+        if isLast is False:
+            a = IncPauliArray(a)
 
-def selectPauliString(a, b):
-    if isCommutate(a, b):
-       return b
+def getArrayPauliStrings(bitArrays):
+    return list(map(getPauliString, bitArrays))
 
-    c = commutator(a, b)
-    imA = isIm(a)
-    imB = isIm(b)
-    imC = isIm(c)
-    if imA and imB and imC:
-        return c
-    if imA and not imB and not imC:
-        return c
-    if not imA and imB and not imC:
-        return c
-    if not imA and not imB and imC:
-        return c
-    return b
-
+def getArrayPauliArrays(pauliStrings):
+    return list(map(getPauliArray, pauliStrings))
 

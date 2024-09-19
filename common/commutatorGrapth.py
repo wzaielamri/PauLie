@@ -298,7 +298,7 @@ def cmpPauliArrays(pos, current, pauliArray, node):
         return -1
     if posInArra > pos:
         return 1
-    II = setIString(2)
+    II = getI(2)
     c = replaceGetes(pos, current, "II")
     p = replaceGetes(pos, pauliArray, "II")
     if  p < c:

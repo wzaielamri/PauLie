@@ -18,8 +18,8 @@ def mergeGraph(listNest, nest):
 
 def genarateGroupNodesByPauliString(aString):                                         
     n = len(aString)
-    b = setIString(n)
-    last = getAllOne(n)
+    b = getI(n)
+    last = getY(n)
     isFinishB = False
     listNest = []
     while isFinishB is False:
@@ -73,9 +73,9 @@ def generatorIBase(n, pauliString):
     k = 0
     aGates = getPauliArray(pauliString)
     while(k <= np):
-       left = setIString(k)
+       left = getI(k)
        left.extend(aGates)
-       right = setIString(np-k)
+       right = getI(np-k)
        left.extend(right)
        k = k + 1
        yield left
@@ -85,9 +85,9 @@ def generatorAllCommutators(n, arrayGeneratorString):
         yield from generatorIBase(n, pauliString)
 
 def generatorAllPauliStrings(n):
-    pauliArray = setIString(n)
+    pauliArray = getI(n)
     yield pauliArray
-    lastPauliArray = getAllOne(n)
+    lastPauliArray = getY(n)
     while True:
         pauliArray = IncPauliArray(pauliArray)
         yield pauliArray
@@ -95,9 +95,9 @@ def generatorAllPauliStrings(n):
             break
 
 def generatorAllIZPauliString(n):
-    pauliArray = setIString(n)
+    pauliArray = getI(n)
     yield pauliArray
-    lastPauliArray = getAllZ(n)
+    lastPauliArray = getZ(n)
     while True:
         pauliArray = IncIZPauliArray(pauliArray)
         yield pauliArray
@@ -126,14 +126,14 @@ def generatorAllBase(n, pauliString):
     k = 0
     aGates = getPauliArray(pauliString)
     while(k <= np):
-        left = setIString(k)
-        left_one = getAllOne(k)
+        left = getI(k)
+        left_one = getY(k)
         full_left = left == left_one
-        right = setIString(np-k)
-        right_one = getAllOne(np-k)
+        right = getI(np-k)
+        right_one = getY(np-k)
         isFinish = False  
         while isFinish is False:
-             gen = setIString(0)
+             gen = getI(0)
              gen.extend(left)
              gen.extend(aGates)
              gen.extend(right)
@@ -150,7 +150,7 @@ def generatorAllBase(n, pauliString):
         k = k + 1
 
 def geteratorNodeByCommutators(n, pauliArray, commutators):
-    I = setIString(n)
+    I = getI(n)
     q = queue.Queue()
     q.put(pauliArray)
     ql = queue.Queue()
