@@ -1,5 +1,5 @@
 import networkx as nx
-from classifier.graphView import *
+from graphs.graphView import *
 from common.pauli import *
 
 def getSubgraphs(nodes):

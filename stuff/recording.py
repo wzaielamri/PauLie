@@ -1,4 +1,4 @@
-from classifier.graphView import *
+from graphs.graphView import *
 
 class FrameGraph:
       ### constructor 

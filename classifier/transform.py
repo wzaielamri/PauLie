@@ -1,6 +1,6 @@
 from common.pauli import *
 import queue
-from classifier.subgraphs import *
+from graphs.subgraphs import *
 from classifier.shape import *
 from stuff.printing import *
 from stuff.recording import *
