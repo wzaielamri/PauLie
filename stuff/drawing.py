@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
-from classifier.recording import *
+from stuff.recording import *
 
 ### plotting graph
 def plotGraph(vertices, edges, edge_labels = None):

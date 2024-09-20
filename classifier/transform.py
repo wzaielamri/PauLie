@@ -2,8 +2,8 @@ from common.pauli import *
 import queue
 from classifier.subgraphs import *
 from classifier.shape import *
-from classifier.printing import *
-from classifier.recording import *
+from stuff.printing import *
+from stuff.recording import *
 import random
 
 ### Return highlighted vertices (connected to the selected vertex)

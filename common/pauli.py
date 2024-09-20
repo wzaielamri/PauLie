@@ -133,15 +133,23 @@ def isIZString(a):
 
 def genAllNodes(n):
     a = getI(n)
+    yield a
     last = getY(n)
-    isLast = False
-    nodes = []
-    while isLast is False:
-        if a == last:
-            isLast = True
+    while True:
+        a = IncPauliArray(a)
         yield a
-        if isLast is False:
-            a = IncPauliArray(a)
+        if a == last:
+            break
+
+def genAllIZ(n):
+    a = getI(n)
+    yield a
+    last = getZ(n)
+    while True:
+        a = IncIZPauliArray(a)
+        yield a
+        if a == last:
+            break
 
 def getArrayPauliStrings(bitArrays):
     return list(map(getPauliString, bitArrays))
