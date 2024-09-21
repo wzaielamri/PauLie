@@ -60,6 +60,7 @@ def IncPauliArray(pauliArray):
            n = n - 1
     return pauliArray
 
+   
 def IncIZPauliArray(pauliArray):
     n = len(pauliArray) - 1
     stop = False
