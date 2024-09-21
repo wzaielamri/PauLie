@@ -2,9 +2,9 @@ import networkx as nx
 from graphs.graphView import *
 from common.pauli import *
 
-def getSubgraphs(nodes):
+def getSubgraphs(nodes, commutators = []):
     subgraphs = []
-    vertices, edges, edge_labels = getGraphView(nodes)
+    vertices, edges, edge_labels = getGraphView(nodes, commutators)
     g = nx.Graph()
     g.add_nodes_from(vertices)
     g.add_edges_from(edges)

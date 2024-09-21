@@ -1,4 +1,5 @@
 from graphs.graphView import *
+from common.pauli import *
 
 class FrameGraph:
       ### constructor 
@@ -38,3 +39,9 @@ def recordingGraph(record:RecordGraph, nodes):
     vertices, edges, edge_labels = getGraphView(nodes)
     record.append(vertices, edges, edge_labels)
 
+
+def recordingGraphString(record:RecordGraph, nodes):
+    if record is None:
+        return
+    vertices, edges, edge_labels = getGraphView(getArrayPauliArrays(nodes))
+    record.append(vertices, edges, edge_labels)

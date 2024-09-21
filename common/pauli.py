@@ -131,6 +131,15 @@ def isIZString(a):
         i += 2
     return True
 
+def isSubInArray(sub, a, pos=0):
+    index = a.find(sub, pos)
+    if index == -1:
+        return False
+    if index % 2 == 0:
+        return True
+    return isSubInArray(sub, a, index+1)
+
+
 def genAllNodes(n):
     a = getI(n)
     yield a
@@ -152,8 +161,10 @@ def genAllIZ(n):
             break
 
 def getArrayPauliStrings(bitArrays):
+    #l = bitArrays.copy()
     return list(map(getPauliString, bitArrays))
 
 def getArrayPauliArrays(pauliStrings):
+    #l = pauliStrings.copy()
     return list(map(getPauliArray, pauliStrings))
 

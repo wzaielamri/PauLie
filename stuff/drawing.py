@@ -2,6 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
 from stuff.recording import *
+from graphs.graphView import *
+from common.pauli import *
 
 ### plotting graph
 def plotGraph(vertices, edges, edge_labels = None):
@@ -15,6 +17,13 @@ def plotGraph(vertices, edges, edge_labels = None):
    nx.draw_networkx(graph, pos=pos)
    plt.show()
 
+def plotGraphByNodes(nodes, commutators=[]):
+    v,e,l = getGraphView(nodes, commutators)
+    return plotGraph(v,e,l)
+
+def plotGraphByStringNodes(nodes, commutators=[]):
+    v,e,l = getGraphView(getArrayPauliArrays(nodes), getArrayPauliArrays(commutators))
+    return plotGraph(v,e,l)
 
 ### animating graph record
 def animationGraph(record: RecordGraph, interval=1000, repeat=False):

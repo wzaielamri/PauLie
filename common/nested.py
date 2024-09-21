@@ -34,3 +34,13 @@ def getNestedStringAlgebra(name):
         nested += getNestedStrings(g)
     return nested
 
+def getNodesInNested(nested):
+    nodes = []
+    for pair in nested:
+        for node in pair:
+            if node not in nodes:
+                nodes.append(node)
+    return nodes
+
+def getNestedNodesInAlgebra(name):
+    return getNodesInNested(getNestedAlgebra(name))
