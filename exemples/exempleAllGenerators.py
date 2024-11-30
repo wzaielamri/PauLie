@@ -2,11 +2,11 @@ import sys
 sys.path.append('..')
 
 from time import perf_counter
-from common.ext2local import *
+from common.extKlocal import *
 
 def loopAllGeneratorsNodes(n, name):
     i = 0
-    for node in gen2localAlgebraGenerators(n, name):
+    for node in genKlocalAlgebraGenerators(n, name):
         i += 1
 
 for i in range(10, 21):

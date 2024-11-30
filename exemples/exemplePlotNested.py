@@ -1,10 +1,10 @@
 import sys
 sys.path.append('..')
 
-from common.ext2local import *
+from common.extKlocal import *
 from stuff.drawing import *
 
 
-generators = get2localAlgebraGenerators(2, "a13")
-nestedNodes = get2localNestedNodesInAgebraGenerator(2, "a13")
+generators = getKlocalAlgebraGenerators(2, "a13")
+nestedNodes = getKlocalNestedNodesInAgebraGenerator(2, "a13")
 plotGraphByNodes(nestedNodes, generators)

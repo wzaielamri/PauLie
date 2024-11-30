@@ -3,9 +3,9 @@ sys.path.append('..')
 
 from common.algebras import *
 from stuff.drawing import *
-from common.ext2local import *
+from common.extKlocal import *
 
 
-generators = get2localAlgebraGenerators(4, "a6")
+generators = getKlocalAlgebraGenerators(4, "a6")
 plotGraphByNodes(generators)
 

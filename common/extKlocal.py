@@ -3,12 +3,12 @@ from common.algebras import *
 from common.nested import *
 
 
-def gen2local(n, p, converter = None, used = []):
-    if n < 2:
-        raise ValueError("Size must be greater than 1")
+def genKlocal(n, p, converter = None, used = []):
+    if n < len(p)//2:
+        raise ValueError(f"Size must be greater than {len(p)//2}")
 
-    if len(p) != 4:
-        raise ValueError("Pauli string should be equal to 2")
+    #if len(p) != 4:
+    #    raise ValueError("Pauli string should be equal to 2")
 
     np = n - len(p)//2
     k = 0
@@ -26,20 +26,20 @@ def gen2local(n, p, converter = None, used = []):
            yield converter(left)
        used.append(left)
 
-def gen2localByString(n, pauliString, used = []):
-    yield from gen2local(n, getPauliArray(pauliString), used=used)
+def genKlocalByString(n, pauliString, used = []):
+    yield from genKlocal(n, getPauliArray(pauliString), used=used)
 
-def gen2localString(n, pauliString, used = []):
-    yield from gen2local(n, getPauliArray(pauliString), getPauliString, used=used)
+def genKlocalString(n, pauliString, used = []):
+    yield from genKlocal(n, getPauliArray(pauliString), getPauliString, used=used)
 
 
-def gen2localExt(n, p, converter = None, used = []):
+def genKlocalExt(n, p, converter = None, used = []):
 
     if n < 2:
         raise ValueError("Size must be greater than 1")
 
-    if len(p) != 4:
-        raise ValueError("Pauli string should be equal to 2")
+    #if len(p) != 4:
+    #    raise ValueError("Pauli string should be equal to 2")
 
     np = n - len(p)//2
     k = 0
@@ -76,46 +76,72 @@ def gen2localExt(n, p, converter = None, used = []):
                  yield converter(gen)
         k = k + 1
 
-def gen2LocalExtByString(n, pauliString):
-    yield from gen2localExt(n, getPauliArray(pauliString))
+def genKlocalExtByString(n, pauliString):
+    yield from genKlocalExt(n, getPauliArray(pauliString))
 
-def gen2localExtString(n, pauliString):
-    yield from gen2localExt(n, getPauliArray(pauliString), getPauliString)
+def genKlocalExtString(n, pauliString):
+    yield from genKlocalExt(n, getPauliArray(pauliString), getPauliString)
 
-def gen2localAlgebraGenerators(n, name):
+
+def genKlocalAlgebraGenerators(n, name):
     generators = getAlgebra(name)
     used = []
     for g in generators:
-        yield from gen2localByString(n, g, used=used)
+        yield from genKlocalByString(n, g, used=used)
 
-def get2localAlgebraGenerators(n, name):
+def getKlocalAlgebraGenerators(n, name):
     generators = []
-    for g in gen2localAlgebraGenerators(n, name):
+    for g in genKlocalAlgebraGenerators(n, name):
         generators.append(g)
     return generators
 
-def gen2localStringAlgebraGenerators(n, name):
+def genKlocalStringAlgebraGenerators(n, name):
     generators = getAlgebra(name)
     used = []
     for g in generators:
-        yield from gen2localString(n, g, used=used)
+        yield from genKlocalString(n, g, used=used)
 
-def get2localStringAlgebraGenerators(n, name):
+def getKlocalStringAlgebraGenerators(n, name):
     generators = []
     used = []
-    for g in gen2localStringAlgebraGenerators(n, name):
+    for g in genKlocalStringAlgebraGenerators(n, name):
         generators.append(g)
     return generators
+####
 
-def gen2localNestedNodesInAgebraGenerator(n, name):
+def genKlocalGenerators(n, generators):
+    used = []
+    for g in generators:
+        yield from genKlocalByString(n, g, used=used)
+
+def getKlocalGenerators(n, generators):
+    gens = []
+    for g in genKlocalGenerators(n, generators):
+        gens.append(g)
+    return gens
+
+def genKlocalStringGenerators(n, generators):
+    used = []
+    for g in generators:
+        yield from genKlocalString(n, g, used=used)
+
+def getKlocalStringGenerators(n, generators):
+    gens = []
+    for g in genKlocalStringGenerators(n, generators):
+        gens.append(g)
+    return gens
+
+####
+
+def genKlocalNestedNodesInAgebraGenerator(n, name):
     nested = getNestedNodesInAlgebra(name)
     used = []
     for node in nested:
-        yield from gen2localExt(n, node, used = used)
+        yield from genKlocalExt(n, node, used = used)
         used.append(node)
 
-def get2localNestedNodesInAgebraGenerator(n, name):
+def getKlocalNestedNodesInAgebraGenerator(n, name):
     nodes = []
-    for node in gen2localNestedNodesInAgebraGenerator(n, name):
+    for node in genKlocalNestedNodesInAgebraGenerator(n, name):
         nodes.append(node)
     return nodes

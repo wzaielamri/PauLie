@@ -253,3 +253,22 @@ class Shape(Debug):
           if self.lenLine == 4:
               return "B3", 4, len(self.legs[1]) - 1, len(self.legs[2])
           return "None", 0, 0, 0
+
+      def getAlgebra(self):
+          typeGraph, nl, nc, n2 = self.getType()
+          #print(f"type={typeGraph}, nl = {nl}, nc={nc}, n2={n2}")
+          n = 2**nc
+          algebras = []
+          for index in range(0, n):
+              if typeGraph == "A":
+                 algebras.append(f"so({nl + 1})")
+              if typeGraph == "B1":
+                 algebras.append(f"sp({2**n2})")
+              if typeGraph == "B2":
+                 algebras.append(f"so({2**(n2+3)})")
+              if typeGraph == "B3":
+                 algebras.append(f"su({2**(n2+2)})")
+              if typeGraph == "None":
+                 algebras.append(f"u(1)")
+
+          return " + ".join(algebras)

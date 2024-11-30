@@ -1,10 +1,10 @@
 import sys
 sys.path.append('..')
 
-from common.ext2local import *
+from common.extKlocal import *
 
-for g in gen2localString(4, "XY"):
+for g in genKlocalString(4, "XY"):
     print(f"{g}")
 
-generators = get2localStringAlgebraGenerators(4, "b0")
+generators = getKlocalStringAlgebraGenerators(4, "b0")
 print(f"{generators}")

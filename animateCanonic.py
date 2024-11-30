@@ -8,7 +8,7 @@ from stuff.recording import *
 
 def buildAndAnimate(nodes):
     record = RecordGraph()
-    canonics = transformToCanonics(nodes, record = record, debug=True)
+    canonics = transformToCanonics(nodes, record = record, debug=False)
     animationGraph(record)
 
 generators = getAllCommutators(8, getAlgebra("a6"))

@@ -1,5 +1,7 @@
-from common.pauli import *
-from common.generator import *
+import sys
+sys.path.append('..')
+
+from common.extKlocal import *
 from classifier.transform import *
 from graphs.graphView import *
 from stuff.drawing import *
@@ -12,7 +14,7 @@ def buildAndPlot(nodes):
     plotGraph(vertices, edges, edge_labels)
 
 
-generators = getAllCommutators(6, getAlgebra("a3"))
+generators = getKlocalGenerators(5, ["XYI", "IXY", "YIX"])
 buildAndPlot(generators)
 
 
