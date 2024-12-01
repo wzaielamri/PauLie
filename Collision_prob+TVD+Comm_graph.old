@@ -127,14 +127,15 @@ def E2_for_algebra(G):
         E_sub += E2_per_Pauli[s]
     return E_sub
 
-for G_a in G:
-    E2 = E2_for_algebra(G_a)
-    E = E2
-    for _ in range(n-2):
-        E = [(P1+ p , P2+p) for p in P for (P1,P2) in E] + [ (p+P1 , p+P2)  for p in P for (P1,P2) in E]
-    G = nx.Graph()
-    G.add_nodes_from(nodes)
-    G.add_edges_from(E)
-    sorted_list = [len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
-    print(sorted_list)
+if __name__ == '__main__':
+    for G_a in G:
+        E2 = E2_for_algebra(G_a)
+        E = E2
+        for _ in range(n-2):
+            E = [(P1+ p , P2+p) for p in P for (P1,P2) in E] + [ (p+P1 , p+P2)  for p in P for (P1,P2) in E]
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(E)
+        sorted_list = [len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
+        print(sorted_list)
 

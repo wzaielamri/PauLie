@@ -14,8 +14,9 @@ def buildAndPlot(nodes):
     plotGraph(vertices, edges, edge_labels)
 
 
-generators = getKlocalGenerators(5, ["XYI", "IXY", "YIX"])
-buildAndPlot(generators)
+if __name__ == '__main__':
+    generators = getKlocalGenerators(5, ["XYI", "IXY", "YIX"])
+    buildAndPlot(generators)
 
 
 

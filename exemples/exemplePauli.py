@@ -3,10 +3,9 @@ sys.path.append('..')
 
 from common.pauli import *
 
-psA = "XXIZYYYZZYYXXZZYYYZZXXIZYYYZZYYXXZZYYY"
-psB = "XZXIZIYZZYYXIXZIYZZYYXIYXXZZYXZXIZIZYZ"
+if __name__ == '__main__':
+    psA = "XXIZYYYZZYYXXZZYYYZZXXIZYYYZZYYXXZZYYY"
+    psB = "XZXIZIYZZYYXIXZIYZZYYXIYXXZZYXZXIZIZYZ"
 
-
-psC = commutatorPauliString(psA, psB)
-
-print(f"[{psA}, {psB}] ~ {psC}")
+    psC = commutatorPauliString(psA, psB)
+    print(f"[{psA}, {psB}] ~ {psC}")

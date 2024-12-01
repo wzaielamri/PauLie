@@ -32,8 +32,8 @@ def classifySizeGenerators(generators):
         canonics, nodes = classifyGenerators(size, generators)
         printClassify(size, generators, canonics, nodes)
 
-
-classifySizeGenerators(["XYI", "IXY", "YIX"])
+if __name__ == '__main__':
+    classifySizeGenerators(["XYI", "IXY", "YIX"])
 
 
 

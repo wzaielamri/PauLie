@@ -12,8 +12,9 @@ def buildAndPlot(nodes):
     plotGraph(vertices, edges, edge_labels)
 
 
-generators = getAllCommutators(6, getAlgebra("a3"))
-buildAndPlot(generators)
+if __name__ == '__main__':
+    generators = getAllCommutators(6, getAlgebra("a3"))
+    buildAndPlot(generators)
 
 
 

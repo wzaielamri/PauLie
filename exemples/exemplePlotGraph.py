@@ -6,6 +6,7 @@ from stuff.drawing import *
 from common.extKlocal import *
 
 
-generators = getKlocalAlgebraGenerators(4, "a6")
-plotGraphByNodes(generators)
+if __name__ == '__main__':
+    generators = getKlocalAlgebraGenerators(4, "a6")
+    plotGraphByNodes(generators)
 

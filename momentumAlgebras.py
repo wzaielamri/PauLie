@@ -30,5 +30,6 @@ def momentumAllAlgebras(size):
     for algebraName in getAlgebras():
         momentumAlgebra(algebraName, size)
 
-momentumAllAlgebras(5)
+if __name__ == '__main__':
+    momentumAllAlgebras(5)
 

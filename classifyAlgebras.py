@@ -13,7 +13,7 @@ def printAlgebra(name, canonics, nodes):
 
     for canonic in canonics:
         typeCanonic, nl, nc, n2 = canonic["shape"].getType()
-        print(f"size = {len(canonic['canonic'])} type = {typeCanonic} nl = {nl} nc = {nc} n2 = {n2}")
+        print(f"size = {len(canonic['canonic'])} type = {typeCanonic} nl = {nl} nc = {nc} n2 = {n2} algebra = {canonic['shape'].getAlgebra()}")
 
     print("--------------------------------------------------")
 
@@ -28,8 +28,8 @@ def classifyAllAlgebras(size):
         canonics, nodes = classifyAlgebra(name, size)
         printAlgebra(name, canonics, nodes)
 
-
-classifyAllAlgebras(8)
+if __name__ == '__main__':
+    classifyAllAlgebras(8)
 
 
 

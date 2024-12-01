@@ -8,13 +8,14 @@ from stuff.drawing import *
 for g in genKlocalString(6, "XXX"):
     print(f"{g}")
 
-generators = getKlocalStringGenerators(6, ["XYI", "IXY", "YIX"])
-print(f"{generators}");
+if __name__ == '__main__':
+    generators = getKlocalStringGenerators(6, ["XYI", "IXY", "YIX"])
+    print(f"{generators}");
 
-generators = getKlocalGenerators(6, ["XYI", "IXY", "YIX"])
-print(f"{generators}");
+    generators = getKlocalGenerators(6, ["XYI", "IXY", "YIX"])
+    print(f"{generators}");
 
-generators = getKlocalGenerators(6, ["XYI", "IXY", "YIX"])
-plotGraphByNodes(generators)
+    generators = getKlocalGenerators(6, ["XYI", "IXY", "YIX"])
+    plotGraphByNodes(generators)
 
 

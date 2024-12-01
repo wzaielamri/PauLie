@@ -12,7 +12,8 @@ def classifySizeGenerators(size, generators):
         algebras.append(canonic["shape"].getAlgebra())
     print("algebra = " + " + ".join(algebras))
 
-classifySizeGenerators(9, ["XYI", "IXY", "YIX"])
+if __name__ == '__main__':
+    classifySizeGenerators(9, ["XYI", "IXY", "YIX"])
 
 
 

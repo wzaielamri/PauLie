@@ -1,3 +1,7 @@
+"""
+aut.
+"""
+
 from common.pauli import *
 from common.generator import *
 from classifier.transform import *
@@ -11,8 +15,9 @@ def buildAndAnimate(nodes):
     canonics = transformToCanonics(nodes, record = record, debug=False)
     animationGraph(record)
 
-generators = getAllCommutators(8, getAlgebra("a6"))
-buildAndAnimate(generators)
+if __name__ == '__main__':
+    generators = getAllCommutators(8, getAlgebra("a6"))
+    buildAndAnimate(generators)
 
 
 

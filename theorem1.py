@@ -43,7 +43,8 @@ def theorem1():
     contractAndPlot(nodes, "ZZYY", "XIYY")
     contractAndPlot(nodes, "XIYY", "XYXY")
 
-theorem1()
+if __name__ == '__main__':
+    theorem1()
 
 
 
