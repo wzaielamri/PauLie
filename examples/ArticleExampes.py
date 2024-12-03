@@ -1,9 +1,6 @@
-import sys                      
-sys.path.append('..')
-
-from classifier.transform import *
-from common.extKlocal import *
-from common.pauli import *
+from paulie_classify.classifier.transform import *
+from paulie_classify.common.extKlocal import *
+from paulie_classify.common.pauli import *
 
 
 def classifySizeGenerators(size, generators):

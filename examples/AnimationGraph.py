@@ -1,10 +1,7 @@
-import sys
-sys.path.append('..')
-
-from common.algebras import *
-from stuff.recording import *
-from stuff.drawing import *
-from common.extKlocal import *
+from paulie_classify.common.algebras import *
+from paulie_classify.stuff.recording import *
+from paulie_classify.stuff.drawing import *
+from paulie_classify.common.extKlocal import *
 
 if __name__ == '__main__':
     record = RecordGraph()

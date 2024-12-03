@@ -1,8 +1,5 @@
-import sys
-sys.path.append('..')
-
-from common.algebras import *
-from graphs.graphView import *
+from paulie_classify.common.algebras import *
+from paulie_classify.graphs.graphView import *
 
 
 if __name__ == '__main__':

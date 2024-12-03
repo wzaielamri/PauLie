@@ -1,8 +1,5 @@
-import sys
-sys.path.append('..')
-
-from common.extKlocal import *
-from stuff.drawing import *
+from paulie_classify.common.extKlocal import *
+from paulie_classify.stuff.drawing import *
 
 #XYI;IXY; YIX
 for g in genKlocalString(6, "XXX"):

@@ -1,6 +1,6 @@
 import networkx as nx
-from graphs.graphView import *
-from common.pauli import *
+from paulie_classify.graphs.graphView import *
+from paulie_classify.common.pauli import *
 
 def getSubgraphs(nodes, commutators = []):
     subgraphs = []

@@ -1,7 +1,4 @@
-import sys
-sys.path.append('..')
-
-from common.extKlocal import *
+from paulie_classify.common.extKlocal import *
 
 for g in genKlocalString(4, "XY"):
     print(f"{g}")

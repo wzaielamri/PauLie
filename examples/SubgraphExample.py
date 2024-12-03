@@ -1,9 +1,6 @@
-import sys
-sys.path.append('..')
-
-from common.extKlocal import *
-from graphs.subgraphs import *
-from common.pauli import *
+from paulie_classify.common.extKlocal import *
+from paulie_classify.graphs.subgraphs import *
+from paulie_classify.common.pauli import *
 
 if __name__ == '__main__':
     generators = getKlocalAlgebraGenerators(4, "a2")

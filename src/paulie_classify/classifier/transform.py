@@ -1,9 +1,9 @@
-from common.pauli import *
+from paulie_classify.common.pauli import *
 import queue
-from graphs.subgraphs import *
-from classifier.shape import *
-from stuff.printing import *
-from stuff.recording import *
+from paulie_classify.graphs.subgraphs import *
+from paulie_classify.classifier.shape import *
+from paulie_classify.stuff.printing import *
+from paulie_classify.stuff.recording import *
 import random
 
 ### Return highlighted vertices (connected to the selected vertex)

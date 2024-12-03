@@ -1,4 +1,4 @@
-from common.pauli import *
+from paulie_classify.common.pauli import *
 
 def getGraphView(nodes, commutators=[]):
     vertices = []

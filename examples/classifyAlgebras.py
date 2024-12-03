@@ -1,6 +1,6 @@
-from common.pauli import *
+from paulie_classify.common.pauli import *
 #from common.generator import *
-from classifier.transform import *
+from paulie_classify.classifier.transform import *
 
 
 def classifyAlgebra(name, size):

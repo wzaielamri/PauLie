@@ -1,6 +1,6 @@
-from common.pauli import *
-from graphs.graphView import *
-from stuff.drawing import *
+from paulie_classify.common.pauli import *
+from paulie_classify.graphs.graphView import *
+from paulie_classify.stuff.drawing import *
 
 def append(nodes, vertix):
     nodes.append(getPauliArray(vertix))

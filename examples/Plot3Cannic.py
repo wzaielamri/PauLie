@@ -1,10 +1,7 @@
-import sys
-sys.path.append('..')
-
-from common.extKlocal import *
-from classifier.transform import *
-from graphs.graphView import *
-from stuff.drawing import *
+from paulie_classify.common.extKlocal import *
+from paulie_classify.classifier.transform import *
+from paulie_classify.graphs.graphView import *
+from paulie_classify.stuff.drawing import *
 
 
 def buildAndPlot(nodes):

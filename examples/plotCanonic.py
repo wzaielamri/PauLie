@@ -1,8 +1,8 @@
 from common.pauli import *
 #from common.generator import *
-from classifier.transform import *
-from graphs.graphView import *
-from stuff.drawing import *
+from paulie_classify.classifier.transform import *
+from paulie_classify.graphs.graphView import *
+from paulie_classify.stuff.drawing import *
 
 
 def buildAndPlot(nodes):

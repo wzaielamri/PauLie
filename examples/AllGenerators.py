@@ -1,8 +1,5 @@
-import sys
-sys.path.append('..')
-
 from time import perf_counter
-from common.extKlocal import *
+from paulie_classify.common.extKlocal import *
 
 def loopAllGeneratorsNodes(n, name):
     i = 0

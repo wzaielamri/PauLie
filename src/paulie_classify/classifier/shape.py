@@ -1,5 +1,5 @@
-from common.pauli import *
-from stuff.printing import *
+from paulie_classify.common.pauli import *
+from paulie_classify.stuff.printing import *
 
       
 class Shape(Debug):                                                     

@@ -1,7 +1,4 @@
-import sys
-sys.path.append('..')
-
-from common.nested import *
+from paulie_classify.common.nested import *
 
 
 if __name__ == '__main__':

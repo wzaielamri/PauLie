@@ -1,8 +1,5 @@
-import sys
-sys.path.append('..')
-
 from time import perf_counter
-from common.pauli import *
+from paulie_classify.common.pauli import *
 
 def loopAllNodes(n):
     i = 0
