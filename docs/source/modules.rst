@@ -6,6 +6,5 @@ Lie_props
 
    animateCanonic
    classifyAlgebras
-   momentumAlgebras
    plotCanonic
    theorem1

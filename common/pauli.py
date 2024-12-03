@@ -91,6 +91,9 @@ def isCommutate(a, b):
     b_dot_a %= 2
     return a_dot_b == b_dot_a
 
+def isCommutateByString(a, b):
+     return isCommutate(getPauliArray(a), getPauliArray(b))
+
 def multiPauliArrays(a, b):
     if len(a) != len(b):
         raise ValueError("gates must have the same length")
