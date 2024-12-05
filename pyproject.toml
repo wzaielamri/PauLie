@@ -16,7 +16,7 @@ readme = "README.md"
 
 # Put your own name and email address here. You can also add more authors.
 authors = [
-    {name = "Oxana", email = "oxana.shaya@rwth-aachen.de"},
+    {name = "Oxana Shaya, Konstantin Golovkin", email = "shayaoxana@gmail.com"},
 ]
 
 # You can choose a different license: https://choosealicense.com/
@@ -40,7 +40,7 @@ classifiers = [
 # This is the minimum version of Python that pip will install your package on.
 # An overview of Python versions, their features and their lifecycle time frames
 # is at https://nedbatchelder.com/text/which-py.html.
-requires-python = ">= 3.9"
+requires-python = ">= 3.8"
 
 # List your needed third-party libraries, if you have any.  "rich" is here as an
 # example.  Your list will be completely different.

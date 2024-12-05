@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: PauLie
 Version: 0.0.1
 Summary: Classification of Lie algebras
-Author-email: Oxana <oxana.shaya@rwth-aachen.de>
+Author-email: "Oxana Shaya, Konstantin Golovkin" <shayaoxana@gmail.com>
 License: Apache-2.0
 Project-URL: Source code, https://github.com/AmanieOxana/PauLie
 Project-URL: Issue tracker, https://github.com/AmanieOxana/PauLie/issues
@@ -14,18 +14,21 @@ Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
-Requires-Python: >=3.9
+Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
 Requires-Dist: networkx
 Requires-Dist: bitarray
 Requires-Dist: matplotlib
 
-# Lie_props
-Classification of Algera Lie 
+# PauLie
+The :code:`PauLie` package is an open-source library for studying various algebraic properties of quantum circuits.
+This first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as
+Paulistrings.
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](https://unitary.fund)
 ### Building the project
+
 #### Installing the Package builder
 python3 -m pip install --upgrade build
 #### building
@@ -34,9 +37,8 @@ python3 -m build
 #### Installing the assembled package
 python -m pip install -e .
 
-### Installing external dependencies
+#### Installing external dependencies
 pip install -r requirements.txt
-
 
 ### Description
 

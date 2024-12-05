@@ -6,12 +6,14 @@
 PauLie documentation
 ====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+The :code:`PauLie` package is an open-source library for studying various algebraic properties of quantum circuits.
+This first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as
+Paulistrings.
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-       modules
+
+    getting_started
+    intro_tutorial
+
