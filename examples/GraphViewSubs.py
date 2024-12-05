@@ -1,5 +1,5 @@
-from paulie_classify.common.algebras import *
-from paulie_classify.graphs.graphView import *
+from PauLie.common.algebras import *
+from PauLie.graphs.graphView import *
 
 
 if __name__ == '__main__':

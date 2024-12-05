@@ -2,11 +2,11 @@
 aut.
 """
 
-from paulie_classify.common.pauli import *
+from PauLie.common.pauli import *
 #from common.generator import *
-from paulie_classify.classifier.transform import *
-from paulie_classify.stuff.drawing import *
-from paulie_classify.stuff.recording import *
+from PauLie.classifier.transform import *
+from PauLie.stuff.drawing import *
+from PauLie.stuff.recording import *
 
 
 

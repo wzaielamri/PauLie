@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: PauLie
+Version: 0.0.1
+Summary: Classification of Lie algebras
+Author-email: Oxana <oxana.shaya@rwth-aachen.de>
+License: Apache-2.0
+Project-URL: Source code, https://github.com/AmanieOxana/PauLie
+Project-URL: Issue tracker, https://github.com/AmanieOxana/PauLie/issues
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: networkx
+Requires-Dist: bitarray
+Requires-Dist: matplotlib
+
+# Lie_props
+Classification of Algera Lie 
+
+[![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](https://unitary.fund)
+### Building the project
+#### Installing the Package builder
+python3 -m pip install --upgrade build
+#### building
+python3 -m build
+
+#### Installing the assembled package
+python -m pip install -e .
+
+### Installing external dependencies
+pip install -r requirements.txt
+
+
+### Description
+
+#### 1. src
+Package source code
+
+#### 2. docs
+sphinx documentation
+https://amanieoxana.github.io/PauLie/
+
+#### 3. examples
+Examples of use
+
+#### 4. tests
+Tests for pytest
+
+
+
+
+
+
+

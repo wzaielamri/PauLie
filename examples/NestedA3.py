@@ -1,4 +1,4 @@
-from paulie_classify.common.nested import *
+from PauLie.common.nested import *
 
 
 if __name__ == '__main__':

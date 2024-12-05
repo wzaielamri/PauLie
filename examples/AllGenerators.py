@@ -1,5 +1,5 @@
 from time import perf_counter
-from paulie_classify.common.extKlocal import *
+from PauLie.common.extKlocal import *
 
 def loopAllGeneratorsNodes(n, name):
     i = 0

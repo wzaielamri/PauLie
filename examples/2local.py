@@ -1,4 +1,4 @@
-from paulie_classify.common.extKlocal import *
+from PauLie.common.extKlocal import *
 
 for g in genKlocalString(4, "XY"):
     print(f"{g}")

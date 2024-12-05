@@ -1,5 +1,5 @@
 from time import perf_counter
-from paulie_classify.common.pauli import *
+from PauLie.common.pauli import *
 
 def loopAllNodes(n):
     i = 0

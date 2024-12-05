@@ -1,5 +1,5 @@
-from paulie_classify.common.extKlocal import *
-from paulie_classify.classifier.transform import *
+from PauLie.common.extKlocal import *
+from PauLie.classifier.transform import *
 
 def classifySizeGenerators(size, generators):
     nodes = getKlocalGenerators(size, generators)

@@ -1,7 +1,7 @@
-from paulie_classify.common.algebras import *
-from paulie_classify.stuff.recording import *
-from paulie_classify.stuff.drawing import *
-from paulie_classify.common.extKlocal import *
+from PauLie.common.algebras import *
+from PauLie.stuff.recording import *
+from PauLie.stuff.drawing import *
+from PauLie.common.extKlocal import *
 
 if __name__ == '__main__':
     record = RecordGraph()

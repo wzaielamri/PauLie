@@ -1,5 +1,5 @@
-from paulie_classify.common.extKlocal import *
-from paulie_classify.classifier.transform import *
+from PauLie.common.extKlocal import *
+from PauLie.classifier.transform import *
 #from graphs.graphView import *
 #from stuff.drawing import *
 

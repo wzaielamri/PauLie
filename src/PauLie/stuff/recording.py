@@ -1,5 +1,5 @@
-from paulie_classify.graphs.graphView import *
-from paulie_classify.common.pauli import *
+from PauLie.graphs.graphView import *
+from PauLie.common.pauli import *
 
 class FrameGraph:
       ### constructor 

@@ -1,6 +1,6 @@
-from paulie_classify.classifier.transform import *
-from paulie_classify.common.extKlocal import *
-from paulie_classify.common.pauli import *
+from PauLie.classifier.transform import *
+from PauLie.common.extKlocal import *
+from PauLie.common.pauli import *
 
 
 def classifySizeGenerators(size, generators):

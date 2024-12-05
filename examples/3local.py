@@ -1,5 +1,5 @@
-from paulie_classify.common.extKlocal import *
-from paulie_classify.stuff.drawing import *
+from PauLie.common.extKlocal import *
+from PauLie.stuff.drawing import *
 
 #XYI;IXY; YIX
 for g in genKlocalString(6, "XXX"):

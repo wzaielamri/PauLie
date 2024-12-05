@@ -1,5 +1,5 @@
-from paulie_classify.common.pauli import *
-from paulie_classify.common.algebras import *
+from PauLie.common.pauli import *
+from PauLie.common.algebras import *
 
 
 def getNested(p):

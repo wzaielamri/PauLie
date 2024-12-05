@@ -1,6 +1,6 @@
-from paulie_classify.common.extKlocal import *
-from paulie_classify.graphs.subgraphs import *
-from paulie_classify.common.pauli import *
+from PauLie.common.extKlocal import *
+from PauLie.graphs.subgraphs import *
+from PauLie.common.pauli import *
 
 if __name__ == '__main__':
     generators = getKlocalAlgebraGenerators(4, "a2")

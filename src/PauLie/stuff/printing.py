@@ -1,4 +1,4 @@
-from paulie_classify.common.pauli import *
+from PauLie.common.pauli import *
 
 
 ### print node

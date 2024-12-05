@@ -1,6 +1,6 @@
-from paulie_classify.common.pauli import *
-from paulie_classify.common.algebras import *
-from paulie_classify.common.nested import *
+from PauLie.common.pauli import *
+from PauLie.common.algebras import *
+from PauLie.common.nested import *
 
 
 def genKlocal(n, p, converter = None, used = []):

@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
-from paulie_classify.stuff.recording import *
-from paulie_classify.graphs.graphView import *
-from paulie_classify.common.pauli import *
+from PauLie.stuff.recording import *
+from PauLie.graphs.graphView import *
+from PauLie.common.pauli import *
 
 ### plotting graph
 def plotGraph(vertices, edges, edge_labels = None):

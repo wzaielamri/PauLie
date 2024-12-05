@@ -1,10 +1,7 @@
 # content of test_sample.py
 
-import sys                      
-sys.path.append('..')
-
-from paulie_classify.classifier.transform import *
-from paulie_classify.common.extKlocal import *
+from PauLie.classifier.transform import *
+from PauLie.common.extKlocal import *
 
 def classifySizeGenerators(size, generators):
     nodes = getKlocalGenerators(size, generators)
