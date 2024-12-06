@@ -11,7 +11,7 @@ target/
 bin/
 gen/
 docs/build/*
-evn/
+env/
 env/*
 
 # Mac OS X
