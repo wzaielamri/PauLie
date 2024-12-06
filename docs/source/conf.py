@@ -19,7 +19,8 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-'sphinx.ext.autodoc'
+'sphinx.ext.autodoc',
+'sphinx.ext.mathjax',
 ]
 
 templates_path = ['_templates']
@@ -32,3 +33,4 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
