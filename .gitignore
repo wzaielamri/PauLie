@@ -14,6 +14,8 @@ docs/build/
 docs/build/*
 env/
 env/*
+src/PauLie.egg-info/
+src/PauLie.egg-info/*
 
 # Mac OS X
 *.DS_Store
