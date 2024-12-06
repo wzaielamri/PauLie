@@ -10,7 +10,9 @@ target/
 **/.idea/
 bin/
 gen/
-docs/build
+docs/build/*
+evn/
+env/*
 
 # Mac OS X
 *.DS_Store
