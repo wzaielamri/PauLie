@@ -28,7 +28,7 @@ G_lie = { 'a0': ["XX"], #0
       'b4': [ "XX", "XY", "XZ", "XI", "IX", "IY", "IZ"], #b4
      }
 
-def getAlgebra(name):
+def getAlgebraGenerators(name):
     return G_lie[name]
 
 def getAlgebras():

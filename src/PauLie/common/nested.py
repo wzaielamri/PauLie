@@ -21,14 +21,14 @@ def getNestedStrings(pauliString):
     return  list(map(getArrayPauliStrings, nested))
 
 def getNestedAlgebra(name):
-    generators = getAlgebra(name)
+    generators = getAlgebraGenerators(name)
     nested = []
     for g in generators:
         nested += getNestedByString(g)
     return nested
 
 def getNestedStringAlgebra(name):
-    generators = getAlgebra(name)
+    generators = getAlgebraGenerators(name)
     nested = []
     for g in generators:
         nested += getNestedStrings(g)

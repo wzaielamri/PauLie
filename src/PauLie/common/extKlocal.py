@@ -84,7 +84,7 @@ def genKlocalExtString(n, pauliString):
 
 
 def genKlocalAlgebraGenerators(n, name):
-    generators = getAlgebra(name)
+    generators = getAlgebraGenerators(name)
     used = []
     for g in generators:
         yield from genKlocalByString(n, g, used=used)
@@ -96,7 +96,7 @@ def getKlocalAlgebraGenerators(n, name):
     return generators
 
 def genKlocalStringAlgebraGenerators(n, name):
-    generators = getAlgebra(name)
+    generators = getAlgebraGenerators(name)
     used = []
     for g in generators:
         yield from genKlocalString(n, g, used=used)

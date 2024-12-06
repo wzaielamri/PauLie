@@ -1,32 +1,14 @@
-from PauLie.common.pauli import *
-#from common.generator import *
-from PauLie.classifier.transform import *
-
-
-def classifyAlgebra(name, size):
-    nodes = getAllCommutators(size, getAlgebra(name))
-    canonics = transformToCanonics(nodes)
-    return canonics, nodes
-
-def printAlgebra(name, canonics, nodes):
-    print(f"algebra {name} size of generators = {len(nodes)}")
-
-    for canonic in canonics:
-        typeCanonic, nl, nc, n2 = canonic["shape"].getType()
-        print(f"size = {len(canonic['canonic'])} type = {typeCanonic} nl = {nl} nc = {nc} n2 = {n2} algebra = {canonic['shape'].getAlgebra()}")
-
-    print("--------------------------------------------------")
-
-def printHead(size):
-    print(f"Classification of dynamic Lia algebras size = {size}")
-    print("--------------------------------------------------")
+from PauLie import *
+from PauLie.common.algebras import *
 
 
 def classifyAllAlgebras(size):
-    printHead(size)
+    print(f"Classification of dynamic Lia algebras size = {size}")
+    print("--------------------------------------------------")
     for name in getAlgebras():
-        canonics, nodes = classifyAlgebra(name, size)
-        printAlgebra(name, canonics, nodes)
+        generators = getAlgebraGenerators(name)
+        algebra = getAlgebra(generators, size=size)
+        print(f"name={name} algebra={algebra}")
 
 if __name__ == '__main__':
     classifyAllAlgebras(8)
