@@ -10,6 +10,7 @@ target/
 **/.idea/
 bin/
 gen/
+docs/build/
 docs/build/*
 env/
 env/*
