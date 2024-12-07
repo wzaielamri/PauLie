@@ -6,13 +6,17 @@ Getting started
 ----------
 Installing
 ----------
-#### Installing the Package builder
-python3 -m pip install --upgrade build
-#### building
-python3 -m build
+1. Install the package builder
+.. code-block:: bash
+    python3 -m pip install --upgrade build
+2. Build
+.. code-block:: bash
+    python3 -m build
 
-#### Installing the assembled package
-python -m pip install -e .
+3. Install the assembled package
+.. code-block:: bash
+    python -m pip install -e .
 
-#### Installing external dependencies
-pip install -r requirements.txt
+4. Install external dependencies
+.. code-block:: bash
+    pip install -r requirements.txt
