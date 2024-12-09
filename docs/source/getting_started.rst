@@ -6,7 +6,7 @@ Getting started
 ----------
 Installing
 ----------
-Make sure to have python >= 3.8 installed.
+Make sure to have python >= 3.12 installed.
 
 1. Installing the package builder
 
