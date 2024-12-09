@@ -15,3 +15,10 @@ Paulistrings.
 
     getting_started
     intro_tutorial
+
+.. toctree::
+   :hidden:
+   :caption: Project Links
+
+   Github <https://github.com/AmanieOxana/PauLie>
+
