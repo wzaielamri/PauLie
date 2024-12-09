@@ -2,8 +2,8 @@ from PauLie.common.pauli import *
 import queue
 from PauLie.graphs.subgraphs import *
 from PauLie.classifier.shape import *
-from PauLie.stuff.printing import *
-from PauLie.stuff.recording import *
+from PauLie.helpers.printing import *
+from PauLie.helpers.recording import *
 import random
 
 ### Return highlighted vertices (connected to the selected vertex)

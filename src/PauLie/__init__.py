@@ -1,8 +1,8 @@
 from PauLie.common.extKlocal import *
 from PauLie.classifier.transform import *
 from PauLie.graphs.graphView import *
-from PauLie.stuff.drawing import *
-from PauLie.stuff.recording import *
+from PauLie.helpers.drawing import *
+from PauLie.helpers.recording import *
 
 #Partial function for constructing a canonical graph
 # generators - list of generators

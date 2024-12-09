@@ -1,5 +1,4 @@
 from PauLie.common.extKlocal import *
-from PauLie.stuff.drawing import *
 
 
 if __name__ == '__main__':

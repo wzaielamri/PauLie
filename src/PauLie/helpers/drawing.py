@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
-from PauLie.stuff.recording import *
+from PauLie.helpers.recording import *
 from PauLie.graphs.graphView import *
 from PauLie.common.pauli import *
 
@@ -41,8 +41,11 @@ def animationGraph(record: RecordGraph, interval=1000, repeat=False):
        pos = nx.spring_layout(graph)
        if edge_labels is not None:
            nx.draw_networkx_edge_labels(graph, pos=pos, edge_labels=edge_labels,font_color='red')
-       nx.draw_networkx(graph, pos=pos)
+       return nx.draw_networkx(graph, pos=pos)
 
 
    ani = matplotlib.animation.FuncAnimation(fig, update, frames=record.getSize(), interval=interval, repeat=repeat)
+   #ani.save(filename="data/example.gif", writer="pillow")
    plt.show()
+   #ani.save(filename="data/example.html", writer="html")
+

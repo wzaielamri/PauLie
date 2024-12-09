@@ -1,5 +1,5 @@
 from PauLie.common.pauli import *
-from PauLie.stuff.printing import *
+from PauLie.helpers.printing import *
 
       
 class Shape(Debug):                                                     
