@@ -1,5 +1,5 @@
 # PauLie
-The :code:`PauLie` package is an open-source library for studying various algebraic properties of quantum circuits.
+The `PauLie` package is an open-source library for studying various algebraic properties of quantum circuits.
 This first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as
 Paulistrings.
 
