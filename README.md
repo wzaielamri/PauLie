@@ -4,6 +4,9 @@ This first release focuses on the classification of the circuit's dynamical Lie 
 Paulistrings.
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](https://unitary.fund)
+
+Make sure to have python >= 3.12 installed.
+
 ### Building the project
 
 #### Installing the Package builder
@@ -32,7 +35,7 @@ Examples of use
 #### 4. tests
 Tests for pytest
 
-
+Feel free to contribute and check out our open issues. 
 
 
 
