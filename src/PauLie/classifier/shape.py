@@ -242,7 +242,7 @@ class Shape(Debug):
               if lenLine == 0 and len(self.legs[1]) > 0:
                  lenLine = 1
               if lenLine > 0:
-                  return "A", lenLine, len(self.legs[1]) - 1, len(self.legs[2])
+                  return "A", lenLine + 1 , len(self.legs[1]) - 1, 0
               else:
                   return "None", lenLine, 0, 0
 
