@@ -103,9 +103,9 @@ def reconstructIfNotConnection(shape, lighting, canonic, debug):
                 shape.clearProhibitedsForPop()
                 return  canonic, isAttachable
             else:
-                self.appendProhibitedsForPop(v)
+                shape.appendProhibitedsForPop(v)
         else:
-            self.appendProhibitedsForPop(v)
+            shape.appendProhibitedsForPop(v)
         shape.resetProhibited()
         shape.appendIsCanonical(v, lit)
 
