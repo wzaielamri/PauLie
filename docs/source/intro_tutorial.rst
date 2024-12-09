@@ -48,7 +48,7 @@ outputs
 The algorithms is based on the concept of an anticommutation graph. Given a set of n-qubit Paulistrings
 :math:`\mathcal{G} = \{P_1,\dots ,P_{n_G}\}`, the anticommutation graph has as a vertex set :math:`\mathcal{G}`
 and edges between all vertices that do not commute. Now the edge between :math:`P_i` and :math:`P_j` can be contracted
-by mapping :math:`P_i \mapsto \pm \frac{1}{2} i [P_i,P_j] P_i^\star`. Now if :math:`P_i^\star` is already in :math:`\mathcal{G}`,
+by mapping :math:`P_i \mapsto \pm \frac{1}{2} i [P_i,P_j] = P_i^\star`. Now if :math:`P_i^\star` is already in :math:`\mathcal{G}`,
 the size of the generator set has been reduced while leaving the Lie algebra invariant.
 We can illustrate this for the generating set :code:`["XYI", "IXY", "XZY"]` via the function :code:`animationAntiCommutationGraph(generators)`.
 As the third Paulistring is proportional to the commutator of the first two Paulistrings it can be contracted.
