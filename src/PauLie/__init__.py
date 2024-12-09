@@ -40,8 +40,8 @@ def plotAntiCommutationGraph(generators, size=0):
 # Animation building transformation anti-commutation graph
 # generators - list of generators
 # size - Generator extensions to size size
-def animationAntiCommutationGraph(generators, size=0):
+def animationAntiCommutationGraph(generators, size=0, storage=None):
     record = RecordGraph()
     canonics = _trasformToCanonics(generators, size=size, record = record)
-    animationGraph(record)
+    animationGraph(record, storage=storage)
 

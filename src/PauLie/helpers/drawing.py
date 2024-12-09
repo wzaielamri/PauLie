@@ -26,7 +26,7 @@ def plotGraphByStringNodes(nodes, commutators=[]):
     return plotGraph(v,e,l)
 
 ### animating graph record
-def animationGraph(record: RecordGraph, interval=1000, repeat=False):
+def animationGraph(record: RecordGraph, interval=1000, repeat=False, storage=None):
    graph = nx.Graph()
    fig, ax = plt.subplots(figsize=(6,4))
    def clear():
@@ -45,7 +45,9 @@ def animationGraph(record: RecordGraph, interval=1000, repeat=False):
 
 
    ani = matplotlib.animation.FuncAnimation(fig, update, frames=record.getSize(), interval=interval, repeat=repeat)
-   #ani.save(filename="data/example.gif", writer="pillow")
+   if storage is not None:
+       ani.save(filename=storage["filename"], writer=storage["writer"])
+#       ani.save(filename=storage["filename"], writer="pillow")
    plt.show()
    #ani.save(filename="data/example.html", writer="html")
 
