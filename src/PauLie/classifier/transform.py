@@ -113,7 +113,7 @@ def reconstructIfNotConnection(shape, lighting, canonic, debug):
     return canonic, isAttachable
 
 ### Append to cononic graph
-def appendToCanonic(shape, lighting, canonic, debug):
+def appendToCanonic(shape, lighting, canonic, debug, record=None):
 
     if len(canonic) == 0:
         canonic.append(lighting)
@@ -135,6 +135,11 @@ def appendToCanonic(shape, lighting, canonic, debug):
 
     while q.empty() is False:
         lighting = q.get()
+        if record is not None:
+            r = canonic.copy();
+            r.append(lighting)
+            recordingGraph(record, r)
+
         canonic, isAppended, lits = getLitsOrAppend(shape, center, lighting, canonic, debug)
         if isAppended:
             canonic.append(lighting)
@@ -181,7 +186,7 @@ def deconstructCanonicUntilConnect(shape, canonic, untoggleableA, untoggleableB,
 
 
 ### Reconstruct the canonical graph if there are untoggleable nodes and append
-def reconstructAndAppendToToggleable(shape, lighting, canonic, debug):
+def reconstructAndAppendToToggleable(shape, lighting, canonic, debug, record):
     printNode(debug, lighting, "reconstruct and append to toggleable")
     lenNodes = len(canonic)
     lits = getLits(lighting, canonic)
@@ -195,12 +200,12 @@ def reconstructAndAppendToToggleable(shape, lighting, canonic, debug):
         printNodes(debug, canonic, "remain")
         if len(deconstructedNodes) == 0:
             return canonic, False
-        canonic, isAppended = appendNode(shape, lighting, canonic, debug)
+        canonic, isAppended = appendNode(shape, lighting, canonic, debug, record)
         if isAppended is False:
             return canonic, False
         mix = True
         for node in deconstructedNodes:
-            canonic, isAppended = appendNode(shape, node, canonic, debug)
+            canonic, isAppended = appendNode(shape, node, canonic, debug, record)
             if isAppended is False:
                 return canonic, False
 
@@ -228,7 +233,7 @@ def resortNodes(center, nodes, debug):
 ### Reconfigure the canonical graph and append a node
 def reconfingAndAppend(shape, lighting, canonic, debug, record):
     printNode(debug, lighting, "reconfig")
-    canonic, isAppended = reconstructAndAppendToToggleable(shape, lighting, canonic, debug)
+    canonic, isAppended = reconstructAndAppendToToggleable(shape, lighting, canonic, debug, record)
     if isAppended:
         return canonic, True
 
@@ -253,14 +258,14 @@ def reconfingAndAppend(shape, lighting, canonic, debug, record):
         if mix is False:
             lits = getLits(lighting, canonic)
             if len(lits) > 0:
-                 canonic, isAppended = appendNode(shape, lighting, canonic, debug)
+                 canonic, isAppended = appendNode(shape, lighting, canonic, debug, record)
                  mix = True
-        canonic, isAppended = appendNode(shape, node, canonic, debug)
+        canonic, isAppended = appendNode(shape, node, canonic, debug, record)
         if isAppended is False:
             return canonic, False
 
     if mix is False:
-        canonic, isAppended = appendNode(shape, lighting, canonic, debug)
+        canonic, isAppended = appendNode(shape, lighting, canonic, debug, record)
 
     return canonic, isAppended
 
@@ -271,7 +276,7 @@ def appendNode(shape, lighting, canonic, debug=False, record=None):
     if lighting in canonic:
         return canonic, True
 
-    canonic, isAppended = appendToCanonic(shape, lighting, canonic, debug)
+    canonic, isAppended = appendToCanonic(shape, lighting, canonic, debug, record)
     if isAppended is False:
         canonic, isAppended = reconfingAndAppend(shape, lighting, canonic, debug, record)
     
