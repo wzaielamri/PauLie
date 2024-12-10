@@ -315,7 +315,8 @@ def transformToCanonic(nodes, debug=False, record=None):
             shape.reset()
             canonic = [center]
             isException = True
-        recordingGraph(record, canonic)
+        if len(canonic) < 3:
+            recordingGraph(record, canonic)
         if isException:
             printNodes(debug, nodes, f"nodes after exception")
 
