@@ -68,7 +68,7 @@ anticommutation graph that is star graph. We demonstrate it by the algebra :math
 .. code-block:: python
 
     size = 4
-    generators = ["XY, "XZ"]
+    generators = ["XY", "XZ"]
     algebra = getAlgebra(generators, size=size)
     print(f"size = {size} algebra = {algebra}")
 
