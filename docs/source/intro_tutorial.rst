@@ -16,7 +16,7 @@ an efficient algorithm for classifying which Lie algebra is generated is given.
 The function :code:`getAlgebra(generators, size=0)` returns exactly which algebra is generated when
 given the generator set :code:`generators` which can be extended periodically to arbitrary qubit numbers
 specified by :code:`size`.
-We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-local spin systems on linear, circular and fully connected topologies" <https://www.nature.com/articles/s41534-024-00900-2>`_[2]:
+We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-local spin systems on linear, circular and fully connected topologies" <https://www.nature.com/articles/s41534-024-00900-2>`_ [2]:
 
 .. code-block:: python
 
@@ -32,7 +32,7 @@ outputs
 
     size = 2 algebra = u(1)
 
-whereas changing to a three qubit system, results another algebra:
+whereas changing to a three qubit system, results in another algebra:
 
 .. code-block:: python
 
