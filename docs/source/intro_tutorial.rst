@@ -6,7 +6,7 @@ the generators consisting of Paulistrings.
 A Paulistring is a tensor product of Pauli matrices
 
 .. math::
-    P = \bigotimes_i  \sigma_i \, \sigma_i \in \{I,X,Y,Z\}
+    P = \bigotimes_i  \sigma_i , \, \sigma_i \in \{I,X,Y,Z\}
 
 and is represented as a string indicating the Pauli matrices successively.
 Given a set of Paulistrings, the closure under the commutator defines a Lie algebra.
