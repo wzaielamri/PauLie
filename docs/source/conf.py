@@ -34,3 +34,4 @@ exclude_patterns = []
 html_theme = 'alabaster'
 html_static_path = ['_static']
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+html_extra_path=['media']
