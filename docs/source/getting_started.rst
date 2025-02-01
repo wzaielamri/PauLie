@@ -6,28 +6,11 @@ Getting started
 ----------
 Installing
 ----------
-Make sure to have python >= 3.12 installed.
+Make sure to have `python >= 3.12` installed.
 
-1. Installing the package builder
-
-.. code-block:: bash
-
-    python3 -m pip install --upgrade build
-
-2. Building
+Once you have `poetry` installed, run:
 
 .. code-block:: bash
 
-    python3 -m build
-
-3. Installing the assembled package
-
-.. code-block:: bash
-
-    python -m pip install -e .
-
-4. Installing external dependencies
-
-.. code-block:: bash
-
-    pip install -r requirements.txt
+    poetry install
+    poetry shell

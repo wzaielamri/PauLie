@@ -10,7 +10,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
-project = 'PauLie'
+project = 'paulie'
 copyright = '2024, Oxana Shaya, Konstantin Golovkin'
 author = 'Oxana Shaya, Konstantin Golovkin'
 release = '0.0.1'

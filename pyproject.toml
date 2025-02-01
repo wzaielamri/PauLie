@@ -1,63 +1,29 @@
-# This file configures the project for packaging, and can also hold other
-# tools' configuration settings.
-#
-# More details about what can go in this file:
-# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-
-[project]
-# This is the basic information about your project.  Change the details here
-# to be about your project instead of "pkgsample".
-name = "PauLie"
-description = "Classification of Lie algebras"
+[tool.poetry]
+name = "paulie"
 version = "0.0.1"
-
-# You can change this to README.md if you prefer.
+description = "Classification of Lie algebras"
+authors = [
+    "Oxana Shaya <shayaoxana@gmail.com>",
+    "Konstantin Golovkin",
+]
 readme = "README.md"
 
-# Put your own name and email address here. You can also add more authors.
-authors = [
-    {name = "Oxana Shaya, Konstantin Golovkin", email = "shayaoxana@gmail.com"},
-]
+[tool.poetry.dependencies]
+python = "~3.12"
+numpy = "^2.2.2"
+networkx = "^3.4.2"
+bitarray = "^3.0.0"
+memory-profiler = "^0.61.0"
+matplotlib = "^3.10.0"
 
-# You can choose a different license: https://choosealicense.com/
-# If you do, update the License classifier below, and put the correct text into
-# your LICENSE.txt file.
-license.text = "Apache-2.0"
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.4"
+sphinx = "^8.1.3"
 
-# Classifiers for your package. PyPI displays these on its page.
-# See https://pypi.org/classifiers/ for all of the possibilities.
-classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-]
-
-# This is the minimum version of Python that pip will install your package on.
-# An overview of Python versions, their features and their lifecycle time frames
-# is at https://nedbatchelder.com/text/which-py.html.
-requires-python = ">= 3.8"
-
-# List your needed third-party libraries, if you have any.  "rich" is here as an
-# example.  Your list will be completely different.
-dependencies = [
-    "networkx",
-    "bitarray",
-    "matplotlib"
-]
-
-[project.urls]
-# These URLs are displayed in a sidebar on PyPI. You don't have to have them,
-# but they can help people learn more about your project. You can include as
-# many named URLs as you want.  They can be any URL, not just to GitHub.
-"Source code" = "https://github.com/AmanieOxana/PauLie"
-"Issue tracker" = "https://github.com/AmanieOxana/PauLie/issues"
-
+[tool.ruff]
+exclude = ["submodules"]
+line-length = 120
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,4 +1,6 @@
-from PauLie.common.nested import *
+from paulie.common.nested import get_nested_strings
+
+
 nesteds = {
 "IX": [["ZY", "ZZ"], ["XY", "XZ"], ["YZ", "YY"], ["IZ", "IY"]],
 "IY": [["IX", "IZ"], ["XX", "XZ"], ["YX", "YZ"], ["ZX", "ZZ"]],
@@ -16,8 +18,8 @@ nesteds = {
 "ZZ": [["XZ","YI"],["IY","ZX"],["ZY","IX"],["XI","YZ"]]}
 
 
-def checkNested(node):
-    nested = getNestedStrings(node)
+def check_nested(node):
+    nested = get_nested_strings(node)
     nested_source = nesteds[node]
     if len(nested) != len(nested_source):
         return False
@@ -27,7 +29,7 @@ def checkNested(node):
         for source_pair in nested_source:
             if pair[0] in source_pair and pair[1] in source_pair:
                 found = True
-                break;
+                break
         if found is False:
             return False
     for source_pair in nested_source:
@@ -35,7 +37,7 @@ def checkNested(node):
         for pair in nested:
             if source_pair[0] in pair and source_pair[1] in pair:
                 found = True
-                break;
+                break
         if found is False:
             return False
 
@@ -43,18 +45,18 @@ def checkNested(node):
 
 
 def test_nested():
-    assert checkNested("IX")
-    assert checkNested("IY")
-    assert checkNested("IZ")
-    assert checkNested("XI")
-    assert checkNested("XX")
-    assert checkNested("XY")
-    assert checkNested("XZ")
-    assert checkNested("YI")
-    assert checkNested("YX")
-    assert checkNested("YY")
-    assert checkNested("YZ")
-    assert checkNested("ZX")
-    assert checkNested("ZY")
-    assert checkNested("ZZ")
+    assert check_nested("IX")
+    assert check_nested("IY")
+    assert check_nested("IZ")
+    assert check_nested("XI")
+    assert check_nested("XX")
+    assert check_nested("XY")
+    assert check_nested("XZ")
+    assert check_nested("YI")
+    assert check_nested("YX")
+    assert check_nested("YY")
+    assert check_nested("YZ")
+    assert check_nested("ZX")
+    assert check_nested("ZY")
+    assert check_nested("ZZ")
 

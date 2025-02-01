@@ -1,28 +1,30 @@
-from PauLie.graphs.graphView import *
-from PauLie.common.pauli import *
+
+
+from paulie.common.pauli import get_array_pauli_arrays
+from paulie.graphs.graph_view import get_graph_view
+
 
 class FrameGraph:
-      ### constructor 
       def __init__(self, vertices, edges, edge_labels = None):
           self.vertices = vertices
           self.edges = edges
           self.edge_labels = edge_labels
 
-      ### 
-      def getGraph(self):
+      def get_graph(self):
           return self.vertices, self.edges, self.edge_labels
+
 
 class RecordGraph: 
      def __init__(self):
          self.frames: FrameGraph = []
 
-     def appendFrame(self, frame: FrameGraph):
+     def append_frame(self, frame: FrameGraph):
          self.frames.append(frame)
 
      def append(self, vertices, edges, edge_labels = None):
-         self.appendFrame(FrameGraph(vertices, edges, edge_labels))
+         self.append_frame(FrameGraph(vertices, edges, edge_labels))
 
-     def getFrame(self, index):
+     def get_frame(self, index):
          if index > len(self.frames) - 1:
             return FrameGraph(["None"], None)
          return self.frames[index]
@@ -30,18 +32,19 @@ class RecordGraph:
      def clear(self):
          self.frames = []
 
-     def getSize(self):
+     def get_size(self):
          return len(self.frames)
 
-def recordingGraph(record:RecordGraph, nodes):
+
+def recording_graph(record: RecordGraph, nodes):
     if record is None:
         return
-    vertices, edges, edge_labels = getGraphView(nodes)
+    vertices, edges, edge_labels = get_graph_view(nodes)
     record.append(vertices, edges, edge_labels)
 
 
-def recordingGraphString(record:RecordGraph, nodes):
+def recording_graph_string(record: RecordGraph, nodes):
     if record is None:
         return
-    vertices, edges, edge_labels = getGraphView(getArrayPauliArrays(nodes))
+    vertices, edges, edge_labels = get_graph_view(get_array_pauli_arrays(nodes))
     record.append(vertices, edges, edge_labels)
