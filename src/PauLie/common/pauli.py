@@ -1,81 +1,84 @@
 from bitarray import bitarray
 
 # Object for handling Pauli strings that relies on the binary symplectic form
-#See section 2 of https://quantum-journal.org/papers/q-2020-06-04-278/
-#The binary symplectic form works as follows. For N = 1 we have
+# See Section 2 of https://quantum-journal.org/papers/q-2020-06-04-278/
+# The binary symplectic form works as follows. For N = 1 we have
 #I = (00)
 #X = (10)
 #Y = (11)
 #Z = (01)
-#This extends obviously for N>1, for example XYZ = (1,1,0|0,1,1)
-#By performing modular arithmetic on this array we can implement the Pauli algebra.
-I = bitarray([0,0])
-X = bitarray([1,0])
-Y = bitarray([1,1])
-Z = bitarray([0,1])
+# This extends obviously for N>1, for example XYZ = (1,1,0|0,1,1)
+# By performing modular arithmetic on this array we can implement the Pauli algebra.
+codec = {
+    "I": bitarray([0, 0]), 
+    "X": bitarray([1, 0]), 
+    "Y": bitarray([1, 1]), 
+    "Z": bitarray([0, 1]),
+}
 
-codec = {'I':I, 'X':X, 'Y':Y, 'Z':Z}
 
-def getI(n):
+def get_I(n):
     if n == 0:
         return bitarray()
     return bitarray(2*n)
 
-def getY(n):
+
+def get_Y(n):
     if n == 0:
         return bitarray()
-    onePauliArray = getI(n)
+    onePauliArray = get_I(n)
     onePauliArray.setall(1)
     return onePauliArray
 
-def getZ(n):
+
+def get_Z(n):
     if n == 0:
         return bitarray()
-    zetPauliArray = getI(n)
+    zetPauliArray = get_I(n)
     i = 1
     while(i < 2*n):
         zetPauliArray[i] = 1
         i += 2
     return zetPauliArray
 
-def getPauliString(bitString):
-    return ''.join(bitString.decode(codec))
 
-def getPauliArray(pauliString):
-
-    pauliArray = bitarray()
-    pauliArray.encode(codec, pauliString)
-    return pauliArray
+def get_pauli_string(bitstring):
+    return "".join(bitstring.decode(codec))
 
 
-def IncPauliArray(pauliArray):
-    n = len(pauliArray) - 1
+def get_pauli_array(pauli_string):
+    pauli_array = bitarray()
+    pauli_array.encode(codec, pauli_string)
+    return pauli_array
+
+
+def inc_pauli_array(pauli_array):
+    n = len(pauli_array) - 1
     stop = False
     while stop is not True:
-        if pauliArray[n] == 0:
-           pauliArray[n] = 1
+        if pauli_array[n] == 0:
+           pauli_array[n] = 1
            break
-        if pauliArray[n] == 1:
-           pauliArray[n] = 0
+        if pauli_array[n] == 1:
+           pauli_array[n] = 0
            n = n - 1
-    return pauliArray
+    return pauli_array
 
    
-def IncIZPauliArray(pauliArray):
-    n = len(pauliArray) - 1
+def inc_IZ_pauli_array(pauli_array):
+    n = len(pauli_array) - 1
     stop = False
     while stop is not True:
-        if pauliArray[n] == 0:
-           pauliArray[n] = 1
+        if pauli_array[n] == 0:
+           pauli_array[n] = 1
            break
-        if pauliArray[n] == 1:
-           pauliArray[n] = 0
+        if pauli_array[n] == 1:
+           pauli_array[n] = 0
            n = n - 2
-    return pauliArray
+    return pauli_array
 
 
-
-def isCommutate(a, b):
+def is_commutate(a, b):
     if len(a) != len(b):
         raise ValueError("gates must have the same length")
     a_dot_b = 0
@@ -91,42 +94,47 @@ def isCommutate(a, b):
     b_dot_a %= 2
     return a_dot_b == b_dot_a
 
-def isCommutateByString(a, b):
-     return isCommutate(getPauliArray(a), getPauliArray(b))
 
-def multiPauliArrays(a, b):
+def is_commutate_by_string(a, b):
+     return is_commutate(get_pauli_array(a), get_pauli_array(b))
+
+
+def multi_pauli_arrays(a, b):
     if len(a) != len(b):
         raise ValueError("gates must have the same length")
     c = bitarray(len(a))
-    lenString = len(c)
     i = 0
-    while i < lenString:
+    while i < len(c):
        c[i] = (a[i] + b[i]) % 2
        i = i + 1
     return c
 
-def multiPauliStringToArray(a, b):
-    aArray = getPauliArray(a)
-    bArray = getPauliArray(b)
-    cArray = multiPauliArrays(aArray, bArray)
+
+def multi_pauli_string_to_array(a, b):
+    aArray = get_pauli_array(a)
+    bArray = get_pauli_array(b)
+    cArray = multi_pauli_arrays(aArray, bArray)
     return cArray
 
-def multiPauliString(a, b):
-    return getPauliString(multiPauliStringToArray(a, b))
+
+def multi_pauli_string(a, b):
+    return get_pauli_string(multi_pauli_string_to_array(a, b))
+
 
 def commutator(a, b):
-    if isCommutate(a, b):
+    if is_commutate(a, b):
         return bitarray(len(a))
-    return multiPauliArrays(a, b)
+    return multi_pauli_arrays(a, b)
 
-def commutatorPauliString(a, b):
-    aArray = getPauliArray(a)
-    bArray = getPauliArray(b)
+
+def commutator_pauli_string(a, b):
+    aArray = get_pauli_array(a)
+    bArray = get_pauli_array(b)
     cArray = commutator(aArray, bArray)
-    return getPauliString(cArray)
+    return get_pauli_string(cArray)
 
 
-def isIZString(a):
+def is_IZ_string(a):
     i = 0
     size = len(a)
     while(i < size):
@@ -135,40 +143,42 @@ def isIZString(a):
         i += 2
     return True
 
-def isSubInArray(sub, a, pos=0):
+
+def is_sub_in_array(sub, a, pos=0):
     index = a.find(sub, pos)
     if index == -1:
         return False
     if index % 2 == 0:
         return True
-    return isSubInArray(sub, a, index+1)
+    return is_sub_in_array(sub, a, index+1)
 
 
-def genAllNodes(n):
-    a = getI(n)
+def gen_all_nodes(n):
+    a = get_I(n)
     yield a
-    last = getY(n)
+    last = get_Y(n)
     while True:
-        a = IncPauliArray(a)
+        a = inc_pauli_array(a)
         yield a
         if a == last:
             break
 
-def genAllIZ(n):
-    a = getI(n)
+
+def gen_all_IZ(n):
+    a = get_I(n)
     yield a
-    last = getZ(n)
+    last = get_Z(n)
     while True:
-        a = IncIZPauliArray(a)
+        a = inc_IZ_pauli_array(a)
         yield a
         if a == last:
             break
 
-def getArrayPauliStrings(bitArrays):
-    #l = bitArrays.copy()
-    return list(map(getPauliString, bitArrays))
 
-def getArrayPauliArrays(pauliStrings):
-    #l = pauliStrings.copy()
-    return list(map(getPauliArray, pauliStrings))
+def get_array_pauli_strings(bit_arrays):
+    return list(map(get_pauli_string, bit_arrays))
+
+
+def get_array_pauli_arrays(pauli_strings):
+    return list(map(get_pauli_array, pauli_strings))
 

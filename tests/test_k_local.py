@@ -1,9 +1,10 @@
-# content of test_sample.py
-from PauLie.common.extKlocal import *
 
 
-def test_Klocal():
-    generators = getKlocalStringGenerators(5, ["XY", "XZ"])
+from paulie.common.ext_k_local import get_k_local_string_generators
+
+
+def test_k_local():
+    generators = get_k_local_string_generators(5, ["XY", "XZ"])
     assert len(generators) == 8
     assert "XYIII" in generators
     assert "IXYII" in generators
