@@ -1,4 +1,4 @@
-from paulie.common.algebras import get_algebra
+from paulie.helpers.drawing import get_algebra
 
 
 def test_classification():
