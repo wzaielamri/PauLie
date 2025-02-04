@@ -134,9 +134,9 @@ def commutator_pauli_string(a, b):
     cArray = commutator(aArray, bArray)
     return get_pauli_string(cArray)
 
-def commutant(generators, size):
+def commutant(generators):
     commutant = []
-    for node in gen_all_nodes(size):
+    for node in gen_all_nodes(len(generators[0])):
         flag = True
         for gen in generators:
             if is_commutate(node, gen) is False:
@@ -145,17 +145,6 @@ def commutant(generators, size):
         if flag:
             commutant.append(node)
     return commutant
-
-def non_commuting_charges(generators, size):
-    non_q = []
-    comm = commutant(generators, size)
-    for c,q in combinations(comm,2):
-        if is_commutate(c, q) is False:
-            non_q.append(c)
-            non_q.append(q)
-    return non_q
-
-
 
 def is_IZ_string(a):
     i = 0

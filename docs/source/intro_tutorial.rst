@@ -20,7 +20,7 @@ We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-
 
 .. code-block:: python
 
-    from paulie import get_algebra
+    from paulie.application.classify import get_algebra
     size = 2
     generators = ["XY"]
     algebra = get_algebra(generators, size=size)

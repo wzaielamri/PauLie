@@ -26,10 +26,10 @@ poetry shell
 The following code gives an example of usage:
 
 ```python
-    from paulie import get_algebra
+    from paulie.application.classify import get_algebra
     n_qubits = 6
     generators = ["XYZXZZ", "ZZYZY"]
-    algebra = get_algebra(generators, size=size)
+    algebra = get_algebra(generators, size = n_qubits)
     print(f"number of qubits = {n_qubits}, algebra = {algebra}")
 ```
 
