@@ -1,6 +1,4 @@
 from bitarray import bitarray
-from itertools import combinations
-
 # Object for handling Pauli strings that relies on the binary symplectic form
 # See Section 2 of https://quantum-journal.org/papers/q-2020-06-04-278/
 # The binary symplectic form works as follows. For N = 1 we have
@@ -135,16 +133,22 @@ def commutator_pauli_string(a, b):
     return get_pauli_string(cArray)
 
 def commutant(generators):
+    """
+    input: list of generators as strings
+    returns: commutant as strings
+    """
+    size = len(generators[0])
+    generators = get_array_pauli_arrays(generators)
     commutant = []
-    for node in gen_all_nodes(len(generators[0])):
+    for node in gen_all_nodes(size):
         flag = True
         for gen in generators:
             if is_commutate(node, gen) is False:
                     flag = False
                     break
         if flag:
-            commutant.append(node)
-    return commutant
+            commutant.append(node.copy())
+    return get_array_pauli_strings(commutant)
 
 def is_IZ_string(a):
     i = 0
