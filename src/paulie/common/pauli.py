@@ -133,6 +133,18 @@ def commutator_pauli_string(a, b):
     cArray = commutator(aArray, bArray)
     return get_pauli_string(cArray)
 
+def commutant(generators, size):
+    commutant = []
+    for node in gen_all_nodes(size):
+        is_all = true
+        for gen in generators:
+            if is_commutate(node, gen) is False:
+                    is_all = false
+                    break
+        if is_all:
+            commutant.append(node)
+    return commutant
+
 
 def is_IZ_string(a):
     i = 0
