@@ -198,3 +198,10 @@ def get_array_pauli_strings(bit_arrays):
 def get_array_pauli_arrays(pauli_strings):
     return list(map(get_pauli_array, pauli_strings))
 
+def complex_conj(a):
+    """
+    input: bitarray
+    output: complex conjugate as bitarray
+    """
+    a = get_array_pauli_strings(a)
+    return a.count('Y')* get_array_pauli_arrays(a)
