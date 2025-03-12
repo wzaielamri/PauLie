@@ -30,7 +30,7 @@ def nested_adjoint(operators: list[PauliString], target: PauliString) -> PauliSt
 
 def count_anticommuting_positions(a: PauliString, b: PauliString) -> int:
        """Count the number of qubit positions where A and B anticommute"""
-       return reduce(lambda count, xy: count if xy[0].is_identity() or xy[1].is_identity() or xy[0] == xy[1] else count + 1, zip(a.get_list_subsystem(), b.get_list_subsystem()), 0)
+       return reduce(lambda count, xy: count if xy[0].is_identity() or xy[1].is_identity() or xy[0] == xy[1] else count + 1, zip(a, b), 0)
 
 
 def derive_generating_operators(target: PauliString) -> list[PauliString]:
@@ -49,12 +49,11 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
     op1 = get_identity(n)
     op2 = get_identity(n)
 
-    targets = target.get_list_subsystem()
     # Count non-identity positions
-    non_identity_count = reduce(lambda count, x: count if x.is_identity() else count + 1, targets, 0)
+    non_identity_count = reduce(lambda count, x: count if x.is_identity() else count + 1, target, 0)
     
     # Set up operators based on target
-    for i, t in enumerate(targets):
+    for i, t in enumerate(target):
         # Identity position - leave as identity in both operators
         if t.is_identity():
             continue
@@ -75,7 +74,7 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
     if op1.commutes_with(op2):
         # If they commute, there must be an even number of anticommuting positions
         # We can fix this by switching one position to make them commute there
-        for i, o in enumerate(op1.get_list_subsystem()):
+        for i, o in enumerate(op1):
             if not o.is_identity():
                 if o == "X":
                     op1.set_subsystem(i, "Z")
@@ -245,7 +244,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
         # X at positions where target has Y
         # XY at positions where target has Z
         # Keep I where target has I
-        for i, p in enumerate(target_P.get_list_subsystem()):
+        for i, p in enumerate(target_P):
             if p == "X":  # X
                 op1.set_subsystem(i, "Y")  # Y
                 op2.set_subsystem(i, "X")  # X

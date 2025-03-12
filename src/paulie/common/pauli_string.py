@@ -29,6 +29,12 @@ class PauliString:
     
     def __len__(self) -> int:
         return 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self
     
     def commutes_with(self, other: "PauliString") -> bool:
         """

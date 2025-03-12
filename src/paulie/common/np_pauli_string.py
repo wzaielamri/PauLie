@@ -11,6 +11,7 @@ class NPPauliString(PauliString):
             z_comp: Binary array indicating Z/Y positions (1 = present)
         """
         super().__init__()
+        self.nextpos = 0
         if x_comp is not None and z_comp is not None:
             self.x = np.array(x_comp, dtype=np.int8)
             self.z = np.array(z_comp, dtype=np.int8)
@@ -71,6 +72,18 @@ class NPPauliString(PauliString):
     
     def __len__(self) -> int:
         return len(self.x)
+
+    def __iter__(self):
+        self.nextpos = 0
+        return self
+
+    def __next__(self):
+        if self.nextpos >= len(self):
+            # we are done
+            raise StopIteration
+        value = NPPauliString(x_comp=self.x[self.nextpos:self.nextpos+1], z_comp=self.z[self.nextpos:self.nextpos+1])
+        self.nextpos += 1
+        return value
     
     def commutes_with(self, other: "NPPauliString") -> bool:
         """
