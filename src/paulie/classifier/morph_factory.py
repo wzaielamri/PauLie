@@ -629,7 +629,7 @@ class MorphFactory(Debug):
               first = lit_indexes[0]
               second = lit_indexes[1]
               if first > 0 and first + 1 != second:
-                  for i in range(second, first - 1, -1):
+                  for i in range(second, first - 1, -1): ## maybe + 1
                       lighting = self.lit(lighting, long_leg[i])
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 1:

@@ -7,4 +7,4 @@ def classify_generator(generators):
     print(f"algebra={algebra}")
 
 if __name__ == '__main__':
-    classify_generator(["XYZXZZ", "IZZYZY"])
+    classify_generator(["XYZXZZ", "ZZYZYI"])
