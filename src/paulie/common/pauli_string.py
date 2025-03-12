@@ -35,6 +35,12 @@ class PauliString:
 
     def __next__(self):
         return self
+
+    def __setitem__(self, position: int, pauli_string):
+        self.set_subsystem(position, pauli_string)
+
+    def __getitem__(self, position: int):
+        return self.get_subsystem(position)
     
     def commutes_with(self, other: "PauliString") -> bool:
         """

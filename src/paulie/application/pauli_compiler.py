@@ -59,16 +59,16 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
             continue
         # X position - use Z in op1, Y in op2
         elif t == "X":
-            op1.set_subsystem(i, "Z")
-            op2.set_subsystem(i, "Y")
+            op1[i] = "Z"
+            op2[i] = "Y"
         # Z position - use Y in op1, X in op2
         elif t == "Z":
-            op1.set_subsystem(i, "Y")
-            op2.set_subsystem(i, "X")
+            op1[i] = "Y"
+            op2[i] = "X"
         # Y position - use X in op1, Z in op2
         elif t == "Y":
-            op1.set_subsystem(i, "X")
-            op2.set_subsystem(i, "Z")
+            op1[i] = "X"
+            op2[i] = "Z"
     # Make sure we have an odd number of anticommuting positions
     # by adjusting operators if needed
     if op1.commutes_with(op2):
@@ -77,11 +77,11 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
         for i, o in enumerate(op1):
             if not o.is_identity():
                 if o == "X":
-                    op1.set_subsystem(i, "Z")
+                    op1[i] = "Z"
                 elif o == "Z":
-                    op1.set_subsystem(i, "X")
+                    op1[i] = "X"
                 elif o == "Y":
-                    op1.set_subsystem(i, "I")
+                    op1[i] = "I"
                 break
     
     # Verify the operators generate the target
@@ -246,20 +246,20 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
         # Keep I where target has I
         for i, p in enumerate(target_P):
             if p == "X":  # X
-                op1.set_subsystem(i, "Y")  # Y
-                op2.set_subsystem(i, "X")  # X
+                op1[i] = "Y"  # Y
+                op2[i] = "X"  # X
             elif p == "Z":  # Z
-                op1.set_subsystem(i, "X")  # X
-                op2.set_subsystem(i, "Z")  # Z
+                op1[i] = "X"  # X
+                op2[i] = "Z"  # Z
             elif p == "Y":  # Y
-                op1.set_subsystem(i, "Z")  # X
-                op2.set_subsystem(i, "X")  # Z
+                op1[i] = "Z"  # Z
+                op2[i] = "X"  # X
         
         # Ensure an odd number of anticommuting positions
         if op1.commutes_with(op2):
             # Add an anticommuting pair
-            op1.set_subsystem(0, "X")  # X
-            op2.set_subsystem(0, "Z")  # Z
+            op1[0] = "X"  # X
+            op2[0] = "Z"  # Z
         
         return [op1, op2]
 

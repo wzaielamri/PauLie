@@ -1,8 +1,15 @@
-import numpy as np
+from bitarray import bitarray
 from paulie.common.pauli_string import PauliString
 
-class NPPauliString(PauliString):
-    def __init__(self, x_comp: np.ndarray = None, z_comp: np.ndarray = None, n: int = None, pauli_str: str = None):
+CODEC = {
+    "I": bitarray([0, 0]), 
+    "X": bitarray([1, 0]), 
+    "Y": bitarray([1, 1]), 
+    "Z": bitarray([0, 1]),
+}
+
+class BitArrayPauliString(PauliString):
+    def __init__(self, n: int = None, pauli_str: str = None):
         """
         Initialize a Pauli string with X and Z components
         
@@ -12,66 +19,33 @@ class NPPauliString(PauliString):
         """
         super().__init__()
         self.nextpos = 0
-        if x_comp is not None and z_comp is not None:
-            self.x = np.array(x_comp, dtype=np.int8)
-            self.z = np.array(z_comp, dtype=np.int8)
-            assert len(self.x) == len(self.z), "X and Z components must have the same length"
-        elif n is not None:
-           self.x = np.zeros(n, dtype=np.int8)
-           self.z = np.zeros(n, dtype=np.int8)
-        elif pauli_str is not None:
-           n = len(pauli_str)
-           self.x = np.zeros(n, dtype=np.int8)
-           self.z = np.zeros(n, dtype=np.int8)
         
-           for i, char in enumerate(pauli_str):
-               if char == "X":
-                   self.x[i] = 1
-               elif char == "Z":
-                   self.z[i] = 1
-               elif char == "Y":
-                   self.x[i] = 1
-                   self.z[i] = 1
-               elif char == "I":
-                   pass  # Both components remain 0
-               else:
-                   raise ValueError(f"Invalid Pauli character: {char}")
+        if n is not None:
+           self.bitarray = bitarray(2 * n)
+        elif pauli_str is not None:
+             self.bitarray = bitarray()
+             self.bitarray.encode(CODEC, pauli_str)
 
-
-        else:
-             raise ValueError(f"Invalid Pauli character: {char}")
 
    
     def __str__(self) -> str:
         """Convert PauliString to readable string (e.g., "XYZI")"""
-        result = []
-        for x_bit, z_bit in zip(self.x, self.z):
-            if x_bit == 0 and z_bit == 0:
-                result.append("I")
-            elif x_bit == 1 and z_bit == 0:
-                result.append("X")
-            elif x_bit == 0 and z_bit == 1:
-                result.append("Z")
-            else:  # x_bit == 1 and z_bit == 1
-                result.append("Y")
-        return "".join(result)
+        return "".join(self.bitarray.decode(CODEC))
     
     def __eq__(self, other) -> bool:
         if isinstance(other, str):
-            other = NPPauliString(pauli_str=other)
-        if not isinstance(other, NPPauliString):
+            other = BitArrayPauliString(pauli_str=other)
+        if not isinstance(other, BitArrayPauliString):
             return False
-        return np.array_equal(self.x, other.x) and np.array_equal(self.z, other.z)
+        return self.bitarray == other.bitarray
 
    
     def __hash__(self) -> int:
         """Make PauliString hashable so it can be used in sets"""
-        x_tuple = tuple(self.x)
-        z_tuple = tuple(self.z)
-        return hash((x_tuple, z_tuple))
+        return hash(str(self.bitarray))
     
     def __len__(self) -> int:
-        return len(self.x)
+        return len(self.bitarray) // 2
 
     def __iter__(self):
         self.nextpos = 0
@@ -84,7 +58,6 @@ class NPPauliString(PauliString):
         value = NPPauliString(x_comp=self.x[self.nextpos:self.nextpos+1], z_comp=self.z[self.nextpos:self.nextpos+1])
         self.nextpos += 1
         return value
-
     
     def commutes_with(self, other: "NPPauliString") -> bool:
         """
