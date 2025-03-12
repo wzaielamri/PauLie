@@ -20,10 +20,7 @@ class PauliString:
         """Convert PauliString to readable string (e.g., "XYZI")"""
         return ""
     
-    def __eq__(self, other: "PauliString") -> bool:
-        return False
-
-    def __eq__(self, other: str) -> bool:
+    def __eq__(self, other) -> bool:
         return False
 
     def __hash__(self) -> int:
