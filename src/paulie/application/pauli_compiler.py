@@ -48,10 +48,8 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
     n = len(target)
     op1 = get_identity(n)
     op2 = get_identity(n)
-
     # Count non-identity positions
     non_identity_count = reduce(lambda count, x: count if x.is_identity() else count + 1, target, 0)
-    
     # Set up operators based on target
     for i, t in enumerate(target):
         # Identity position - leave as identity in both operators
@@ -61,6 +59,7 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
         elif t == "X":
             op1[i] = "Z"
             op2[i] = "Y"
+
         # Z position - use Y in op1, X in op2
         elif t == "Z":
             op1[i] = "Y"
@@ -69,6 +68,7 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
         elif t == "Y":
             op1[i] = "X"
             op2[i] = "Z"
+
     # Make sure we have an odd number of anticommuting positions
     # by adjusting operators if needed
     if op1.commutes_with(op2):
@@ -132,7 +132,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
     # Verify the derived sequence works
     result = derived_sequence[0].adjoint_map(derived_sequence[1])
     if result and result == target_P:
-        #print(f"Using derived operators: {derived_sequence}")
+        #print(f"Using derived operators: {derived_sequence[0]}, {derived_sequence[1]}")
         return derived_sequence
         
     # If direct derivation didn't work, try the specific cases
@@ -160,7 +160,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
         
         # Try deriving a pair specifically for V
         derived_V_sequence = derive_generating_operators(V)
-        #print(f"derived_V_sequence[0] = {derived_V_sequence[0]} derived_V_sequence[1] = {derived_V_sequence[1]}")
+        print(f"derived_V_sequence[0] = {derived_V_sequence[0]} derived_V_sequence[1] = {derived_V_sequence[1]}")
         # Extend to full system
         I_Nmk = get_identity(N-k)
         return [derived_V_sequence[0].tensor(I_Nmk), derived_V_sequence[1].tensor(I_Nmk)]

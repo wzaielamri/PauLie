@@ -1,4 +1,4 @@
-from paulie.common.pauli_string_factory import get_pauli_string
+from paulie.common.pauli_string_factory import get_pauli_string, PauliStringType, set_factory
 from paulie.application.pauli_compiler import pauli_compiler, nested_adjoint 
 
 
@@ -74,7 +74,6 @@ def test_pauli_compiler():
         print(f"Matches target: {result1 == target1}")
     else:
         print("\nThe sequence produced a zero commutator")
-    
     # Example 2: XIII (a case where W=I)
     print("\n" + "=" * 50)
     print("EXAMPLE 2: Compiling XIII (W=I case)")
@@ -134,4 +133,8 @@ def test_pauli_compiler():
 
 
 if __name__ == "__main__":
+    print(f"np implementation")
+    test_pauli_compiler()
+    set_factory(PauliStringType.BITARRAY)
+    print(f"bitarray implementation")
     test_pauli_compiler()

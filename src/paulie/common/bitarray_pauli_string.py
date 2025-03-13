@@ -9,7 +9,7 @@ CODEC = {
 }
 
 class BitArrayPauliString(PauliString):
-    def __init__(self, n: int = None, pauli_str: str = None):
+    def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None):
         """
         Initialize a Pauli string with X and Z components
         
@@ -19,33 +19,34 @@ class BitArrayPauliString(PauliString):
         """
         super().__init__()
         self.nextpos = 0
-        
-        if n is not None:
-           self.bitarray = bitarray(2 * n)
+        if bits is not None:
+           self.bits = bits.copy()
+        elif n is not None:
+           self.bits = bitarray(2 * n)
         elif pauli_str is not None:
-             self.bitarray = bitarray()
-             self.bitarray.encode(CODEC, pauli_str)
+             self.bits = bitarray()
+             self.bits.encode(CODEC, pauli_str)
 
 
    
     def __str__(self) -> str:
         """Convert PauliString to readable string (e.g., "XYZI")"""
-        return "".join(self.bitarray.decode(CODEC))
+        return "".join(self.bits.decode(CODEC))
     
     def __eq__(self, other) -> bool:
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
             return False
-        return self.bitarray == other.bitarray
+        return self.bits == other.bits
 
    
     def __hash__(self) -> int:
         """Make PauliString hashable so it can be used in sets"""
-        return hash(str(self.bitarray))
+        return hash(str(self.bits))
     
     def __len__(self) -> int:
-        return len(self.bitarray) // 2
+        return len(self.bits) // 2
 
     def __iter__(self):
         self.nextpos = 0
@@ -55,47 +56,51 @@ class BitArrayPauliString(PauliString):
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
-        value = NPPauliString(x_comp=self.x[self.nextpos:self.nextpos+1], z_comp=self.z[self.nextpos:self.nextpos+1])
+        value = BitArrayPauliString(bits=self.bits[2*self.nextpos:2*self.nextpos+2])
         self.nextpos += 1
         return value
     
-    def commutes_with(self, other: "NPPauliString") -> bool:
+    def commutes_with(self, other: "BitArrayPauliString") -> bool:
         """
         Check if this Pauli string commutes with another
         Returns True if they commute, False if they anticommute
         """
         # Compute symplectic product mod 2
         # Paulis commute iff the symplectic product is 0
-        dot1 = np.sum(self.x * other.z) % 2
-        dot2 = np.sum(self.z * other.x) % 2
-        return (dot1 + dot2) % 2 == 0
-    
-    def get_subsystem(self, start: int, length: int = 1) -> "NPPauliString":
+        if len(self) != len(other):
+            raise ValueError("Pauli arrays must be of equal length")
+        return sum(self.bits[i] & other.bits[i + 1] for i in range(0, len(self.bits), 2)) % 2 == sum(self.bits[i + 1] & other.bits[i] for i in range(0, len(self.bits), 2)) % 2
+      
+    def get_subsystem(self, start: int, length: int = 1) -> "BitArrayPauliString":
         """Get a subsystem of this Pauli string"""
-        return NPPauliString(x_comp=self.x[start:start+length], z_comp=self.z[start:start+length])
+        return BitArrayPauliString(bits=self.bits[2*start:2*start+2*length])
 
     def get_list_subsystem(self, start: int = 0, length: int = 1) -> list[PauliString]:
         return [self.get_subsystem(i, length) for i in range(0, len(self), length)]
 
     def set_subsystem(self, position: int, pauli_string):
         if isinstance(pauli_string, str):
-            pauli_string = NPPauliString(pauli_str=pauli_string)
+            pauli_string = BitArrayPauliString(pauli_str=pauli_string)
 
         for i in range(0, len(pauli_string)):
-            self.x[position + i] = pauli_string.x[i]
-            self.z[position + i] = pauli_string.z[i]
+            self.bits[2*position + 2*i] = pauli_string.bits[2*i]
+            self.bits[2*position + 2*i + 1] = pauli_string.bits[2*i + 1]
 
     def is_identity(self) -> bool:
         """Check if this Pauli string is the identity"""
-        return np.all(self.x == 0) and np.all(self.z == 0)
+        return bitarray(len(self.bits)) == self.bits
     
-    def tensor(self, other: "NPPauliString") -> "NPPauliString":
+    def tensor(self, other: "BitArrayPauliString") -> "BitArrayPauliString":
         """Tensor product of this Pauli string with another"""
-        x_new = np.concatenate((self.x, other.x))
-        z_new = np.concatenate((self.z, other.z))
-        return NPPauliString(x_comp=x_new, z_comp=z_new)
+        new_bits = bitarray(len(self.bits) + len(other.bits))
+        for i in range(len(new_bits)):
+            s = self.bits if i < len(self.bits) else other.bits
+            j = i if i < len(self.bits) else i - len(self.bits)
+            new_bits[i] = s[j]
+
+        return BitArrayPauliString(bits=new_bits)
     
-    def adjoint_map(self, other: "NPPauliString") -> "NPPauliString":
+    def adjoint_map(self, other: "BitArrayPauliString") -> "BitArrayPauliString":
         """
         Compute the adjoint map ad_A(B) = [A,B]
         Returns None if the commutator is zero (i.e., if A and B commute)
@@ -110,9 +115,9 @@ class BitArrayPauliString(PauliString):
         
         # For anticommuting Paulis, the product gives a new Pauli
         # XOR of the bit vectors gives the non-phase part of the product
-        result_x = (self.x + other.x) % 2
-        result_z = (self.z + other.z) % 2
-        
-        return NPPauliString(x_comp=result_x, z_comp=result_z)
+        if len(self.bits) != len(other.bits):
+            raise ValueError("Pauli arrays must have the same length")
+        return BitArrayPauliString(bits = self.bits ^ other.bits)  # Bitwise XOR is equivalent to mod-2 addition
+
 
 
