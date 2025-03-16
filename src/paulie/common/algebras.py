@@ -31,6 +31,10 @@ G_LIE: dict[str, list[str]] = {
 }
 
 
-def get_lie_algebra() -> dict[str, list[str]]:
+def get_lie_algebra(name:str) -> list[str]:
+    """Returns the dictionary of generators of Lie algebras."""
+    return G_LIE[name]
+
+def get_lie_algebras() -> dict[str, list[str]]:
     """Returns the dictionary of generators of Lie algebras."""
     return G_LIE

@@ -1,6 +1,4 @@
 from paulie.helpers.printing import Debug
-from paulie.common.pauli import get_pauli_string, get_pauli_array, multiply_pauli_arrays, is_commutative
-from paulie.helpers.recording import recording_graph
 from paulie.classifier.classification import Morph
 import sys, os, traceback
 
@@ -25,17 +23,18 @@ class MorphFactory(Debug):
           self.delayed_vertices = []
           self.debug_lighting = None
           self.debug_break = False
+          self.dependents = []
 
 
       def set_debug(self, debug):
           self.debug = debug
 
-      def recording(self, lighting = None, vertices = None):
-           if vertices is None:
-               vertices = self.get_vertices()
-           if lighting is not None:
-              vertices.append(lighting)
-           recording_graph(self.record, vertices)
+      #def recording(self, lighting = None, vertices = None):
+      #     if vertices is None:
+      #         vertices = self.get_vertices()
+      #     if lighting is not None:
+      #        vertices.append(lighting)
+      #     recording_graph(self.record, vertices)
 
       def set_lighting(self, lighting):
            self.lighting = lighting
@@ -44,10 +43,10 @@ class MorphFactory(Debug):
            return self.lighting
 
       def get_morph(self):
-          return Morph(self.legs)
+          return Morph(self.legs, self.dependents)
 
       def lit(self, lighting, vertix):
-          lighting = multiply_pauli_arrays(lighting, vertix)
+          lighting = lighting.adjoint_map(vertix)
           if self.is_included(lighting):
               raise DependentException()
           return lighting
@@ -56,12 +55,14 @@ class MorphFactory(Debug):
           """Return highlighted vertices (connected to the selected vertex)."""
           if vertices is None:
               vertices = self.get_vertices()
-          lits = []
-          for v in vertices:
-              if v != lighting:
-                  if is_commutative(lighting, v) is False:
-                      lits.append(v)
-          return lits
+          return [v for v in vertices if v != lighting and not lighting.commutes_with(v)]
+
+#          lits = []
+#          for v in vertices:
+#              if v != lighting:
+#                  if not lighting.commutes_with(v):
+#                      lits.append(v)
+#          return lits
 
       def is_empty(self):
           return len(self.legs) == 0
@@ -137,7 +138,7 @@ class MorphFactory(Debug):
               else:
                   q = v
               if p is not None and q is not None:
-                  return multiply_pauli_arrays(p, q), p
+                  return p.multiply(q), p
           return None, None
 
       def _gen_two_legs(self):
@@ -219,6 +220,7 @@ class MorphFactory(Debug):
 
           vertices = self.get_vertices()
           lits = self.get_lits(lighting, vertices)
+
           if len(lits) == 1:
               if center in lits:
                  self.append(lighting, center)
@@ -333,62 +335,6 @@ class MorphFactory(Debug):
                self.print_lit_vertices(leg, lits)
 
 
-      def find_center_and_lits(self, vertices):
-          """Find a center with maximum connections. And bring back these connections."""
-          center = vertices[0]
-          center_lits = []
-          for v in vertices:
-              lits = self.get_lits(v, vertices)
-              if len(lits) > len(center_lits):
-                  center = v
-                  center_lits = lits
-          return center, center_lits
-
-
-      def append_to_sorted_vertices(self, sorted_vertices, vertices):
-          """Adding the next node according to the principle of having a connection with the previous one.
-    
-          If there are several connected ones, then we insert them after the first one. (To reduce the risk of graph
-          reassembly).
-          """
-          for v in vertices:
-              if v in sorted_vertices:
-                  vertices.remove(v)
-                  continue
-
-              lits = self.get_lits(v, sorted_vertices)
-              if len(lits) == 0:
-                  continue
-              if len(lits) > 1:
-                  min_index = len(sorted_vertices)
-                  for lit in lits:
-                      index = sorted_vertices.index(lit)
-                      if index < min_index:
-                          min_index = index
-                  sorted_vertices.insert(min_index + 1, v)
-              else:
-                  sorted_vertices.append(v)
-              vertices.remove(v)
-              return
-
-
-      def sort_vertices(self, vertices):
-          """Sorting nodes in order from the center and then by connections."""
-          vertices.sort()
-          sorted_vertices = []
-          center, lits = self.find_center_and_lits(vertices)
-          vertices.remove(center)
-          sorted_vertices.append(center)
-
-          for lit in lits:
-              vertices.remove(lit)
-              if lit not in sorted_vertices:
-                  sorted_vertices.append(lit)
-
-          while len(vertices) > 0:
-              self.append_to_sorted_vertices(sorted_vertices, vertices)
-
-          return sorted_vertices
 
       def get_lit_indexes(self, vertices, lits):
           indexes = []
@@ -425,7 +371,7 @@ class MorphFactory(Debug):
               lits = self.get_lits(lighting)
               for lit in lits:
                   if lit != p:
-                      v = self.lit(pq, lit)
+                      v = pq.multiply(lit)
                       self.replace(lit, v)
               self.append(lighting, p)
               long_leg = self.get_long_leg()
@@ -496,9 +442,9 @@ class MorphFactory(Debug):
               return self
 
           long_lits = self.get_lits(lighting, long_leg)
-
           if len(long_lits) == 0:
               # find lited two leg
+              center_lits = self.get_lits(lighting, [center])
               if center in center_lits:
                   lighting = self.lit(lighting, center)
                   lighting = self.lit(lighting, long_leg[0])
@@ -513,6 +459,7 @@ class MorphFactory(Debug):
                           lighting = self.lit(lighting, v1)
                           lits.append(v0)
                       if v0 in lits:
+                          lighting = self.lit(lighting, v0)
                           lighting = self.lit(lighting, center)
                           lighting = self.lit(lighting, long_leg[0])
                           lighting = self.lit(lighting, omega)
@@ -532,7 +479,7 @@ class MorphFactory(Debug):
                       raise NotConnectedException()
                   first_lit = lit_indexes[0]
                   for i in range(first_lit, 1, -1):
-                      lighting = self.lit(lighting, long_leg[0])
+                      lighting = self.lit(lighting, long_leg[i])
 
 
           long_v0 = long_leg[0]
@@ -550,6 +497,7 @@ class MorphFactory(Debug):
                   lits.append(v0)
 
               if v0 in lits and v1 in lits:
+                  center_lits = self.get_lits(lighting, [center])
                   if center in center_lits:
                       lighting = self.lit(lighting, center)
                       #omega is lited
@@ -771,8 +719,8 @@ class MorphFactory(Debug):
                   raise AppendedException
               g = long_leg[len(long_leg) - 2]
               omega = self.get_one_vertix()
-              pq = multiply_pauli_arrays(omega, lighting)
-              new_g = multiply_pauli_arrays(pq, g)
+              pq = omega.multiply(lighting)
+              new_g = pq.multiply(g)
               self.remove(last_v)
               self.append(lighting, center)
               self.replace(g, new_g)
@@ -835,7 +783,7 @@ class MorphFactory(Debug):
           return vertices
 
       def set_debug_vertix(self, lighting):
-          self.debug_lighting = get_pauli_array(lighting)
+          self.debug_lighting = lighting
 
       def set_debug_break(self, lighting):
            if lighting == self.debug_lighting:
@@ -859,22 +807,25 @@ class MorphFactory(Debug):
       def is_break(self):
            return self.debug_break
       #def unlit_two_legs(morph, lighting)
-      def build(self, vertices):
+      def build(self, generators):
           """Transform a connected graph to a cononic type."""
-          if len(vertices) == 0:
+          #self.debuging()
+
+          if len(generators) == 0:
               return self
 
-          vertices = self.sort_vertices(vertices)
+          vertices = generators.get_queue().get()
           self.print_vertices(vertices, "init")
-          self.recording(vertices=vertices)
+          #self.recording(vertices=vertices)
           unappended = []
-          dependents = []
+          self.dependents = []
+
           #self.set_debug_vertix("ZYIIII")
           while len(vertices) > 0:
               lighting = vertices[0]
               vertices.remove(lighting)
               try:
-                  #self.debugbreak(number=13, lighting = lighting)
+                  #self.debugbreak(number=8, lighting = lighting)
                   self._pipeline(lighting)
               except AppendedException:
                   vertices = self.restore_delayed(vertices)
@@ -882,7 +833,7 @@ class MorphFactory(Debug):
                       unappended.remove(lighting)
                   pass
               except DependentException:
-                  dependents.append(lighting)
+                  self.dependents.append(lighting)
               except NotConnectedException:
                   exc_type, exc_obj, exc_tb = sys.exc_info()
                   self.print_vertix(lighting, f"Exception {traceback.format_exc()}")
@@ -906,6 +857,6 @@ class MorphFactory(Debug):
 
           self.print_state()
           self.print_vertices(unappended, f"unappended")
-          self.print_vertices(dependents, f"dependents")
+          self.print_vertices(self.dependents, f"dependents")
           return self
 

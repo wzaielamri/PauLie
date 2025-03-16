@@ -1,10 +1,16 @@
+from paulie.common.all_pauli_strings import get_all_pauli_strings
+from itertools import combinations
+
+
 class PauliString:
-    def __init__(self):
+    def __init__(self, pauli_str: str = ""):
         """
         Initialize a Pauli string
         """
         pass
 
+    def create_instance(self, n: int = None, pauli_str: str = None):
+        return None
 
     @classmethod
     def from_string(cls, pauli_str: str) -> "PauliString":
@@ -21,6 +27,23 @@ class PauliString:
         return ""
     
     def __eq__(self, other) -> bool:
+        return False
+
+    def __lt__(self, other):
+        #<
+        return False
+    def __le__(self, other):
+        #<=
+        return False
+
+    def __gt__(self, other):
+        #>
+        return False
+    def __ge__(self, other):
+        #>=
+        return False
+    def __ne__(self, other):
+        # != 
         return False
 
     def __hash__(self) -> int:
@@ -41,8 +64,18 @@ class PauliString:
 
     def __getitem__(self, position: int):
         return self.get_subsystem(position)
-    
-    def commutes_with(self, other: "PauliString") -> bool:
+
+    def __copy__(self):
+        return None
+
+    def copy(self):
+        return None
+
+    def __add__(self, val2): 
+        return None
+
+
+    def commutes_with(self, other) -> bool:
         """
         Check if this Pauli string commutes with another
         Returns True if they commute, False if they anticommute
@@ -72,8 +105,11 @@ class PauliString:
     def tensor(self, other: "PauliString") -> "PauliString":
         """Tensor product of this Pauli string with another"""
         return PauliString()
-    
-    def adjoint_map(self, other: "PauliString") -> "PauliString":
+
+    def multiply(self, other) -> "NPPauliString":
+        return None
+
+    def adjoint_map(self, other) -> "PauliString":
         """
         Compute the adjoint map ad_A(B) = [A,B]
         Returns None if the commutator is zero (i.e., if A and B commute)
@@ -91,3 +127,29 @@ class PauliString:
         
         return PauliString()
 
+    def inc(self):
+         pass
+
+    def is_last(self) -> bool:
+        for p in self:
+            if p != "Y":
+                return False
+        return True
+
+    def expand(self, n: int):
+        pass
+
+    def get_nested(self, generators = None):
+        if generators is None:
+           generators = get_all_pauli_strings(len(self))
+        return [
+            (self.create_instance(pauli_str=a), self.create_instance(pauli_str=b))
+            for a, b in combinations(generators, 2)
+            if a != str(self) and b != str(self) and not self.create_instance(pauli_str=a).commutes_with(b) and self.create_instance(pauli_str=a).adjoint_map(b) == self
+        ]
+                      
+    def get_commutants(self, generators = None):
+        if generators is None:
+            generators = get_all_pauli_strings(len(self))
+
+        return [self.create_instance(pauli_str=str(g)) for g in generators if self.commutes_with(g)]

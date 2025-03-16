@@ -1,4 +1,4 @@
-from paulie.common.nested import get_nested_strings
+from paulie.common.pauli_string_factory import get_pauli_string as p 
 
 
 nesteds = {
@@ -19,15 +19,15 @@ nesteds = {
 
 
 def check_nested(node):
-    nested = get_nested_strings(node)
-    nested_source = nesteds[node]
+    nested = node.get_nested()
+    nested_source = nesteds[str(node)]
     if len(nested) != len(nested_source):
         return False
 
     for pair in nested:
         found = False
         for source_pair in nested_source:
-            if pair[0] in source_pair and pair[1] in source_pair:
+            if str(pair[0]) in source_pair and str(pair[1]) in source_pair:
                 found = True
                 break
         if found is False:
@@ -45,18 +45,18 @@ def check_nested(node):
 
 
 def test_nested():
-    assert check_nested("IX")
-    assert check_nested("IY")
-    assert check_nested("IZ")
-    assert check_nested("XI")
-    assert check_nested("XX")
-    assert check_nested("XY")
-    assert check_nested("XZ")
-    assert check_nested("YI")
-    assert check_nested("YX")
-    assert check_nested("YY")
-    assert check_nested("YZ")
-    assert check_nested("ZX")
-    assert check_nested("ZY")
-    assert check_nested("ZZ")
+    assert check_nested(p("IX"))
+    assert check_nested(p("IY"))
+    assert check_nested(p("IZ"))
+    assert check_nested(p("XI"))
+    assert check_nested(p("XX"))
+    assert check_nested(p("XY"))
+    assert check_nested(p("XZ"))
+    assert check_nested(p("YI"))
+    assert check_nested(p("YX"))
+    assert check_nested(p("YY"))
+    assert check_nested(p("YZ"))
+    assert check_nested(p("ZX"))
+    assert check_nested(p("ZY"))
+    assert check_nested(p("ZZ"))
 

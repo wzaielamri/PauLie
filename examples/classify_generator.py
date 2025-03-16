@@ -1,9 +1,10 @@
 from paulie.common.algebras import get_lie_algebra
 from paulie.application.classify import get_algebra
+from paulie.common.pauli_string_factory import get_pauli_string as p 
 
 
 def classify_generator(generators):
-    algebra = get_algebra(generators)
+    algebra = get_algebra(p(generators))
     print(f"algebra={algebra}")
 
 if __name__ == '__main__':

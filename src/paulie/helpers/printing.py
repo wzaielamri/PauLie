@@ -1,12 +1,10 @@
-from paulie.common.pauli import get_pauli_string, get_pauli_array
+from paulie.common.pauli_string import PauliString
 
-
-
-def print_vertix(debug, vertix, title=""):
+def print_vertix(debug, vertix: PauliString, title=""):
     if debug:
-        print(f"{title} {get_pauli_string(vertix)}")
+        print(f"{title} {vertix}")
 
-def print_vertices(debug, vertices, title = ""):
+def print_vertices(debug, vertices: list[PauliString], title = ""):
     if debug is False:
         return
 
@@ -16,7 +14,7 @@ def print_vertices(debug, vertices, title = ""):
     print("-------------------")
 
 
-def print_lit_vertices(debug, vertices, lits, title = ""):
+def print_lit_vertices(debug, vertices: list[PauliString], lits, title = ""):
     if debug is False:
         return
 
@@ -46,11 +44,11 @@ class Debug:
       def restore(self):
           self.debug = self.save_debug
 
-      def print_vertix(self, vertix, title=""):
+      def print_vertix(self, vertix: PauliString, title=""):
           print_vertix(self.debug, vertix, title)
 
 
-      def print_vertices(self, vertices, title=""):
+      def print_vertices(self, vertices: list[PauliString], title=""):
           print_vertices(self.debug, vertices, title)
 
       def print_title(self, title):
@@ -58,8 +56,8 @@ class Debug:
               if title != "":
                   print(f"{title}")
 
-      def print_lit_vertices(self, vertices, lits, title = ""):
+      def print_lit_vertices(self, vertices:list[PauliString], lits:list[PauliString], title = ""):
           print_lit_vertices(self.debug, vertices, lits, title)
 
-      def is_pauli_string(self, vertix, paulistring):
-          return get_pauli_array(paulistring) == vertix
+      def is_pauli_string(self, vertix: PauliString, paulistring:PauliString):
+          return paulistring == vertix

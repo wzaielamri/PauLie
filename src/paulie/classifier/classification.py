@@ -15,8 +15,10 @@ class TypeAlgebra(enum.Enum):
 
 
 class Morph:
-      def __init__(self, legs):
+      def __init__(self, legs, dependents):
           self.legs = legs # center is zero leg
+          self.dependents = dependents
+
 
       def is_empty(self):
           return len(self.legs) == 0
@@ -26,6 +28,9 @@ class Morph:
 
       def get_vertices(self):
           return [v for leg in self.legs for v in leg ]
+
+      def get_dependents(self):
+          return self.dependents
 
       def counts(self):
           one_legs = 0
@@ -166,5 +171,7 @@ class Classification:
       def get_vertices(self):
           return [v for morph in self.morphs for v in morph.get_vertices() ]
 
+      def get_dependents(self):
+          return [v for morph in self.morphs for v in morph.get_dependents()]
 
 

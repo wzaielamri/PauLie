@@ -1,26 +1,19 @@
-from paulie.common.pauli import (
-    get_array_pauli_arrays, 
-    get_pauli_string,
-    is_commutative,
-    multiply_pauli_arrays,
-)
+from paulie.common.pauli_string_generators import PauliStringGenerators
 
 
-def get_graph_view(nodes, commutators=[]):
+def get_graph_view(vertices: PauliStringGenerators, commutators:list[PauliStringGenerators]=[]):
     vertices = []
     edge_labels = {}
     edges = []
-    for nodeA in nodes:
-        vertices.append(get_pauli_string(nodeA))
-        for nodeB in nodes:
-            if nodeA < nodeB:
-                if is_commutative(nodeA, nodeB) is False:
-                    nodeC = multiply_pauli_arrays(nodeA, nodeB)
-                    if len(commutators) == 0 or nodeC in commutators:
-                        edges.append((get_pauli_string(nodeA), get_pauli_string(nodeB)))
-                        edge_labels[(get_pauli_string(nodeA), get_pauli_string(nodeB))] = get_pauli_string(nodeC)
+    for a in vertices:
+        vertices.append(str(a))
+        for b in nodes:
+            if a < b:
+                if a.commutes_with(b) is False:
+                    c = nodeA.adjoint_map(b)
+                    if len(commutators) == 0 or c in commutators:
+                        edges.append((str(a), str(b)))
+                        edge_labels[(str(a), str(b))] = str(c)
     return vertices, edges, edge_labels
 
 
-def get_graph_view_by_string(nodes, commutators=[]):
-    return get_graph_view(get_array_pauli_arrays(nodes), get_array_pauli_arrays(commutators))

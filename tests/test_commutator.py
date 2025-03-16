@@ -1,104 +1,108 @@
+from paulie.common.pauli_string_factory import get_pauli_string as p 
 
 
-from paulie.common.pauli import (
-    commutator,
-    get_pauli_array,
-    is_commutative,
-    multiply_pauli_arrays,
-)
 
 
 def test_commmutator():
-    I = get_pauli_array("I")   # noqa
-    X = get_pauli_array("X")
-    Y = get_pauli_array("Y")
-    Z = get_pauli_array("Z")
-    assert is_commutative(I, I)
-    assert is_commutative(I, X)
-    assert is_commutative(I, Y)
-    assert is_commutative(I, Z)
-    assert is_commutative(X, I)
-    assert is_commutative(X, X)
-    assert is_commutative(X, Y) is False
-    assert is_commutative(X, Z) is False
-    assert is_commutative(Y, I)
-    assert is_commutative(Y, X) is False
-    assert is_commutative(Y, Y)
-    assert is_commutative(Y, Z) is False
-    assert is_commutative(Z, I)
-    assert is_commutative(Z, X) is False
-    assert is_commutative(Z, Y) is False
-    assert is_commutative(Z, Z)
-    assert multiply_pauli_arrays(I, I) == I
-    assert multiply_pauli_arrays(I, X) == X
-    assert multiply_pauli_arrays(I, Y) == Y
-    assert multiply_pauli_arrays(I, Z) == Z
-    assert commutator(X, Y) == Z
-    assert commutator(X, Z) == Y
-    assert commutator(Y, X) == Z
-    assert commutator(Y, Z) == X
-    assert commutator(Z, X) == Y
-    assert commutator(Z, Y) == X
-    assert(commutator(X, commutator(Y, Z))) == I
+    I = p("I")   # noqa
+    X = p("X")
+    Y = p("Y")
+    Z = p("Z")
+    assert I.commutes_with(I)
+    assert I.commutes_with(X)
+    assert I.commutes_with(Y)
+    assert I.commutes_with(Z)
+    assert X.commutes_with(I)
+    assert X.commutes_with(X)
+    assert not X.commutes_with(Y)
+    assert not X.commutes_with(Z)
+    assert Y.commutes_with(I)
+    assert not Y.commutes_with(X)
+    assert Y.commutes_with(Y)
+    assert not Y.commutes_with(Z)
+    assert Z.commutes_with(I)
+    assert not Z.commutes_with(X)
+    assert not Z.commutes_with(Y)
+    assert Z.commutes_with(Z)
+    assert I.multiply(I) == I
+    assert I.multiply(X) == X
+    assert I.multiply(Y) == Y
+    assert I.multiply(Z) == Z
+    assert X.multiply(I) == X
+    assert X.multiply(X) == I
+    assert X.multiply(Y) == Z
+    assert X.multiply(Z) == Y
+    assert Y.multiply(I) == Y
+    assert Y.multiply(X) == Z
+    assert Y.multiply(Y) == I
+    assert Y.multiply(Z) == X
+    assert Z.multiply(I) == Z
+    assert Z.multiply(X) == Y
+    assert Z.multiply(Y) == X
+    assert Z.multiply(Z) == I
+    assert Z.adjoint_map(Y) == X
+    assert X.multiply(Y.multiply(Z)) == I
 
-    XI = get_pauli_array("XI")
-    get_pauli_array("IX")
-    assert is_commutative(XI, XI)
+    XI = p("XI")
+    IX = p("IX")
+    assert XI.commutes_with(XI)
 
-    XY = get_pauli_array("XY")
-    YX = get_pauli_array("YX")
-    assert is_commutative(XY, YX)
-    XIIII = get_pauli_array("XIIII")
-    ZIIII = get_pauli_array("ZIIII")
-    assert is_commutative(XIIII, ZIIII) is False
+    XY = p("XY")
+    YX = p("YX")
+    assert XY.commutes_with(YX)
 
-    IYXII = get_pauli_array("IYXII")
-    IXIXI = get_pauli_array("IXIXI")
-    IIIZI = get_pauli_array("IIIZI")
-    IZIXZ = get_pauli_array("IZIXZ")
-    IIIIX = get_pauli_array("IIIIX")
+    XIIII = p("XIIII")
+    ZIIII = p("ZIIII")
+    assert not XIIII.commutes_with(ZIIII)
 
-    assert is_commutative(XIIII, IYXII)
-    assert is_commutative(XIIII, IXIXI)
-    assert is_commutative(XIIII, IIIZI)
-    assert is_commutative(XIIII, IZIXZ)
-    assert is_commutative(XIIII, IIIIX)
 
-    assert is_commutative(ZIIII, IYXII)
-    assert is_commutative(ZIIII, IXIXI)
-    assert is_commutative(ZIIII, IIIZI)
-    assert is_commutative(ZIIII, IZIXZ)
-    assert is_commutative(ZIIII, IIIIX)
+    IYXII = p("IYXII")
+    IXIXI = p("IXIXI")
+    IIIZI = p("IIIZI")
+    IZIXZ = p("IZIXZ")
+    IIIIX = p("IIIIX")
 
-    assert is_commutative(IYXII, IYXII)
-    assert is_commutative(IYXII, IXIXI) is False
-    assert is_commutative(IYXII, IIIZI)
-    assert is_commutative(IYXII, IZIXZ) is False
-    assert is_commutative(IYXII, IIIIX)
+    assert XIIII.commutes_with(IYXII)
+    assert XIIII.commutes_with(IXIXI)
+    assert XIIII.commutes_with(IIIZI)
+    assert XIIII.commutes_with(IZIXZ)
+    assert XIIII.commutes_with(IIIIX)
 
-    assert is_commutative(IXIXI, IYXII) is False
-    assert is_commutative(IXIXI, IXIXI)
-    assert is_commutative(IXIXI, IIIZI) is False
-    assert is_commutative(IXIXI, IZIXZ) is False
-    assert is_commutative(IXIXI, IIIIX)
+    assert ZIIII.commutes_with(IYXII)
+    assert ZIIII.commutes_with(IXIXI)
+    assert ZIIII.commutes_with(IIIZI)
+    assert ZIIII.commutes_with(IZIXZ)
+    assert ZIIII.commutes_with(IIIIX)
 
-    assert is_commutative(IIIZI, IYXII)
-    assert is_commutative(IIIZI, IXIXI) is False
-    assert is_commutative(IIIZI, IIIZI)
-    assert is_commutative(IIIZI, IZIXZ) is False
-    assert is_commutative(IIIZI, IIIIX)
+    assert IYXII.commutes_with(IYXII)
+    assert not IYXII.commutes_with(IXIXI)
+    assert IYXII.commutes_with(IIIZI)
+    assert not IYXII.commutes_with(IZIXZ)
+    assert IYXII.commutes_with(IIIIX)
 
-    assert is_commutative(IZIXZ, IYXII) is False
-    assert is_commutative(IZIXZ, IXIXI) is False
-    assert is_commutative(IZIXZ, IIIZI) is False
-    assert is_commutative(IZIXZ, IZIXZ)
-    assert is_commutative(IZIXZ, IIIIX) is False
+    assert not IXIXI.commutes_with(IYXII)
+    assert IXIXI.commutes_with(IXIXI)
+    assert not IXIXI.commutes_with(IIIZI)
+    assert not IXIXI.commutes_with(IZIXZ)
+    assert IXIXI.commutes_with(IIIIX)
 
-    assert is_commutative(IIIIX, IYXII)
-    assert is_commutative(IIIIX, IXIXI)
-    assert is_commutative(IIIIX, IIIZI)
-    assert is_commutative(IIIIX, IZIXZ) is False
-    assert is_commutative(IIIIX, IIIIX)
+    assert IIIZI.commutes_with(IYXII)
+    assert not IIIZI.commutes_with(IXIXI)
+    assert IIIZI.commutes_with(IIIZI)
+    assert not IIIZI.commutes_with(IZIXZ)
+    assert IIIZI.commutes_with(IIIIX)
 
-    IZXXI = get_pauli_array("IZXXI")
-    assert commutator(IXIXI, IYXII) == IZXXI
+    assert not IZIXZ.commutes_with(IYXII)
+    assert not IZIXZ.commutes_with(IXIXI)
+    assert not IZIXZ.commutes_with(IIIZI)
+    assert IZIXZ.commutes_with(IZIXZ)
+    assert not IZIXZ.commutes_with(IIIIX)
+
+    assert IIIIX.commutes_with(IYXII)
+    assert IIIIX.commutes_with(IXIXI)
+    assert IIIIX.commutes_with(IIIZI)
+    assert not IIIIX.commutes_with(IZIXZ)
+    assert IIIIX.commutes_with(IIIIX)
+
+    IZXXI = p("IZXXI")
+    assert IXIXI.adjoint_map(IYXII) == IZXXI

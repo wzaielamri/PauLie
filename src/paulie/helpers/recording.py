@@ -1,6 +1,3 @@
-
-
-from paulie.common.pauli import get_array_pauli_arrays
 from paulie.graphs.graph_view import get_graph_view
 
 
@@ -42,9 +39,3 @@ def recording_graph(record: RecordGraph, nodes):
     vertices, edges, edge_labels = get_graph_view(nodes)
     record.append(vertices, edges, edge_labels)
 
-
-def recording_graph_string(record: RecordGraph, nodes):
-    if record is None:
-        return
-    vertices, edges, edge_labels = get_graph_view(get_array_pauli_arrays(nodes))
-    record.append(vertices, edges, edge_labels)

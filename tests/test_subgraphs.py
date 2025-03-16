@@ -1,10 +1,7 @@
-
-
-from paulie.graphs.subgraphs import get_subgraphs
-from paulie.common.ext_k_local import get_k_local_generators
+from paulie.common.pauli_string_factory import get_pauli_string as p 
 
 
 def test_subgraphs():
-    generators = get_k_local_generators(5, ["XIIII", "ZIIII", "IYXII", "IXIXI", "IIIZI", "IZIXZ", "IIIIX"])
-    subgraphs = get_subgraphs(generators)
+    generators = p(["XIIII", "ZIIII", "IYXII", "IXIXI", "IIIZI", "IZIXZ", "IIIIX"])
+    subgraphs = generators.get_subgraphs()
     assert len(subgraphs) == 2

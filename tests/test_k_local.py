@@ -1,16 +1,15 @@
+from paulie.common.pauli_string_factory import get_pauli_string as p 
 
-
-from paulie.common.ext_k_local import get_k_local_string_generators
 
 
 def test_k_local():
-    generators = get_k_local_string_generators(5, ["XY", "XZ"])
+    generators = p(["XY", "XZ"], n=5)
     assert len(generators) == 8
-    assert "XYIII" in generators
-    assert "IXYII" in generators
-    assert "IIXYI" in generators
-    assert "IIIXY" in generators
-    assert "XZIII" in generators
-    assert "IXZII" in generators
-    assert "IIXZI" in generators
-    assert "IIIXZ" in generators
+    assert p("XYIII") in generators
+    assert p("IXYII") in generators
+    assert p("IIXYI") in generators
+    assert p("IIIXY") in generators
+    assert p("XZIII") in generators
+    assert p("IXZII") in generators
+    assert p("IIXZI") in generators
+    assert p("IIIXZ") in generators

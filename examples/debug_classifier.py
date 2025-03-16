@@ -1,32 +1,33 @@
-
-from paulie.classifier.classify import classify
-from paulie.common.ext_k_local import get_k_local_algebra_generators
-from paulie.graphs.graph_view import get_graph_view
 from paulie.helpers.drawing import plot_graph
-
+from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory 
+from paulie.common.algebras import get_lie_algebra
+from time import perf_counter
 
 
 def debug_classification(n, name, debug = True):
-    print(f"Debugging transform for algebra {name} size {n}")
+    print(f"Debugging classification for algebra {name} size {n}")
     print("--------------------------------------------------")
-    generators = get_k_local_algebra_generators(n, name)
-    classification = classify(generators, debug=debug)
-    print("--------------------------------------------------")
-    print(f"algebra = {classification.get_algebra()}")
-    vertices, edges, edge_labels =  get_graph_view(generators)
-    #plot_graph(vertices, edges, edge_labels)
 
-    cannonics = classification.get_vertices()
-    vertices, edges, edge_labels =  get_graph_view(cannonics)
-    plot_graph(vertices, edges, edge_labels)
+    generators = p(get_lie_algebra(name), n = n)
+    print("--------------------------------------------------")
+    print(f"algebra = {generators.get_class().get_algebra()}")
+
+    #vertices, edges, edge_labels =  generators.get_canonic_graph()
+    #plot_graph(vertices, edges, edge_labels)
 
 
 if __name__ == '__main__':
     #debug_transform(600, "a1", True)
-    debug_classification(10, "a22", True)
+    start_time = perf_counter()
+    debug_classification(100, "a22", True)
+    end_time = perf_counter()
+    print(f"np time {end_time - start_time: 0.4f} sec.")
 
-
-
+    set_factory(PauliStringType.BITARRAY)
+    start_time = perf_counter()
+    debug_classification(100, "a22", True)
+    end_time = perf_counter()
+    print(f"bitarray time {end_time - start_time: 0.4f} sec.")
 
 
 

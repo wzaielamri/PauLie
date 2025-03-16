@@ -1,11 +1,10 @@
-from paulie.helpers.classify_generators import classify_generators
+from paulie.common.pauli_string_generators import PauliStringGenerators
 
 
 # Get algebra
 # generators - list of generators
-# size - Generator extensions to size size
-def get_algebra(generators, size=0):
-    classification = classify_generators(generators, size=size)
+def get_algebra(generators: PauliStringGenerators):
+    classification = generators.get_class()
     return classification.get_algebra()
 
 
