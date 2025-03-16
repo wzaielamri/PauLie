@@ -1,5 +1,3 @@
-from paulie.graphs.graph_view import get_graph_view
-
 
 class FrameGraph:
       def __init__(self, vertices, edges, edge_labels = None):
@@ -36,6 +34,6 @@ class RecordGraph:
 def recording_graph(record: RecordGraph, nodes):
     if record is None:
         return
-    vertices, edges, edge_labels = get_graph_view(nodes)
+    vertices, edges, edge_labels = nodes.get_graph()
     record.append(vertices, edges, edge_labels)
 

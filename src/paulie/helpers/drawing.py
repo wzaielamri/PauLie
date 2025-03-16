@@ -2,7 +2,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
 from paulie.helpers.recording import RecordGraph
-from paulie.graphs.graph_view import get_graph_view
 
 
 def plot_graph(vertices, edges, edge_labels = None):
@@ -17,7 +16,7 @@ def plot_graph(vertices, edges, edge_labels = None):
 
 
 def plot_graph_by_nodes(nodes, commutators=[]):
-    vertices, edges, edge_labels = get_graph_view(nodes, commutators)
+    vertices, edges, edge_labels = nodes.get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
 
 
