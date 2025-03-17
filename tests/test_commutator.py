@@ -42,6 +42,7 @@ def test_commmutator():
     assert Z@Z == I
     assert Z^Y == X
     assert X@(Y@Z) == I
+    assert X@Y@Z == I
 
     XI = p("XI")
     IX = p("IX")
