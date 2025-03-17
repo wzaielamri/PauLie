@@ -1,12 +1,12 @@
 from itertools import combinations
-from paulie.common.pauli_string_generators import PauliStringGenerators
+from paulie.common.pauli_string_collection import PauliStringCollection
 
-def non_commuting_charges(generators: PauliStringGenerators)->PauliStringGenerators:
+def non_commuting_charges(generators: PauliStringCollection)->PauliStringCollection:
     """
     inputs: generators as strings
     outputs: list of charges as strings
     """
-    non_q = PauliStringGenerators()
+    non_q = PauliStringCollection()
     comm = generators.get_commutants()
     for c,q in combinations(comm,2):
         if c.commutes_with(q) is False:

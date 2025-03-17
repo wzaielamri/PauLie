@@ -1,8 +1,16 @@
+"""
+Implementation of a Pauli string on numpy
+"""
+
 import numpy as np
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_parser import pauli_string_parser
 
 class NPPauliString(PauliString):
+    """
+    Implementation of a Pauli string on numpy
+    """
+
     def __init__(self, x_comp: np.ndarray = None, z_comp: np.ndarray = None, n: int = None, pauli_str: str = None):
         """
         Initialize a Pauli string with X and Z components
@@ -10,6 +18,8 @@ class NPPauliString(PauliString):
         Args:
             x_comp: Binary array indicating X/Y positions (1 = present)
             z_comp: Binary array indicating Z/Y positions (1 = present)
+            n: Pauli string length
+            pauli_str: String representation of a Pauli string
         """
         super().__init__()
         self.nextpos = 0
@@ -46,6 +56,13 @@ class NPPauliString(PauliString):
              raise ValueError(f"Invalid Pauli character: {char}")
 
     def create_instance(self, n: int = None, pauli_str: str = None):
+        """
+           Create a Pauli string instance
+           Args:
+                n: Pauli string length
+                pauli_str: String representation of a Pauli string
+           Returns the intensity of a Pauli string
+        """
         return NPPauliString(n=n, pauli_str=pauli_str)
    
     def __str__(self) -> str:
@@ -63,6 +80,12 @@ class NPPauliString(PauliString):
         return "".join(result)
     
     def __eq__(self, other) -> bool:
+        """
+        Overloading the equality operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = NPPauliString(pauli_str=other)
         if not isinstance(other, NPPauliString):
@@ -70,7 +93,12 @@ class NPPauliString(PauliString):
         return np.array_equal(self.x, other.x) and np.array_equal(self.z, other.z)
 
     def __lt__(self, other):
-        #<
+        """
+        Overloading < operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = NPPauliString(pauli_str=other)
         if not isinstance(other, NPPauliString):
@@ -89,7 +117,12 @@ class NPPauliString(PauliString):
         return False
 
     def __le__(self, other):
-        #<=
+        """
+        Overloading <= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = NPPauliString(pauli_str=other)
         if not isinstance(other, NPPauliString):
@@ -108,15 +141,30 @@ class NPPauliString(PauliString):
         return True
 
     def __gt__(self, other):
-        #>
+        """
+        Overloading > operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return not self <= other
 
     def __ge__(self, other):
-        #>=
+        """
+        Overloading >= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return not self < other
 
     def __ne__(self, other):
-        # != 
+        """
+        Overloading != operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return not self == other
 
    
@@ -127,13 +175,22 @@ class NPPauliString(PauliString):
         return hash((x_tuple, z_tuple))
     
     def __len__(self) -> int:
+        """
+        Pauli string length
+        """
         return len(self.x)
 
     def __iter__(self):
+        """
+        Pauli String Iterator
+        """
         self.nextpos = 0
         return self
 
     def __next__(self):
+        """
+        The value of the next position of the Pauli string
+        """
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
@@ -142,12 +199,21 @@ class NPPauliString(PauliString):
         return value
 
     def __copy__(self):
+        """
+        Pauli string copy operator
+        """
         return NPPauliString(x_comp=self.x, z_comp=self.z)
 
     def copy(self):
+        """
+        Copy Pauli string
+        """
         return NPPauliString(x_comp=self.x, z_comp=self.z)
     
     def __add__(self, other): 
+        """
+        Pauli string addition operator
+        """
         if isinstance(other, str):
             other = NPPauliString(pauli_str=other)
         return self.tensor(other)
@@ -173,9 +239,13 @@ class NPPauliString(PauliString):
         return NPPauliString(x_comp=self.x[start:start+length], z_comp=self.z[start:start+length])
 
     def get_list_subsystem(self, start: int = 0, length: int = 1) -> list[PauliString]:
+        """Get a list of Pauli string subsystems"""
         return [self.get_subsystem(i, length) for i in range(0, len(self), length)]
 
     def set_subsystem(self, position: int, pauli_string):
+        """
+        Set subsystem value
+        """
         if isinstance(pauli_string, str):
             pauli_string = NPPauliString(pauli_str=pauli_string)
 
@@ -194,15 +264,13 @@ class NPPauliString(PauliString):
         return NPPauliString(x_comp=x_new, z_comp=z_new)
 
     def multiply(self, other) -> "NPPauliString":
+        """
+        Proportional multiplication operator of two Pauli strings
+        Returns a PauliString proportional to the multiplication 
+        """
         if isinstance(other, str):
             other = NPPauliString(pauli_str=other)
 
-        # For Pauli strings, if they anticommute, [A,B] = 2AB
-        # In the context of generating a Lie algebra, we only care about
-        # the result up to a constant factor
-        
-        # For anticommuting Paulis, the product gives a new Pauli
-        # XOR of the bit vectors gives the non-phase part of the product
         result_x = (self.x + other.x) % 2
         result_z = (self.z + other.z) % 2
         
@@ -232,6 +300,9 @@ class NPPauliString(PauliString):
         return NPPauliString(x_comp=result_x, z_comp=result_z)
 
     def inc(self):
+        """
+        Pauli string increment operator
+        """
         for i in reversed(range(len(self))):
             if self.z[i] == 0:
                 self.z[i] = 1
@@ -246,5 +317,11 @@ class NPPauliString(PauliString):
                 self.x[i] = 0
 
     def expand(self, n: int):
+        """
+        Increasing the size of the Pauli string
+        Args:
+            n (int): New Pauli string length
+        Returns the Pauli string extension
+        """
         return self + NPPauliString(n = n - len(self))
 

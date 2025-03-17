@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.linalg import block_diag
-from paulie.common.pauli_string_generators import PauliStringGenerators
+from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 def is_in_so(A):
@@ -13,7 +13,7 @@ def is_in_sp(A):
     return A.conj @ J @ A == J
 
 
-def reachable(U, generators: PauliStringGenerators):
+def reachable(U, generators: PauliStringCollection):
     """
     input: U as a numpy array, generator list
     output: whether it is reachable

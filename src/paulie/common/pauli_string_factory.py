@@ -1,27 +1,48 @@
+"""
+Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations
+
+"""
+
 import enum
 from paulie.common.np_pauli_string import NPPauliString
 from paulie.common.bitarray_pauli_string import BitArrayPauliString
 from paulie.common.pauli_string import PauliString
-from paulie.common.pauli_string_generators import PauliStringGenerators
+from paulie.common.pauli_string_collection import PauliStringCollection
 from typing import Generator
 from paulie.common.algebras import get_lie_algebra
 
 class PauliStringType(enum.Enum):
-      NP = 0
-      BITARRAY = 1
-      PAULIARRAY = 2
+      """
+      Pauli string implementation types
+      """
+      NP = 0 # numpy implemebtation
+      BITARRAY = 1  # bitarray implementation
+      PAULIARRAY = 2  # pauliarray implementation
 
 class PauliStringFactory:
+    """
+    Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations
+
+    """
+
     def __init__(self, type_string: PauliStringType = PauliStringType.NP):
-          self.type_string = type_string
+        """
+        Factory initialization
+        """
+        self.type_string = type_string
 
 
     def set_type(self, type_string: PauliStringType):
+        """
+        Set Pauli string implementation type
+        """
         self.type_string = type_string
 
     def build(self, n: int=None, pauli_str: str=None):
         """
-        Initialize a Pauli string
+        Create an instance of a Pauli string of a given implementation
+        Args: n - lenght of Pauli string
+              pauli_str - string representation of Pauli string
         """
         if self.type_string == PauliStringType.NP:
             return NPPauliString(pauli_str=pauli_str, n=n)
@@ -30,43 +51,87 @@ class PauliStringFactory:
         return None
 
 
+"""
+Current factory instance
+"""
 _factory = PauliStringFactory()
+
 def get_factory() -> PauliStringFactory:
+    """
+    Get the current instance of the factory
+    """
     return _factory
 
 def set_factory(type_string: PauliStringType):
+    """
+    Set Pauli string implementation type
+    Args: type_string - Pauli string implementation types
+    """
+
     _factory.set_type(type_string)
 
 def get_identity(n: int):
+    """
+    Get an identity of a given length
+    Args: n - lenght of Pauli string
+    returns identity
+    """
     return _factory.build(n=n)
 
 def get_pauli_string(o, n:int = None):
+    """
+    Get Pauli strings in their current representation
+    Args: 
+         o - a Pauli string or a collection of Pauli strings.
+         n - length of Pauli strings
+    Returns If o is a Pauli string, then its current instantiation value n is created
+    otherwise PauliStringCollection is created - a collection of Pauli strings.
+    Given n, the collection is expanded as k-local. Where k is the maximum length of a Pauli string in a given collection
+    """
     if isinstance(o, str):
         return _factory.build(pauli_str=o, n=n)
     if isinstance(o, PauliString):
         return _factory.build(pauli_str=str(o), n=n)
-    generators = PauliStringGenerators([_factory.build(pauli_str=p) if isinstance(p, str) else _factory.build(pauli_str=str(p)) for p in o])
+    generators = PauliStringCollection([_factory.build(pauli_str=p) if isinstance(p, str) else _factory.build(pauli_str=str(p)) for p in o])
     if n is not None:
-        return PauliStringGenerators(list(gen_k_local_generators(n, generators.get())))
+        return PauliStringCollection(list(gen_k_local_generators(n, generators.get())))
     return generators
 
 
 
 class Used:
+    """
+    Helper class for monitoring previously created Pauli strings
+    """
     def __init__(self):
+        """
+        Initialization
+        """
+
         self.clear()
 
     def clear(self):
+        """
+        Clear set
+        """
         self.used = set()
 
     def append(self, p: PauliString):
-         self.used.add(p)
+        """
+        Append to set
+        Args:
+            p - Pauli string
+        """
+        self.used.add(p)
 
     def is_used(self, p: PauliString) -> bool:
+        """
+        Checking a Pauli string in a set
+        """
         return p in self.used
 
 def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], None, None]:
-    """Generates k-local Pauli operators."""
+    """Generates k-local Pauli strings."""
     if n < len(p):
         raise ValueError(f"Size must be greater than {len(p)}")
 
@@ -89,10 +154,6 @@ def gen_k_local_generators(n: int, generators: list[str], used: Used = None) -> 
             g = get_pauli_string(pauli_str=g, n = len(longest))
         
         yield from gen_k_local(n, g, used=used)
-
-def commutant(generators: PauliStringGenerators) -> PauliStringGenerators:
-    """Returns the commutant of a set of Pauli generators."""
-    return PauliStringGenerators([g.copy() for g in gen_all_pauli_strings(generators.get_size()) if all(g.commutes_with(gen)) for gen in generators])
 
 
 

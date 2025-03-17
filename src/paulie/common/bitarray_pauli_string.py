@@ -1,3 +1,8 @@
+"""
+Implementation of a Pauli string on bitarray
+"""
+
+
 from bitarray import bitarray
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_parser import pauli_string_parser
@@ -10,13 +15,18 @@ CODEC = {
 }
 
 class BitArrayPauliString(PauliString):
+    """
+    Implementation of a Pauli string on bitarray
+    """
+
     def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None):
         """
-        Initialize a Pauli string with X and Z components
+        Initialize a Pauli string
         
         Args:
-            x_comp: Binary array indicating X/Y positions (1 = present)
-            z_comp: Binary array indicating Z/Y positions (1 = present)
+            n: Pauli string length
+            pauli_str: String representation of a Pauli string
+            bits: Bit representation of a Pauli string
         """
         super().__init__()
         self.nextpos = 0
@@ -33,6 +43,13 @@ class BitArrayPauliString(PauliString):
                  self.bits = o.bits.copy()
 
     def create_instance(self, n: int = None, pauli_str: str = None):
+        """
+           Create a Pauli string instance
+           Args:
+                n: Pauli string length
+                pauli_str: String representation of a Pauli string
+           Returns the intensity of a Pauli string
+        """
         return BitArrayPauliString(n=n, pauli_str=pauli_str)
    
     def __str__(self) -> str:
@@ -40,6 +57,12 @@ class BitArrayPauliString(PauliString):
         return "".join(self.bits.decode(CODEC))
     
     def __eq__(self, other) -> bool:
+        """
+        Overloading the equality operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
@@ -47,35 +70,60 @@ class BitArrayPauliString(PauliString):
         return self.bits == other.bits
 
     def __lt__(self, other):
-        #<
+        """
+        Overloading < operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits < other.bits
     def __le__(self, other):
-        #<=
+        """
+        Overloading <= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits <= other.bits
     def __gt__(self, other):
-        #>
+        """
+        Overloading > operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits > other.bits
     def __ge__(self, other):
-        #>=
+        """
+        Overloading >= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits >= other.bits
     def __ne__(self, other):
-        # != 
+        """
+        Overloading != operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         if not isinstance(other, BitArrayPauliString):
@@ -87,13 +135,22 @@ class BitArrayPauliString(PauliString):
         return hash(str(self.bits))
     
     def __len__(self) -> int:
+        """
+        Pauli string length
+        """
         return len(self.bits) // 2
 
     def __iter__(self):
+        """
+        Pauli String Iterator
+        """
         self.nextpos = 0
         return self
 
     def __next__(self):
+        """
+        The value of the next position of the Pauli string
+        """
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
@@ -102,12 +159,21 @@ class BitArrayPauliString(PauliString):
         return value
 
     def __copy__(self):
+        """
+        Pauli string copy operator
+        """
         return BitArrayPauliString(bits=self.bits)
 
     def copy(self):
+        """
+        Copy Pauli string
+        """
         return BitArrayPauliString(bits=self.bits)
 
     def __add__(self, other): 
+        """
+        Pauli string addition operator
+        """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
         return self.tensor(other)
@@ -131,9 +197,13 @@ class BitArrayPauliString(PauliString):
         return BitArrayPauliString(bits=self.bits[2*start:2*start+2*length])
 
     def get_list_subsystem(self, start: int = 0, length: int = 1) -> list[PauliString]:
+        """Get a list of Pauli string subsystems"""
         return [self.get_subsystem(i, length) for i in range(0, len(self), length)]
 
     def set_subsystem(self, position: int, pauli_string):
+        """
+        Set subsystem value
+        """
         if isinstance(pauli_string, str):
             pauli_string = BitArrayPauliString(pauli_str=pauli_string)
 
@@ -157,19 +227,12 @@ class BitArrayPauliString(PauliString):
 
     def multiply(self, other) -> "BitArrayPauliString":
         """
-        Compute the adjoint map ad_A(B) = [A,B]
-        Returns None if the commutator is zero (i.e., if A and B commute)
-        Otherwise returns a PauliString proportional to the commutator
+        Proportional multiplication operator of two Pauli strings
+        Returns a PauliString proportional to the multiplication 
         """
         if isinstance(other, str):
             other = BitArrayPauliString(pauli_str=other)
 
-        # For Pauli strings, if they anticommute, [A,B] = 2AB
-        # In the context of generating a Lie algebra, we only care about
-        # the result up to a constant factor
-        
-        # For anticommuting Paulis, the product gives a new Pauli
-        # XOR of the bit vectors gives the non-phase part of the product
         if len(self.bits) != len(other.bits):
             raise ValueError("Pauli arrays must have the same length")
         return BitArrayPauliString(bits = self.bits ^ other.bits)  # Bitwise XOR is equivalent to mod-2 addition
@@ -197,6 +260,9 @@ class BitArrayPauliString(PauliString):
         return BitArrayPauliString(bits = self.bits ^ other.bits)  # Bitwise XOR is equivalent to mod-2 addition
 
     def inc(self):
+        """
+        Pauli string increment operator
+        """
         for i in reversed(range(len(self.bits))):
             if self.bits[i] == 0:
                 self.bits[i] = 1
@@ -204,5 +270,11 @@ class BitArrayPauliString(PauliString):
             self.bits[i] = 0
 
     def expand(self, n: int):
+        """
+        Increasing the size of the Pauli string
+        Args:
+            n (int): New Pauli string length
+        Returns the Pauli string extension
+        """
         return self + BitArrayPauliString(n = n - len(self))
 

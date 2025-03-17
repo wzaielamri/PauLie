@@ -1,49 +1,86 @@
+"""
+Abstract Pauli String Class
+"""
 from paulie.common.all_pauli_strings import get_all_pauli_strings
 from itertools import combinations
 
 
 class PauliString:
-    def __init__(self, pauli_str: str = ""):
+    """
+    Abstract Pauli String Class
+    """
+
+    def __init__(self):
         """
         Initialize a Pauli string
         """
         pass
 
     def create_instance(self, n: int = None, pauli_str: str = None):
+        """
+           Create a Pauli string instance
+           Args:
+                n: Pauli string length
+                pauli_str: String representation of a Pauli string
+           Returns the intensity of a Pauli string
+        """
+
         return None
 
-    @classmethod
-    def from_string(cls, pauli_str: str) -> "PauliString":
-        """
-        Create a PauliString from a string like "IXYZ"
-        
-        Args:
-            pauli_str: String of I, X, Y, Z characters
-        """
-        return cls()        
     
     def __str__(self) -> str:
         """Convert PauliString to readable string (e.g., "XYZI")"""
         return ""
     
     def __eq__(self, other) -> bool:
+        """
+        Overloading the equality operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
 
     def __lt__(self, other):
-        #<
+        """
+        Overloading < operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
     def __le__(self, other):
-        #<=
+        """
+        Overloading <= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
 
     def __gt__(self, other):
-        #>
+        """
+        Overloading > operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
     def __ge__(self, other):
-        #>=
+        """
+        Overloading >= operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
     def __ne__(self, other):
-        # != 
+        """
+        Overloading != operator of two Pauli strings
+        Args:
+             other: Comparable Pauli string
+        Returns the result of the comparison
+        """
         return False
 
     def __hash__(self) -> int:
@@ -51,27 +88,51 @@ class PauliString:
         return hash(0)
     
     def __len__(self) -> int:
+        """
+        Pauli string length
+        """
         return 0
 
     def __iter__(self):
+        """
+        Pauli String Iterator
+        """
         return self
 
     def __next__(self):
+        """
+        The value of the next position of the Pauli string
+        """
         return self
 
     def __setitem__(self, position: int, pauli_string):
+        """
+        Set value to position
+        """
         self.set_subsystem(position, pauli_string)
 
     def __getitem__(self, position: int):
+        """
+        Get values at position
+        """
         return self.get_subsystem(position)
 
     def __copy__(self):
+        """
+        Pauli string copy operator
+        """
         return None
 
     def copy(self):
+        """
+        Copy Pauli string
+        """
         return None
 
     def __add__(self, val2): 
+        """
+        Pauli string addition operator
+        """
         return None
 
 
@@ -92,11 +153,12 @@ class PauliString:
         """Get list  subsystem of this Pauli string"""
         return []
 
-    def set_subsystem(self, position: int, pauli_string: "PauliString"):
+    def set_subsystem(self, position: int, pauli_string):
+        """
+        Set subsystem value
+        """
         pass
 
-    def set_subsystem(self, position: int, pauli_string: str):
-        pass
 
     def is_identity(self) -> bool:
         """Check if this Pauli string is the identity"""
@@ -107,6 +169,10 @@ class PauliString:
         return PauliString()
 
     def multiply(self, other) -> "NPPauliString":
+        """
+        Proportional multiplication operator of two Pauli strings
+        Returns a PauliString proportional to the multiplication 
+        """
         return None
 
     def adjoint_map(self, other) -> "PauliString":
@@ -128,18 +194,29 @@ class PauliString:
         return PauliString()
 
     def inc(self):
-         pass
+        """
+        Pauli string increment operator
+        """
+        pass
 
-    def is_last(self) -> bool:
-        for p in self:
-            if p != "Y":
-                return False
-        return True
 
     def expand(self, n: int):
+        """
+        Increasing the size of the Pauli string
+        Args:
+            n (int): New Pauli string length
+        Returns the Pauli string extension
+        """
         pass
 
     def get_nested(self, generators = None):
+        """
+        Get nested of Pauli string
+        Args:
+            generators: Collection of Pauli strings on which nested is searched
+                        If not specified, then the search area is all Pauli strings of the same size
+        """
+
         if generators is None:
            generators = get_all_pauli_strings(len(self))
         return [
@@ -149,7 +226,27 @@ class PauliString:
         ]
                       
     def get_commutants(self, generators = None):
+        """
+        Get a list of Pauli strings that commute with this string
+        Args:
+            generators: Collection of Pauli strings on which commutant is searched
+                        If not specified, then the search area is all Pauli strings of the same size
+
+        """
         if generators is None:
             generators = get_all_pauli_strings(len(self))
 
         return [self.create_instance(pauli_str=str(g)) for g in generators if self.commutes_with(g)]
+
+    def get_anti_commutants(self, generators = None):
+        """
+        Get a list of Pauli strings that no-commute with this string
+        Args:
+            generators: Collection of Pauli strings on which commutant is searched
+                        If not specified, then the search area is all Pauli strings of the same size
+
+        """
+        if generators is None:
+            generators = get_all_pauli_strings(len(self))
+
+        return [self.create_instance(pauli_str=str(g)) for g in generators if not self.commutes_with(g)]
