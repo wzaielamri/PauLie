@@ -20,6 +20,7 @@ src/PauLie.egg-info/*
 .venv/*
 examples/data
 examples/data/*
+__pycache__/
 
 # Mac OS X
 *.DS_Store

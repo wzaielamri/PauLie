@@ -35,7 +35,12 @@ The following code gives an example of usage:
 
 Feel free to contribute and check out our open issues. We are also happy to chat with you via [Dicord](https://discord.gg/unitary-fund-764231928676089909)
 
+### Testing
 
+In order to run the test suite, run:
 
+```sh
+poetry run python -m pytest
+```
 
 
