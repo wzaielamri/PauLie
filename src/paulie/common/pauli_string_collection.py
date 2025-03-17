@@ -163,7 +163,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(gen.commutes_with(g) for gen in self.generators)])
+        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(gen|g for gen in self.generators)])
 
     def get_anti_commutants(self, generators=None):
         """
@@ -173,7 +173,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(not gen.commutes_with(g) for gen in self.generators)])
+        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(not gen|g for gen in self.generators)])
 
     def get_graph(self, generators: list["PauliStringCollection"]=[]):
         """
@@ -190,8 +190,8 @@ class PauliStringCollection:
             vertices.append(str(a))
             for b in self.generators:
                 if a < b:
-                    if not a.commutes_with(b):
-                        c = a.adjoint_map(b)
+                    if not a|b:
+                        c = a^b
                         if len(generators) == 0 or c in generators:
                             edges.append((str(a), str(b)))
                             edge_labels[(str(a), str(b))] = str(c)
@@ -245,7 +245,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string.commutes_with(g)])
+        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string|g])
 
     def get_commutates(self, pauli_string, generators = None):
         """
@@ -257,7 +257,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and g.commutes_with(pauli_string)])
+        return PauliStringCollection([g for g in generators if g != pauli_string and g|pauli_string])
  
     def get_max_connected(self):
         """Get the Pauli string that has the maximum number of non-commutable"""

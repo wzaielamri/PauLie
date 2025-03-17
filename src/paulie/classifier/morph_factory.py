@@ -46,7 +46,7 @@ class MorphFactory(Debug):
           return Morph(self.legs, self.dependents)
 
       def lit(self, lighting, vertix):
-          lighting = lighting.adjoint_map(vertix)
+          lighting = lighting^vertix
           if self.is_included(lighting):
               raise DependentException()
           return lighting
@@ -55,7 +55,7 @@ class MorphFactory(Debug):
           """Return highlighted vertices (connected to the selected vertex)."""
           if vertices is None:
               vertices = self.get_vertices()
-          return [v for v in vertices if v != lighting and not lighting.commutes_with(v)]
+          return [v for v in vertices if v != lighting and not lighting|v]
 
 #          lits = []
 #          for v in vertices:
@@ -138,7 +138,7 @@ class MorphFactory(Debug):
               else:
                   q = v
               if p is not None and q is not None:
-                  return p.multiply(q), p
+                  return p@q, p
           return None, None
 
       def _gen_two_legs(self):
@@ -371,7 +371,7 @@ class MorphFactory(Debug):
               lits = self.get_lits(lighting)
               for lit in lits:
                   if lit != p:
-                      v = pq.multiply(lit)
+                      v = pq@lit
                       self.replace(lit, v)
               self.append(lighting, p)
               long_leg = self.get_long_leg()
@@ -719,8 +719,8 @@ class MorphFactory(Debug):
                   raise AppendedException
               g = long_leg[len(long_leg) - 2]
               omega = self.get_one_vertix()
-              pq = omega.multiply(lighting)
-              new_g = pq.multiply(g)
+              pq = omega@lighting
+              new_g = pq@g
               self.remove(last_v)
               self.append(lighting, center)
               self.replace(g, new_g)

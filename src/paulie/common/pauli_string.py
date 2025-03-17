@@ -135,6 +135,24 @@ class PauliString:
         """
         return None
 
+    def __or__(self, other)->bool:
+        """
+        Overloading | operator of two Pauli strings like commutes_with
+        """
+        return self.commutes_with(other)
+
+    def __xor__(self, other):
+        """
+        Overloading ^ operator of two Pauli strings like adjoint_map
+        """
+        return self.adjoint_map(other)
+
+    def __matmul__(self, other):
+        """
+        Overloading @ operator of two Pauli strings like multiply
+        """
+        return self.multiply(other)
+
 
     def commutes_with(self, other) -> bool:
         """
@@ -174,6 +192,7 @@ class PauliString:
         Returns a PauliString proportional to the multiplication 
         """
         return None
+
 
     def adjoint_map(self, other) -> "PauliString":
         """
@@ -222,7 +241,7 @@ class PauliString:
         return [
             (self.create_instance(pauli_str=a), self.create_instance(pauli_str=b))
             for a, b in combinations(generators, 2)
-            if a != str(self) and b != str(self) and not self.create_instance(pauli_str=a).commutes_with(b) and self.create_instance(pauli_str=a).adjoint_map(b) == self
+            if a != str(self) and b != str(self) and not self.create_instance(pauli_str=a)|b and self.create_instance(pauli_str=a)^b == self
         ]
                       
     def get_commutants(self, generators = None):
@@ -236,7 +255,7 @@ class PauliString:
         if generators is None:
             generators = get_all_pauli_strings(len(self))
 
-        return [self.create_instance(pauli_str=str(g)) for g in generators if self.commutes_with(g)]
+        return [self.create_instance(pauli_str=str(g)) for g in generators if self|g]
 
     def get_anti_commutants(self, generators = None):
         """
@@ -249,4 +268,4 @@ class PauliString:
         if generators is None:
             generators = get_all_pauli_strings(len(self))
 
-        return [self.create_instance(pauli_str=str(g)) for g in generators if not self.commutes_with(g)]
+        return [self.create_instance(pauli_str=str(g)) for g in generators if not self|g]

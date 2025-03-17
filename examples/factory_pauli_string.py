@@ -40,3 +40,12 @@ if __name__ == "__main__":
     print(f"{g}")
 
     print(f"{g + p('Z_2')}")
+
+    print(f"X | Y {p('X')|p('Y')}")
+    print(f"I | X {p('I')|p('X')}")
+
+    print(f"X ^ Y {p('X')^p('Y')}")
+    print(f"I ^ X {p('I')^p('X')}")
+
+    print(f"X @ Y {p('X')@p('Y')}")
+    print(f"I @ X {p('I')@p('X')}")

@@ -8,52 +8,52 @@ def test_commmutator():
     X = p("X")
     Y = p("Y")
     Z = p("Z")
-    assert I.commutes_with(I)
-    assert I.commutes_with(X)
-    assert I.commutes_with(Y)
-    assert I.commutes_with(Z)
-    assert X.commutes_with(I)
-    assert X.commutes_with(X)
-    assert not X.commutes_with(Y)
-    assert not X.commutes_with(Z)
-    assert Y.commutes_with(I)
-    assert not Y.commutes_with(X)
-    assert Y.commutes_with(Y)
-    assert not Y.commutes_with(Z)
-    assert Z.commutes_with(I)
-    assert not Z.commutes_with(X)
-    assert not Z.commutes_with(Y)
-    assert Z.commutes_with(Z)
-    assert I.multiply(I) == I
-    assert I.multiply(X) == X
-    assert I.multiply(Y) == Y
-    assert I.multiply(Z) == Z
-    assert X.multiply(I) == X
-    assert X.multiply(X) == I
-    assert X.multiply(Y) == Z
-    assert X.multiply(Z) == Y
-    assert Y.multiply(I) == Y
-    assert Y.multiply(X) == Z
-    assert Y.multiply(Y) == I
-    assert Y.multiply(Z) == X
-    assert Z.multiply(I) == Z
-    assert Z.multiply(X) == Y
-    assert Z.multiply(Y) == X
-    assert Z.multiply(Z) == I
-    assert Z.adjoint_map(Y) == X
-    assert X.multiply(Y.multiply(Z)) == I
+    assert I|I
+    assert I|X
+    assert I|Y
+    assert I|Z
+    assert X|I
+    assert X|X
+    assert not X|Y
+    assert not X|Z
+    assert Y|I
+    assert not Y|X
+    assert Y|Y
+    assert not Y|Z
+    assert Z|I
+    assert not Z|X
+    assert not Z|Y
+    assert Z|Z
+    assert I@I == I
+    assert I@X == X
+    assert I@Y == Y
+    assert I@Z == Z
+    assert X@I == X
+    assert X@X == I
+    assert X@Y == Z
+    assert X@Z == Y
+    assert Y@I == Y
+    assert Y@X == Z
+    assert Y@Y == I
+    assert Y@Z == X
+    assert Z@I == Z
+    assert Z@X == Y
+    assert Z@Y == X
+    assert Z@Z == I
+    assert Z^Y == X
+    assert X@(Y@Z) == I
 
     XI = p("XI")
     IX = p("IX")
-    assert XI.commutes_with(XI)
+    assert XI|XI
 
     XY = p("XY")
     YX = p("YX")
-    assert XY.commutes_with(YX)
+    assert XY|YX
 
     XIIII = p("XIIII")
     ZIIII = p("ZIIII")
-    assert not XIIII.commutes_with(ZIIII)
+    assert not XIIII|ZIIII
 
 
     IYXII = p("IYXII")
@@ -62,47 +62,47 @@ def test_commmutator():
     IZIXZ = p("IZIXZ")
     IIIIX = p("IIIIX")
 
-    assert XIIII.commutes_with(IYXII)
-    assert XIIII.commutes_with(IXIXI)
-    assert XIIII.commutes_with(IIIZI)
-    assert XIIII.commutes_with(IZIXZ)
-    assert XIIII.commutes_with(IIIIX)
+    assert XIIII|IYXII
+    assert XIIII|IXIXI
+    assert XIIII|IIIZI
+    assert XIIII|IZIXZ
+    assert XIIII|IIIIX
 
-    assert ZIIII.commutes_with(IYXII)
-    assert ZIIII.commutes_with(IXIXI)
-    assert ZIIII.commutes_with(IIIZI)
-    assert ZIIII.commutes_with(IZIXZ)
-    assert ZIIII.commutes_with(IIIIX)
+    assert ZIIII|IYXII
+    assert ZIIII|IXIXI
+    assert ZIIII|IIIZI
+    assert ZIIII|IZIXZ
+    assert ZIIII|IIIIX
 
-    assert IYXII.commutes_with(IYXII)
-    assert not IYXII.commutes_with(IXIXI)
-    assert IYXII.commutes_with(IIIZI)
-    assert not IYXII.commutes_with(IZIXZ)
-    assert IYXII.commutes_with(IIIIX)
+    assert IYXII|IYXII
+    assert not IYXII|IXIXI
+    assert IYXII|IIIZI
+    assert not IYXII|IZIXZ
+    assert IYXII|IIIIX
 
-    assert not IXIXI.commutes_with(IYXII)
-    assert IXIXI.commutes_with(IXIXI)
-    assert not IXIXI.commutes_with(IIIZI)
-    assert not IXIXI.commutes_with(IZIXZ)
-    assert IXIXI.commutes_with(IIIIX)
+    assert not IXIXI|IYXII
+    assert IXIXI|IXIXI
+    assert not IXIXI|IIIZI
+    assert not IXIXI|IZIXZ
+    assert IXIXI|IIIIX
 
-    assert IIIZI.commutes_with(IYXII)
-    assert not IIIZI.commutes_with(IXIXI)
-    assert IIIZI.commutes_with(IIIZI)
-    assert not IIIZI.commutes_with(IZIXZ)
-    assert IIIZI.commutes_with(IIIIX)
+    assert IIIZI|IYXII
+    assert not IIIZI|IXIXI
+    assert IIIZI|IIIZI
+    assert not IIIZI|IZIXZ
+    assert IIIZI|IIIIX
 
-    assert not IZIXZ.commutes_with(IYXII)
-    assert not IZIXZ.commutes_with(IXIXI)
-    assert not IZIXZ.commutes_with(IIIZI)
-    assert IZIXZ.commutes_with(IZIXZ)
-    assert not IZIXZ.commutes_with(IIIIX)
+    assert not IZIXZ|IYXII
+    assert not IZIXZ|IXIXI
+    assert not IZIXZ|IIIZI
+    assert IZIXZ|IZIXZ
+    assert not IZIXZ|IIIIX
 
-    assert IIIIX.commutes_with(IYXII)
-    assert IIIIX.commutes_with(IXIXI)
-    assert IIIIX.commutes_with(IIIZI)
-    assert not IIIIX.commutes_with(IZIXZ)
-    assert IIIIX.commutes_with(IIIIX)
+    assert IIIIX|IYXII
+    assert IIIIX|IXIXI
+    assert IIIIX|IIIZI
+    assert not IIIIX|IZIXZ
+    assert IIIIX|IIIIX
 
     IZXXI = p("IZXXI")
-    assert IXIXI.adjoint_map(IYXII) == IZXXI
+    assert IXIXI^IYXII == IZXXI

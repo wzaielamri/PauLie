@@ -20,7 +20,7 @@ def nested_adjoint(operators: list[PauliString], target: PauliString) -> PauliSt
         
     current = target
     for op in reversed(operators):
-        result = op.adjoint_map(current)
+        result = op^current
         if result is None:
             return None
         current = result
@@ -71,7 +71,7 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
 
     # Make sure we have an odd number of anticommuting positions
     # by adjusting operators if needed
-    if op1.commutes_with(op2):
+    if op1|op2:
         # If they commute, there must be an even number of anticommuting positions
         # We can fix this by switching one position to make them commute there
         for i, o in enumerate(op1):
@@ -85,13 +85,13 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
                 break
     
     # Verify the operators generate the target
-    result = op1.adjoint_map(op2)
+    result = op1^op2
     if result and result == target:
         #print(f"Successfully derived operators {op1} and {op2} that generate {target}")
         return [op1, op2]
     
     # Try the reverse
-    result = op2.adjoint_map(op1)
+    result = op2^op1
     if result and result == target:
         #print(f"Successfully derived operators {op2} and {op1} that generate {target} (reversed)")
         return [op2, op1]
@@ -130,7 +130,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
     derived_sequence = derive_generating_operators(target_P)
     
     # Verify the derived sequence works
-    result = derived_sequence[0].adjoint_map(derived_sequence[1])
+    result = derived_sequence[0]^derived_sequence[1]
     if result and result == target_P:
         #print(f"Using derived operators: {derived_sequence[0]}, {derived_sequence[1]}")
         return derived_sequence
@@ -151,7 +151,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
                 if i == j:
                     continue
                 # Check if this pair generates V
-                result = A1.adjoint_map(A2)
+                result = A1^A2
                 #print(f"A1={A1}, A2={A2}, result={result}")
                 if result and result == V:
                     # Found a pair, extend to full system
@@ -176,7 +176,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
                     continue
                 
                 # Check if this pair generates W
-                result = B1.adjoint_map(B2)
+                result = B1^B2
                 if result and result == W:
                     # Found a pair, extend to full system
                     I_k = get_identity(k)
@@ -201,9 +201,9 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
                     continue
                 
                 # Check if they anticommute (have odd number of anticommuting positions)
-                if not op1.commutes_with(op2):
+                if not op1|op2:
                     # Check if they generate the target
-                    result = op1.adjoint_map(op2)
+                    result = op1^op2
                     if result and result == target_P:
                         #print(f"Found pair in existing operators: {op1}, {op2}")
                         return [op1, op2]
@@ -229,8 +229,8 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
                        (op2, op3), (op2, op4), (op3, op4)]
         
         for op1, op2 in combinations:
-            if not op1.commutes_with(op2):
-                result = op1.adjoint_map(op2)
+            if not op1|op2:
+                result = op1^op2
                 if result and result == target_P:
                     #print(f"Found working combination: {op1}, {op2}")
                     return [op1, op2]
@@ -256,7 +256,7 @@ def pauli_compiler(target_P: PauliString, A_set: list[PauliString], A_prime_set:
                 op2[i] = "X"  # X
         
         # Ensure an odd number of anticommuting positions
-        if op1.commutes_with(op2):
+        if op1|op2:
             # Add an anticommuting pair
             op1[0] = "X"  # X
             op2[0] = "Z"  # Z
