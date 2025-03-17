@@ -11,3 +11,8 @@ if __name__ == "__main__":
     print(f"YZ_3X_5s6 = {pauli_string_parser('YZ_3X_5s6')}")
     print(f"YZ_15 = {pauli_string_parser('YZ_15')}")
     print(f"Y_2Z_15 = {pauli_string_parser('Y_2Z_15')}")
+
+    try:
+        print(f"Y_12Z_5 = {pauli_string_parser('Y_12Z_5')}")
+    except ValueError as e:
+        print(f"error parsing: {e}")
