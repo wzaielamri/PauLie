@@ -19,9 +19,12 @@ def perfomence_commutator_pauliarray(g1):
         p3 = a.commute_with(b)
 
 if __name__ == "__main__":
-
-
-    g = get_random_list(100, 1000)
+#    set_factory(PauliStringType.BITARRAY)
+    print(f"{p("XXZ")}")
+    print(f"{p("ZZX")}")
+    print(f"{p("YZX")}")
+#    exit()
+    g = get_random_list(1000, 1000)
     g1 = p(g)
     start_time = perf_counter()
     perfomence_mult(g1)

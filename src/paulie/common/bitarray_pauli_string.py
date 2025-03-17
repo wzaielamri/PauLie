@@ -4,6 +4,7 @@ Implementation of a Pauli string on bitarray
 
 
 from bitarray import bitarray
+from bitarray.util import count_and
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_parser import pauli_string_parser
 from six.moves import reduce
@@ -42,6 +43,8 @@ class BitArrayPauliString(PauliString):
              if n is not None and n > len(self):
                  o = self + BitArrayPauliString(n = n - len(self))
                  self.bits = o.bits.copy()
+        self.bits_even = self.bits[::2]
+        self.bits_odd  = self.bits[1::2]
 
     def create_instance(self, n: int = None, pauli_str: str = None):
         """
@@ -192,17 +195,12 @@ class BitArrayPauliString(PauliString):
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
 
-        a = self.bits
-        b = other.bits
-        a_dot_b = 0
-        b_dot_a = 0
 
-        for i in range(0, len(a), 2):
-            if a[i] and b[i+1]:
-                a_dot_b += 1
-            if a[i+1] and b[i]:
-                b_dot_a += 1
-        return a_dot_b%2 == b_dot_a%2
+        a_even = self.bits_even
+        a_odd = self.bits_odd
+        b_even = other.bits_even
+        b_odd = other.bits_odd
+        return count_and(self.bits_even, other.bits_odd) % 2 == count_and(other.bits_even, self.bits_odd) % 2
    
         #return sum(self.bits[i] & other.bits[i + 1] for i in range(0, len(self.bits), 2)) % 2 == sum(self.bits[i + 1] & other.bits[i] for i in range(0, len(self.bits), 2)) % 2
       
