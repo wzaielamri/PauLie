@@ -18,7 +18,6 @@ Clone the repository. Once you have [`poetry` installed](https://python-poetry.o
 
 ```sh
 poetry install
-poetry shell
 ```
 
 ### Getting started 

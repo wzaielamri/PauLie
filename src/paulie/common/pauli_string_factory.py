@@ -1,29 +1,19 @@
-"""
-Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations
-
-"""
-
+"""Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
 import enum
 from paulie.common.np_pauli_string import NPPauliString
 from paulie.common.bitarray_pauli_string import BitArrayPauliString
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from typing import Generator
-from paulie.common.algebras import get_lie_algebra
 
 class PauliStringType(enum.Enum):
-      """
-      Pauli string implementation types
-      """
+      """Pauli string implementation types."""
       NP = 0 # numpy implemebtation
       BITARRAY = 1  # bitarray implementation
       PAULIARRAY = 2  # pauliarray implementation
 
 class PauliStringFactory:
-    """
-    Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations
-
-    """
+    """Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
 
     def __init__(self, type_string: PauliStringType = PauliStringType.NP):
         """
@@ -154,6 +144,3 @@ def gen_k_local_generators(n: int, generators: list[str], used: Used = None) -> 
             g = get_pauli_string(pauli_str=g, n = len(longest))
         
         yield from gen_k_local(n, g, used=used)
-
-
-

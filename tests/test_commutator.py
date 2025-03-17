@@ -1,111 +1,134 @@
+import pytest
 from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory
 
-
-
-
-def test_commmutator():
+@pytest.fixture(scope="module")
+def pauli_setup():
+    """Set up Pauli operators for testing."""
     set_factory(PauliStringType.BITARRAY)
+    return {
+        "I": p("I"),
+        "X": p("X"),
+        "Y": p("Y"),
+        "Z": p("Z"),
+        "XI": p("XI"),
+        "IX": p("IX"),
+        "XY": p("XY"),
+        "YX": p("YX"),
+        "XIIII": p("XIIII"),
+        "ZIIII": p("ZIIII"),
+        "IYXII": p("IYXII"),
+        "IXIXI": p("IXIXI"),
+        "IIIZI": p("IIIZI"),
+        "IZIXZ": p("IZIXZ"),
+        "IIIIX": p("IIIIX"),
+        "IZXXI": p("IZXXI")
+    }
 
-    I = p("I")   # noqa
-    X = p("X")
-    Y = p("Y")
-    Z = p("Z")
-    assert I|I
-    assert I|X
-    assert I|Y
-    assert I|Z
-    assert X|I
-    assert X|X
-    assert not X|Y
-    assert not X|Z
-    assert Y|I
-    assert not Y|X
-    assert Y|Y
-    assert not Y|Z
-    assert Z|I
-    assert not Z|X
-    assert not Z|Y
-    assert Z|Z
-    assert I@I == I
-    assert I@X == X
-    assert I@Y == Y
-    assert I@Z == Z
-    assert X@I == X
-    assert X@X == I
-    assert X@Y == Z
-    assert X@Z == Y
-    assert Y@I == Y
-    assert Y@X == Z
-    assert Y@Y == I
-    assert Y@Z == X
-    assert Z@I == Z
-    assert Z@X == Y
-    assert Z@Y == X
-    assert Z@Z == I
-    assert Z^Y == X
-    assert X@(Y@Z) == I
-    assert X@Y@Z == I
+def test_single_qubit_commutation(pauli_setup):
+    """Test commutation relations for single-qubit Pauli operators."""
+    # Identity commutes with everything
+    assert pauli_setup["I"] | pauli_setup["I"]
+    assert pauli_setup["I"] | pauli_setup["X"]
+    assert pauli_setup["I"] | pauli_setup["Y"]
+    assert pauli_setup["I"] | pauli_setup["Z"]
+    
+    # X commutation relations
+    assert pauli_setup["X"] | pauli_setup["I"]
+    assert pauli_setup["X"] | pauli_setup["X"]
+    assert not pauli_setup["X"] | pauli_setup["Y"]
+    assert not pauli_setup["X"] | pauli_setup["Z"]
+    
+    # Y commutation relations
+    assert pauli_setup["Y"] | pauli_setup["I"]
+    assert not pauli_setup["Y"] | pauli_setup["X"]
+    assert pauli_setup["Y"] | pauli_setup["Y"]
+    assert not pauli_setup["Y"] | pauli_setup["Z"]
+    
+    # Z commutation relations
+    assert pauli_setup["Z"] | pauli_setup["I"]
+    assert not pauli_setup["Z"] | pauli_setup["X"]
+    assert not pauli_setup["Z"] | pauli_setup["Y"]
+    assert pauli_setup["Z"] | pauli_setup["Z"]
 
-    XI = p("XI")
-    IX = p("IX")
-    assert XI|XI
+def test_single_qubit_products(pauli_setup):
+    """Test multiplication of single-qubit Pauli operators."""
+    # Extract operators for cleaner code
+    I, X, Y, Z = pauli_setup["I"], pauli_setup["X"], pauli_setup["Y"], pauli_setup["Z"]
+    
+    # Identity products
+    assert I @ I == I
+    assert I @ X == X
+    assert I @ Y == Y
+    assert I @ Z == Z
+    
+    # X products
+    assert X @ I == X
+    assert X @ X == I
+    assert X @ Y == Z
+    assert X @ Z == Y
+    
+    # Y products
+    assert Y @ I == Y
+    assert Y @ X == Z
+    assert Y @ Y == I
+    assert Y @ Z == X
+    
+    # Z products
+    assert Z @ I == Z
+    assert Z @ X == Y
+    assert Z @ Y == X
+    assert Z @ Z == I
 
-    XY = p("XY")
-    YX = p("YX")
-    assert XY|YX
+def test_operator_chaining(pauli_setup):
+    """Test chaining of Pauli operators."""
+    X, Y, Z = pauli_setup["X"], pauli_setup["Y"], pauli_setup["Z"]
+    
+    assert Z ^ Y == X
+    assert X @ (Y @ Z) == pauli_setup["I"]
+    assert X @ Y @ Z == pauli_setup["I"]
 
-    XIIII = p("XIIII")
-    ZIIII = p("ZIIII")
-    assert not XIIII|ZIIII
+def test_multi_qubit_commutation(pauli_setup):
+    """Test commutation relations for multi-qubit Pauli strings."""
+    # Same operator commutes with itself
+    assert pauli_setup["XI"] | pauli_setup["XI"]
+    
+    # Different operators on different qubits
+    assert pauli_setup["XY"] | pauli_setup["YX"]
+    
+    # Non-commuting operators on same qubit
+    assert not pauli_setup["XIIII"] | pauli_setup["ZIIII"]
+    
+    # Test commutation with the first pattern
+    assert pauli_setup["XIIII"] | pauli_setup["IYXII"]
+    assert pauli_setup["XIIII"] | pauli_setup["IXIXI"]
+    assert pauli_setup["XIIII"] | pauli_setup["IIIZI"]
+    assert pauli_setup["XIIII"] | pauli_setup["IZIXZ"]
+    assert pauli_setup["XIIII"] | pauli_setup["IIIIX"]
 
+def test_complex_commutation_matrix(pauli_setup):
+    """Test commutation relations between multiple multi-qubit operators."""
+    # Define the operators to test
+    operators = [
+        pauli_setup["ZIIII"], pauli_setup["IYXII"], pauli_setup["IXIXI"],
+        pauli_setup["IIIZI"], pauli_setup["IZIXZ"], pauli_setup["IIIIX"]
+    ]
+    
+    # Expected commutation results (True if commutes, False otherwise)
+    expected_results = [
+        # ZIIII  IYXII  IXIXI  IIIZI  IZIXZ  IIIIX
+        [True,  True,  True,  True,  True,  True],   # ZIIII
+        [True,  True,  False, True,  False, True],   # IYXII
+        [True,  False, True,  False, False, True],   # IXIXI
+        [True,  True,  False, True,  False, True],   # IIIZI
+        [True,  False, False, False, True,  False],  # IZIXZ
+        [True,  True,  True,  True,  False, True]    # IIIIX
+    ]
+    
+    # Test all combinations
+    for i, op1 in enumerate(operators):
+        for j, op2 in enumerate(operators):
+            assert (op1 | op2) == expected_results[i][j], f"Commutation failed for operators at position {i},{j}"
 
-    IYXII = p("IYXII")
-    IXIXI = p("IXIXI")
-    IIIZI = p("IIIZI")
-    IZIXZ = p("IZIXZ")
-    IIIIX = p("IIIIX")
-
-    assert XIIII|IYXII
-    assert XIIII|IXIXI
-    assert XIIII|IIIZI
-    assert XIIII|IZIXZ
-    assert XIIII|IIIIX
-
-    assert ZIIII|IYXII
-    assert ZIIII|IXIXI
-    assert ZIIII|IIIZI
-    assert ZIIII|IZIXZ
-    assert ZIIII|IIIIX
-
-    assert IYXII|IYXII
-    assert not IYXII|IXIXI
-    assert IYXII|IIIZI
-    assert not IYXII|IZIXZ
-    assert IYXII|IIIIX
-
-    assert not IXIXI|IYXII
-    assert IXIXI|IXIXI
-    assert not IXIXI|IIIZI
-    assert not IXIXI|IZIXZ
-    assert IXIXI|IIIIX
-
-    assert IIIZI|IYXII
-    assert not IIIZI|IXIXI
-    assert IIIZI|IIIZI
-    assert not IIIZI|IZIXZ
-    assert IIIZI|IIIIX
-
-    assert not IZIXZ|IYXII
-    assert not IZIXZ|IXIXI
-    assert not IZIXZ|IIIZI
-    assert IZIXZ|IZIXZ
-    assert not IZIXZ|IIIIX
-
-    assert IIIIX|IYXII
-    assert IIIIX|IXIXI
-    assert IIIIX|IIIZI
-    assert not IIIIX|IZIXZ
-    assert IIIIX|IIIIX
-
-    IZXXI = p("IZXXI")
-    assert IXIXI^IYXII == IZXXI
+def test_multi_qubit_products(pauli_setup):
+    """Test products of multi-qubit Pauli strings."""
+    assert pauli_setup["IXIXI"] ^ pauli_setup["IYXII"] == pauli_setup["IZXXI"]

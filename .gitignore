@@ -21,6 +21,7 @@ src/PauLie.egg-info/*
 examples/data
 examples/data/*
 __pycache__/
+.pytest_cache/
 
 # Mac OS X
 *.DS_Store
