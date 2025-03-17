@@ -1,9 +1,11 @@
-from paulie.common.pauli_string_factory import get_pauli_string as p 
+from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory
 
 
 
 
 def test_commmutator():
+    set_factory(PauliStringType.BITARRAY)
+
     I = p("I")   # noqa
     X = p("X")
     Y = p("Y")
