@@ -3,7 +3,7 @@ from paulie.common.all_pauli_strings import get_random, get_random_list
 from time import perf_counter
 from itertools import combinations
 import numpy as np
-#from pauliarray import PauliArray
+from pauliarray import PauliArray
 #from pauliarray.pauli.weighted_pauli_array import commutator
 
 def perfomence_mult(g1):
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     print(f"{p("ZZX")}")
     print(f"{p("YZX")}")
 #    exit()
-    g = get_random_list(1000, 1000)
+    g = get_random_list(100, 1000)
     g1 = p(g)
     start_time = perf_counter()
     perfomence_mult(g1)
@@ -49,9 +49,9 @@ if __name__ == "__main__":
     end_time = perf_counter()
     print(f"bitarray | time {end_time - start_time: 0.4f} sec.")
 
-#    paulis = PauliArray.from_labels(paulis)
+    paulis = PauliArray.from_labels(g)
 
-#    start_time = perf_counter()
-#    perfomence_commutator_pauliarray(paulis)
-#    end_time = perf_counter()
-#    print(f"pauliarray | time {end_time - start_time: 0.4f} sec.")
+    start_time = perf_counter()
+    perfomence_commutator_pauliarray(paulis)
+    end_time = perf_counter()
+    print(f"pauliarray | time {end_time - start_time: 0.4f} sec.")
