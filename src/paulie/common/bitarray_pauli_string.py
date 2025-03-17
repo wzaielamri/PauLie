@@ -6,6 +6,7 @@ Implementation of a Pauli string on bitarray
 from bitarray import bitarray
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_parser import pauli_string_parser
+from six.moves import reduce
 
 CODEC = {
     "I": bitarray([0, 0]), 
@@ -190,7 +191,20 @@ class BitArrayPauliString(PauliString):
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
-        return sum(self.bits[i] & other.bits[i + 1] for i in range(0, len(self.bits), 2)) % 2 == sum(self.bits[i + 1] & other.bits[i] for i in range(0, len(self.bits), 2)) % 2
+
+        a = self.bits
+        b = other.bits
+        a_dot_b = 0
+        b_dot_a = 0
+
+        for i in range(0, len(a), 2):
+            if a[i] and b[i+1]:
+                a_dot_b += 1
+            if a[i+1] and b[i]:
+                b_dot_a += 1
+        return a_dot_b%2 == b_dot_a%2
+   
+        #return sum(self.bits[i] & other.bits[i + 1] for i in range(0, len(self.bits), 2)) % 2 == sum(self.bits[i + 1] & other.bits[i] for i in range(0, len(self.bits), 2)) % 2
       
     def get_subsystem(self, start: int, length: int = 1) -> "BitArrayPauliString":
         """Get a subsystem of this Pauli string"""

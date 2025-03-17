@@ -46,7 +46,7 @@ class MorphFactory(Debug):
           return Morph(self.legs, self.dependents)
 
       def lit(self, lighting, vertix):
-          lighting = lighting^vertix
+          lighting = lighting@vertix
           if self.is_included(lighting):
               raise DependentException()
           return lighting

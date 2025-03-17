@@ -854,6 +854,25 @@ files = [
 ]
 
 [[package]]
+name = "pauliarray"
+version = "0.0.1"
+description = "Efficient Pauli operators manipulation toolbox"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+numpy = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/algolab-quantique/pauliarray.git"
+reference = "HEAD"
+resolved_reference = "e0e245aa8c9470324f3454c9624e3412018fb106"
+
+[[package]]
 name = "pillow"
 version = "11.1.0"
 description = "Python Imaging Library (Fork)"
@@ -1248,4 +1267,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "~3.12"
-content-hash = "bca9008dbca5c3ff08304c0ae3c43bf784d8136879c676ff010a0ec838856346"
+content-hash = "51399447301e7f1d81c0f1ba717c0a177ede6d4b769f95bb2f6be320a3ec6fb5"

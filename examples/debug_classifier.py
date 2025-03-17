@@ -19,13 +19,13 @@ def debug_classification(n, name, debug = True):
 if __name__ == '__main__':
     #debug_transform(600, "a1", True)
     start_time = perf_counter()
-    debug_classification(10, "a22", True)
+    debug_classification(100, "a22", True)
     end_time = perf_counter()
     print(f"np time {end_time - start_time: 0.4f} sec.")
 
     set_factory(PauliStringType.BITARRAY)
     start_time = perf_counter()
-    debug_classification(10, "a22", True)
+    debug_classification(100, "a22", True)
     end_time = perf_counter()
     print(f"bitarray time {end_time - start_time: 0.4f} sec.")
 
