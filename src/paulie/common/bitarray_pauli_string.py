@@ -222,6 +222,8 @@ class BitArrayPauliString(PauliString):
         for i in range(0, len(pauli_string)):
             self.bits[2*position + 2*i] = pauli_string.bits[2*i]
             self.bits[2*position + 2*i + 1] = pauli_string.bits[2*i + 1]
+            self.bits_even[position  + i] = pauli_string.bits_even[i]
+            self.bits_odd[position + i] = pauli_string.bits_odd[i]
 
     def is_identity(self) -> bool:
         """Check if this Pauli string is the identity"""
