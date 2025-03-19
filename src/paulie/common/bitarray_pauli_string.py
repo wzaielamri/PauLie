@@ -1,13 +1,8 @@
-"""
-Implementation of a Pauli string on bitarray
-"""
-
-
+"""Implementation of a Pauli string on bitarray."""
 from bitarray import bitarray
 from bitarray.util import count_and
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_parser import pauli_string_parser
-from six.moves import reduce
 
 CODEC = {
     "I": bitarray([0, 0]), 
@@ -17,13 +12,10 @@ CODEC = {
 }
 
 class BitArrayPauliString(PauliString):
-    """
-    Implementation of a Pauli string on bitarray
-    """
+    """Implementation of a Pauli string on bitarray."""
 
     def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None):
-        """
-        Initialize a Pauli string
+        """Initialize a Pauli string.
         
         Args:
             n: Pauli string length
@@ -47,8 +39,7 @@ class BitArrayPauliString(PauliString):
         self.bits_odd  = self.bits[1::2]
 
     def create_instance(self, n: int = None, pauli_str: str = None):
-        """
-           Create a Pauli string instance
+        """Create a Pauli string instance.
            Args:
                 n: Pauli string length
                 pauli_str: String representation of a Pauli string
@@ -57,12 +48,11 @@ class BitArrayPauliString(PauliString):
         return BitArrayPauliString(n=n, pauli_str=pauli_str)
    
     def __str__(self) -> str:
-        """Convert PauliString to readable string (e.g., "XYZI")"""
+        """Convert PauliString to readable string (e.g., "XYZI")."""
         return "".join(self.bits.decode(CODEC))
     
     def __eq__(self, other) -> bool:
-        """
-        Overloading the equality operator of two Pauli strings
+        """Overloading the equality operator of two Pauli strings.
         Args:
              other: Comparable Pauli string
         Returns the result of the comparison
@@ -85,6 +75,7 @@ class BitArrayPauliString(PauliString):
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits < other.bits
+
     def __le__(self, other):
         """
         Overloading <= operator of two Pauli strings
@@ -97,6 +88,7 @@ class BitArrayPauliString(PauliString):
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits <= other.bits
+
     def __gt__(self, other):
         """
         Overloading > operator of two Pauli strings
@@ -109,6 +101,7 @@ class BitArrayPauliString(PauliString):
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits > other.bits
+
     def __ge__(self, other):
         """
         Overloading >= operator of two Pauli strings
@@ -121,6 +114,7 @@ class BitArrayPauliString(PauliString):
         if not isinstance(other, BitArrayPauliString):
             return False
         return self.bits >= other.bits
+
     def __ne__(self, other):
         """
         Overloading != operator of two Pauli strings
@@ -165,12 +159,6 @@ class BitArrayPauliString(PauliString):
     def __copy__(self):
         """
         Pauli string copy operator
-        """
-        return BitArrayPauliString(bits=self.bits)
-
-    def copy(self):
-        """
-        Copy Pauli string
         """
         return BitArrayPauliString(bits=self.bits)
 

@@ -6,11 +6,13 @@ from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from typing import Generator
 
+
 class PauliStringType(enum.Enum):
       """Pauli string implementation types."""
       NP = 0 # numpy implemebtation
       BITARRAY = 1  # bitarray implementation
       PAULIARRAY = 2  # pauliarray implementation
+
 
 class PauliStringFactory:
     """Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
@@ -20,7 +22,6 @@ class PauliStringFactory:
         Factory initialization
         """
         self.type_string = type_string
-
 
     def set_type(self, type_string: PauliStringType):
         """
@@ -38,7 +39,6 @@ class PauliStringFactory:
             return NPPauliString(pauli_str=pauli_str, n=n)
         elif self.type_string == PauliStringType.BITARRAY:
             return BitArrayPauliString(pauli_str=pauli_str,n=n)
-        return None
 
 
 """
@@ -88,37 +88,28 @@ def get_pauli_string(o, n:int = None):
     return generators
 
 
-
 class Used:
     """
     Helper class for monitoring previously created Pauli strings
     """
     def __init__(self):
-        """
-        Initialization
-        """
-
         self.clear()
 
     def clear(self):
-        """
-        Clear set
-        """
+        """Clear set"""
         self.used = set()
 
     def append(self, p: PauliString):
-        """
-        Append to set
+        """Append to set
         Args:
             p - Pauli string
         """
         self.used.add(p)
 
     def is_used(self, p: PauliString) -> bool:
-        """
-        Checking a Pauli string in a set
-        """
+        """Checking a Pauli string in a set"""
         return p in self.used
+
 
 def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], None, None]:
     """Generates k-local Pauli strings."""
@@ -126,14 +117,15 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], 
         raise ValueError(f"Size must be greater than {len(p)}")
 
     used = used or Used()
-    np = n - len(p)
-    for k in range(np + 1):
-        left = get_identity(k) + p + get_identity(np - k)
+    n_p = n - len(p)
+    for k in range(n_p + 1):
+        left = get_identity(k) + p + get_identity(n_p - k)
         if used.is_used(left):
             continue
 
         used.append(left)
         yield left
+
 
 def gen_k_local_generators(n: int, generators: list[str], used: Used = None) -> Generator[list[int], None, None]:
     """Generates k-local operators for a set of generators."""
