@@ -12,18 +12,19 @@ def debug_classification(n, name):
     print("--------------------------------------------------")
 
     generators = p(get_lie_algebra(name), n = n)
+    generators.set_debug(False)
     print("--------------------------------------------------")
     print(f"algebra = {generators.get_class().get_algebra()}")
 
 
 if __name__ == '__main__':
     start_time = perf_counter()
-    debug_classification(100, "a22")
+    debug_classification(10, "a22")
     end_time = perf_counter()
     print(f"np time {end_time - start_time: 0.4f} sec.")
 
     set_factory(PauliStringType.BITARRAY)
     start_time = perf_counter()
-    debug_classification(100, "a22")
+    debug_classification(10, "a22")
     end_time = perf_counter()
     print(f"bitarray time {end_time - start_time: 0.4f} sec.")

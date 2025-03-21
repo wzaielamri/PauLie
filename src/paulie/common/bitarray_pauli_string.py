@@ -162,6 +162,10 @@ class BitArrayPauliString(PauliString):
         """
         return BitArrayPauliString(bits=self.bits)
 
+    def copy(self):
+         """Copy Pauli string"""
+         return BitArrayPauliString(bits=self.bits)
+ 
     def __add__(self, other): 
         """
         Pauli string addition operator

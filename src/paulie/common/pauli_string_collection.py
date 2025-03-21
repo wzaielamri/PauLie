@@ -13,7 +13,7 @@ class PauliStringCollection:
     Collection of Pauli strings
     """
 
-    def __init__(self, generators:list[PauliString]=[]):
+    def __init__(self, generators:list[PauliString]=[], debug: bool = False):
         """
         Initializing a collection
         Args:
@@ -22,6 +22,7 @@ class PauliStringCollection:
         self.nextpos = 0
         self.generators = []
         self.classification = None
+        self.debug = debug
         if len(generators) == 0:
             return
 
@@ -37,6 +38,12 @@ class PauliStringCollection:
         Get an array of Pauli strings
         """
         return self.generators
+
+    def set_debug(self, debug):
+        self.debug = debug
+
+    def get_debug(self):
+        return self.debug
 
     def __str__(self) -> str:
         """Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS")"""
@@ -56,7 +63,7 @@ class PauliStringCollection:
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
-        value = self.generators[self.nextpos].copy()
+        value = self.generators[self.nextpos] #.copy()
         self.nextpos += 1
         return value
 
@@ -67,11 +74,11 @@ class PauliStringCollection:
 
     def __copy__(self):
         """Overloading the collection copy operator"""
-        return PauliStringCollection(self.generators)
+        return PauliStringCollection(self.generators, debug=self.debug)
 
     def copy(self):
         """ Copy collection"""
-        return PauliStringCollection(self.generators)
+        return PauliStringCollection(self.generators, debug=self.debug)
     
     def __add__(self, p: PauliString): 
         """Overloading the addition operator with a collection"""
@@ -79,7 +86,7 @@ class PauliStringCollection:
         new_generators = []
         for g in self.generators:
             new_generators.append(g + p)
-        return PauliStringCollection(new_generators)
+        return PauliStringCollection(new_generators, debug=self.debug)
 
     def mul(self, a, b):
         """ multiplication on collection"""
@@ -88,7 +95,7 @@ class PauliStringCollection:
         for ga in a.generators:
             for gb in b.generators:
                 new_generators.append(ga + gb)
-        return PauliStringCollection(new_generators)
+        return PauliStringCollection(new_generators, debug=self.debug)
 
     def __mul__(self, other):
         """Overloading the multiplication operator with a collection"""
@@ -163,7 +170,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(gen|g for gen in self.generators)])
+        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(gen|g for gen in self.generators)], debug=self.debug)
 
     def get_anti_commutants(self, generators=None):
         """
@@ -173,7 +180,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(not gen|g for gen in self.generators)])
+        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(not gen|g for gen in self.generators)], debug=self.debug)
 
     def get_graph(self, generators: list["PauliStringCollection"]=[]):
         """
@@ -199,7 +206,7 @@ class PauliStringCollection:
 
     def _convert(self, generators: list[str])->"PauliStringCollection":
         """ Convert list of string to List of PauliString"""
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators])
+        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators], debug=self.debug)
 
     def get_subgraphs(self):
         """Get related subsets of a collection"""
@@ -232,7 +239,7 @@ class PauliStringCollection:
     def get_canonic_graph(self):
         """Get the canonical representation of a graph"""
         classification = self.get_class()
-        generators = PauliStringCollection(classification.get_vertices())
+        generators = PauliStringCollection(classification.get_vertices(), debug=self.debug)
         return generators.get_graph()
 
     def get_anti_commutates(self, pauli_string, generators = None):
@@ -245,7 +252,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string|g])
+        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string|g], debug=self.debug)
 
     def get_commutates(self, pauli_string, generators = None):
         """
@@ -257,7 +264,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and g|pauli_string])
+        return PauliStringCollection([g for g in generators if g != pauli_string and g|pauli_string], debug=self.debug)
  
     def get_max_connected(self):
         """Get the Pauli string that has the maximum number of non-commutable"""
@@ -278,7 +285,7 @@ class PauliStringCollection:
         """Append the next related Pauli string to the queue"""
         for p in pauli_strings:
             if p in queue_pauli_strings:
-               pauli_strings.remove(v)
+               pauli_strings.remove(p)
                continue
             anti_commutates = self.get_anti_commutates(p, generators = queue_pauli_strings)
             if len(anti_commutates) == 0:
@@ -299,12 +306,11 @@ class PauliStringCollection:
         """Get associated sequence of Pauli strings"""
         new_generators = self.copy()
         new_generators.sort()
-        queue_pauli_strings = PauliStringCollection()
+        queue_pauli_strings = PauliStringCollection(debug=self.debug)
         pauli_string, anti_commutates = self.get_max_connected()
 
         new_generators.remove(pauli_string)
         queue_pauli_strings.append(pauli_string)
-
         for anti_commutate in anti_commutates:
             new_generators.remove(anti_commutate)
             if anti_commutate not in queue_pauli_strings:

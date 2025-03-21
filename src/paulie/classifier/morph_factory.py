@@ -815,6 +815,7 @@ class MorphFactory(Debug):
               return self
 
           vertices = generators.get_queue().get()
+          self.set_debug(generators.get_debug())
           self.print_vertices(vertices, "init")
           #self.recording(vertices=vertices)
           unappended = []
