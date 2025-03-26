@@ -186,7 +186,7 @@ class PauliString:
         """Tensor product of this Pauli string with another"""
         return PauliString()
 
-    def multiply(self, other) -> "NPPauliString":
+    def multiply(self, other):
         """
         Proportional multiplication operator of two Pauli strings
         Returns a PauliString proportional to the multiplication 

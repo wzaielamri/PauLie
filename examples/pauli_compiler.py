@@ -133,8 +133,8 @@ def test_pauli_compiler():
 
 
 if __name__ == "__main__":
-    print(f"np implementation")
+    print("np implementation")
     test_pauli_compiler()
     set_factory(PauliStringType.BITARRAY)
-    print(f"bitarray implementation")
+    print("bitarray implementation")
     test_pauli_compiler()

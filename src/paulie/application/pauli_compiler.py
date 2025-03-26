@@ -48,8 +48,6 @@ def derive_generating_operators(target: PauliString) -> list[PauliString]:
     n = len(target)
     op1 = get_identity(n)
     op2 = get_identity(n)
-    # Count non-identity positions
-    non_identity_count = reduce(lambda count, x: count if x.is_identity() else count + 1, target, 0)
     # Set up operators based on target
     for i, t in enumerate(target):
         # Identity position - leave as identity in both operators

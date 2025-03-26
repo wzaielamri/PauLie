@@ -1,6 +1,7 @@
 from paulie.helpers.printing import Debug
 from paulie.classifier.classification import Morph
-import sys, os, traceback
+import sys
+import traceback
 
 class AppendedException(Exception):
     pass
@@ -175,7 +176,6 @@ class MorphFactory(Debug):
       def _gen_long_legs(self):
           if self.is_empty_legs():
               raise Exception("No legs")
-          is_long = False
           for i in range(len(self.legs)-1, 1, -1):
               if len(self.legs) > 2:
                   yield self.legs[i]
@@ -797,7 +797,6 @@ class MorphFactory(Debug):
               raise DebugException()
 
           if number is not None:
-              vertices = self.get_vertices()
               if number <= len(self.get_vertices()):
                   self.print_state(lighting)
                   raise DebugException()
@@ -857,7 +856,7 @@ class MorphFactory(Debug):
 
 
           self.print_state()
-          self.print_vertices(unappended, f"unappended")
-          self.print_vertices(self.dependents, f"dependents")
+          self.print_vertices(unappended, "unappended")
+          self.print_vertices(self.dependents, "dependents")
           return self
 

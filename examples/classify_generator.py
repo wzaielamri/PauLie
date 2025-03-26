@@ -1,4 +1,3 @@
-from paulie.common.algebras import get_lie_algebra
 from paulie.application.classify import get_algebra
 from paulie.common.pauli_string_factory import get_pauli_string as p 
 

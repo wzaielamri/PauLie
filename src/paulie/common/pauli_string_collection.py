@@ -4,7 +4,6 @@ Collection of Pauli strings
 from paulie.common.pauli_string import PauliString
 from paulie.common.all_pauli_strings import get_all_pauli_strings
 import networkx as nx
-from itertools import combinations
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 

@@ -154,7 +154,7 @@ class Classification:
 
           algebras.sort()
           _algebras.sort()
-          if i in range(0, len(algebras)):
+          for i in range(len(algebras)):
               if algebras[i] != _algebras[i]:
                   return False
           return True

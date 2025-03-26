@@ -1,22 +1,21 @@
 from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory 
-from paulie.common.all_pauli_strings import get_random, get_random_list
+from paulie.common.all_pauli_strings import get_random_list
 from time import perf_counter
 from itertools import combinations
-import numpy as np
 from pauliarray import PauliArray
-#from pauliarray.pauli.weighted_pauli_array import commutator
+
 
 def perfomence_mult(g1):
     for a, b in combinations(g1, 2):
-        p3 = a@b
+        a @ b
 
 def perfomence_check_comm(g1):
     for a, b in combinations(g1, 2):
-        p3 = a^b
+        a ^ b
 
 def perfomence_commutator_pauliarray(g1):
     for a, b in combinations(g1, 2):
-        p3 = a.commute_with(b)
+        a.commute_with(b)
 
 if __name__ == "__main__":
 #    set_factory(PauliStringType.BITARRAY)

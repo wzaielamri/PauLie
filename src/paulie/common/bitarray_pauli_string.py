@@ -186,12 +186,6 @@ class BitArrayPauliString(PauliString):
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
-
-
-        a_even = self.bits_even
-        a_odd = self.bits_odd
-        b_even = other.bits_even
-        b_odd = other.bits_odd
         return count_and(self.bits_even, other.bits_odd) % 2 == count_and(other.bits_even, self.bits_odd) % 2
    
         #return sum(self.bits[i] & other.bits[i + 1] for i in range(0, len(self.bits), 2)) % 2 == sum(self.bits[i + 1] & other.bits[i] for i in range(0, len(self.bits), 2)) % 2
