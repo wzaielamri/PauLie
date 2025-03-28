@@ -29,7 +29,7 @@ The following code gives an example of usage:
     from paulie.common.pauli_string_factory import get_pauli_string as p
     
     n_qubits = 6
-    generators = p(["XYZX", "ZZYZY"], n = 8)
+    generators = p(["XYZX", "ZZYZY"], n = n_qubits)
     algebra = get_algebra(generators)
     print(f"number of qubits = {n_qubits}, algebra = {algebra}")
 ```
