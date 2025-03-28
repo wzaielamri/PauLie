@@ -13,39 +13,42 @@ Given a set of Paulistrings, the closure under the commutator defines a Lie alge
 
 In `"Full classification of Pauli Lie algebras" <https://arxiv.org/abs/2408.00081>`_ [1].
 an efficient algorithm for classifying which Lie algebra is generated is given.
-The function :code:`get_algebra(generators, size=0)` returns exactly which algebra is generated when
-given the generator set :code:`generators` which can be extended periodically to arbitrary qubit numbers
-specified by :code:`size`.
+The function :code:`get_algebra` returns exactly which algebra is generated when
+given the generator set which can be extended with identities to arbitrary qubit numbers
+specified.
 We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-local spin systems on linear, circular and fully connected topologies" <https://www.nature.com/articles/s41534-024-00900-2>`_ [2]:
 
 .. code-block:: python
 
     from paulie.application.classify import get_algebra
-    size = 2
-    generators = ["XY"]
-    algebra = get_algebra(generators, size=size)
-    print(f"size = {size} algebra = {algebra}")
+    from paulie.common.pauli_string_factory import get_pauli_string as p
+
+    generators = p(["XY"])
+    algebra = get_algebra(generators)
+    print(f"algebra = {algebra}")
 
 outputs
 
 .. code-block:: bash
 
-    size = 2 algebra = u(1)
+    algebra = u(1)
 
 whereas changing to a three qubit system, results in another algebra:
 
 .. code-block:: python
 
     size = 3
-    algebra = get_algebra(generators, size=size)
-    print(f"size = {size} algebra = {algebra}")
+    generators = p(["XY"], n=size)
+    algebra = get_algebra(generators)
+    print(f"algebra = {algebra}")
 
 outputs
 
 .. code-block:: bash
 
-    size = 3 algebra = so(3)
+    algebra = so(2)
 
+(Result should be so(3))
 The algorithms is based on the concept of an anticommutation graph. Given a set of n-qubit Paulistrings
 :math:`\mathcal{G} = \{P_1,\dots ,P_{n_G}\}`, the anticommutation graph has as a vertex set :math:`\mathcal{G}`
 and edges between all vertices that do not commute. Now the edge between :math:`P_i` and :math:`P_j` can be contracted
