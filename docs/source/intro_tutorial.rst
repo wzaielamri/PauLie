@@ -70,16 +70,16 @@ anticommutation graph that is star graph. We demonstrate it by the algebra :math
 
 .. code-block:: python
 
-    size = 4
-    generators = ["XY", "XZ"]
-    algebra = get_algebra(generators, size=size)
-    print(f"size = {size} algebra = {algebra}")
+    n_qubits = 4
+    generators = p(["XY", "XZ"], n=n_qubits)
+    algebra = get_algebra(generators)
+    print(f"algebra = {algebra}")
 
 outputs
 
 .. code-block:: bash
 
-    size = 4 algebra = sp(4)
+    algebra = sp(4)
 
 We can also animate the transformation to a star graph:
 

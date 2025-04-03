@@ -2,21 +2,11 @@ import pytest
 from paulie.application.classify import get_algebra
 from paulie.common.pauli_string_factory import get_pauli_string as p
 
-def test_classification():
-    """Test algebra classification equivalence for different generator sets."""
-    # Define the two sets of generators to be compared
-    generators_set1 = p(["XY", "XZ"])
-    generators_set2 = p(["IX", "XY"])
-    
-    # Get the algebra classifications
-    algebra1 = get_algebra(generators_set1)
-    algebra2 = get_algebra(generators_set2)
-    
-    # Assert that they represent the same algebra
-    assert algebra1 == algebra2, f"Expected equal algebras, but got {algebra1} and {algebra2}"
-
 @pytest.mark.parametrize("generators1, generators2, should_equal", [
-    (["XY", "XZ"], ["IX", "XY"], True),
+    (["XY", "XZ"], ["IX", "XY"], True), #Example III.1 Wie+24
+    (["XX", "YZ"],["YY", "ZX"], True), #Example III.4
+    (["ZZ", "YX", "XY"],["XX", "YZ", "ZY"], True), #Example III.5
+    (["ZZ", "YX", "XY"], ["YY", "ZX", "XZ"], True),
     # Add more test cases here as needed
 ])
 def test_multiple_algebra_equivalences(generators1, generators2, should_equal):
@@ -28,3 +18,13 @@ def test_multiple_algebra_equivalences(generators1, generators2, should_equal):
         assert algebra1 == algebra2, f"Expected {generators1} and {generators2} to represent the same algebra"
     else:
         assert algebra1 != algebra2, f"Expected {generators1} and {generators2} to represent different algebras"
+
+def test_explicit_algebras():
+    assert get_algebra(p(["XX", "YY", "ZZ", "ZY"])) == "u(1)+2*so(2)" # Example III.8
+    assert get_algebra(p(["XY"])) == "u(1)" # Example I.4
+    assert get_algebra(p(["XY"], n = 3)) == "so(3)"
+
+
+
+
+
