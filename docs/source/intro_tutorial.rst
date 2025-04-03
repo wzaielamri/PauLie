@@ -46,9 +46,8 @@ outputs
 
 .. code-block:: bash
 
-    algebra = so(2)
+    algebra = so(3)
 
-(Result should be so(3))
 The algorithms is based on the concept of an anticommutation graph. Given a set of n-qubit Paulistrings
 :math:`\mathcal{G} = \{P_1,\dots ,P_{n_G}\}`, the anticommutation graph has as a vertex set :math:`\mathcal{G}`
 and edges between all vertices that do not commute. Now the edge between :math:`P_i` and :math:`P_j` can be contracted
@@ -87,11 +86,11 @@ We can also animate the transformation to a star graph:
     :file: media/example_b.html
 
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
-Also measure based on operator spread capturing quantum circuit complexity rely on this concept.
+Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are to be added as functionalities of :code:`paulie` in the future.
 
-Finding an efficent way to transform the inital graph into a canonical graph is non-trivial.
+Finding an efficient way to transform the initial graph into a canonical graph is non-trivial.
 The current implementation in worst case has a exponential scaling in the number of independent generators, but we
 hope to improve it to a polynomial scaling.
 
