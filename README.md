@@ -34,7 +34,7 @@ The following code gives an example of usage:
     print(f"number of qubits = {n_qubits}, algebra = {algebra}")
 ```
 
-Feel free to contribute and check out our open issues. We are also happy to chat with you via [Dicord](https://discord.gg/unitary-fund-764231928676089909)
+Feel free to contribute and check out our open issues. We are also happy to chat with you via [Discord](https://discord.gg/unitary-fund-764231928676089909)
 
 ### Testing
 
