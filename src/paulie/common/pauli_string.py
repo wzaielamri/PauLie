@@ -350,6 +350,7 @@ class PauliString:
         return [g for g in generators if not self|g]
 
 
+
     def get_nested(self, generators = None):
         """
         Get nested of Pauli string
@@ -358,9 +359,16 @@ class PauliString:
                         If not specified, then the search area is all Pauli strings of the same size
         """
 
-        generators = self.get_anti_commutants(generators = generators)
-        nested = set()
-        for g in generators:
-            if (g@self, g) not in nested:
-                nested.add((g, g@self))
-        return list(nested)
+        # Retrieve the Pauli strings that anticommute with self.
+        anti_commuting = self.get_anti_commutants(generators=generators)
+        nested_pairs = set()
+
+        # Iterate through all anti-commuting Pauli strings
+        for g in anti_commuting:
+            # Compute the adjoint map (or the product) once
+            adj = g @ self
+            # Use canonical ordering to ensure the pair is unique: store the pair as (min, max).
+            canonical_pair = (g, adj) if g < adj else (adj, g)
+            nested_pairs.add(canonical_pair)
+
+        return list(nested_pairs)
