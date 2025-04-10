@@ -349,6 +349,7 @@ class PauliString:
 
         return [g for g in generators if not self|g]
 
+
     def get_nested(self, generators = None):
         """
         Get nested of Pauli string
@@ -358,8 +359,8 @@ class PauliString:
         """
 
         generators = self.get_anti_commutants(generators = generators)
-        return [
-            (a, b)
-            for a, b in combinations(generators, 2)
-            if a^b == self
-        ]
+        nested = set()
+        for g in generators:
+            if (g@self, g) not in nested:
+                nested.add((g, g@self))
+        return list(nested)
