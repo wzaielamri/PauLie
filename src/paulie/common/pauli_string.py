@@ -50,6 +50,9 @@ class PauliString:
     def __str__(self) -> str:
         """Convert PauliString to readable string (e.g., "XYZI")."""
         return "".join(self.bits.decode(CODEC))
+
+    def _ensure_pauli_string(self, other):
+        return other if isinstance(other, PauliString) else PauliString(pauli_str=str(other))
     
     def __eq__(self, other) -> bool:
         """Overloading the equality operator of two Pauli strings.
@@ -57,10 +60,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits == other.bits
 
     def __lt__(self, other):
@@ -70,10 +70,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits < other.bits
 
     def __le__(self, other):
@@ -83,10 +80,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits <= other.bits
 
     def __gt__(self, other):
@@ -96,10 +90,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits > other.bits
 
     def __ge__(self, other):
@@ -109,10 +100,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits >= other.bits
 
     def __ne__(self, other):
@@ -122,10 +110,7 @@ class PauliString:
              other: Comparable Pauli string
         Returns the result of the comparison
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
-        if not isinstance(other, PauliString):
-            return False
+        other = self._ensure_pauli_string(other)
         return self.bits != other.bits
    
     def __hash__(self) -> int:
@@ -182,8 +167,7 @@ class PauliString:
         """
         Pauli string addition operator
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
+        other = self._ensure_pauli_string(other)
         return self.tensor(other)
     
     def __or__(self, other)->bool:
@@ -211,8 +195,7 @@ class PauliString:
         """
         # Compute symplectic product mod 2
         # Paulis commute iff the symplectic product is 0
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
+        other = self._ensure_pauli_string(other)
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
@@ -228,8 +211,8 @@ class PauliString:
         """
         Set subsystem value
         """
-        if isinstance(pauli_string, str):
-            pauli_string = PauliString(pauli_str=pauli_string)
+        pauli_string = self._ensure_pauli_string(pauli_string)
+
 
         for i in range(0, len(pauli_string)):
             self.bits[2*position + 2*i] = pauli_string.bits[2*i]
@@ -256,8 +239,7 @@ class PauliString:
         Proportional multiplication operator of two Pauli strings
         Returns a PauliString proportional to the multiplication 
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
+        other = self._ensure_pauli_string(other)
 
         if len(self.bits) != len(other.bits):
             raise ValueError("Pauli arrays must have the same length")
@@ -269,8 +251,7 @@ class PauliString:
         Returns None if the commutator is zero (i.e., if A and B commute)
         Otherwise returns a PauliString proportional to the commutator
         """
-        if isinstance(other, str):
-            other = PauliString(pauli_str=other)
+        other = self._ensure_pauli_string(other)
 
         if self.commutes_with(other):
             return None
