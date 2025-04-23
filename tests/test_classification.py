@@ -27,10 +27,10 @@ def test_explicit_algebras():
     assert p(["XX", "YY", "ZZ", "ZY"]).get_class().is_algebra("u(1)+2*so(2)") # Example III.8
     assert p(["XY"]).get_class().is_algebra("u(1)") # Example I.4
     assert p(["XY"], n = 3).get_class().is_algebra("so(3)")
-    for n in [2,5,10]:
-        dict = two_local_algebras(n)
-        for name in dict.keys:
-            assert p(G_LIE[name], n = n).get_class().is_algebra(dict[name])
+    for n in [3,5,10]:
+        algs = two_local_algebras(n)
+        for name in algs.keys():
+            assert p(G_LIE[name], n = n).get_class().is_algebra(algs[name])
 
 
 
