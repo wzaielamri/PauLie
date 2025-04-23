@@ -12,7 +12,7 @@ def get_graph(generators, commutators=[]):
     edge_labels = {}
     edges = []
     for a, b in combinations(generators, 2):
-        c = a^b
+        c = matmul(a,b)
         if c and (len(commutators) == 0 or c in commutators):
             edges.append((str(a), str(b)))
             edge_labels[(str(a), str(b))] = str(c)

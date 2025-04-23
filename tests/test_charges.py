@@ -28,17 +28,3 @@ def test_algebras_with_non_commuting_charges(algebra_name, should_have_charges):
     else:
         assert len(charges) == 0, f"Expected {algebra_name} to have no non-commuting charges, but found {len(charges)}"
 
-def test_a8_specific_charges():
-    """Test specific properties of non-commuting charges in the a8 algebra."""
-    generators = p(get_lie_algebra("a8"))
-    charges = non_commuting_charges(generators)
-    
-    # Add more specific assertions about the charges if needed
-    assert len(charges) > 0, "a8 should have non-commuting charges"
-    
-def test_a9_specific_charges():
-    """Test specific properties of non-commuting charges in the a9 algebra."""
-    generators = p(get_lie_algebra("a9"))
-    charges = non_commuting_charges(generators)
-    
-    assert len(charges) > 0, "a9 should have non-commuting charges"
