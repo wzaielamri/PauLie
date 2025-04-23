@@ -32,7 +32,7 @@ G_LIE: dict[str, list[str]] = {
 
 # A dictionary of the DLAs
 def two_local_algebras(n):
-    return dict[str, list[str]] = {
+    return  {
     "a0": f"({n-1})*u(1)",
     "a1": f"so({n})",
     "a2": f"so({n})+so({n})", #same as a_4

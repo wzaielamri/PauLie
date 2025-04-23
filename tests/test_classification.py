@@ -8,11 +8,11 @@ from operator import itemgetter
     ([["XY", "XZ"], ["IX", "XY"]]), #Example III.1 Wie+24
     ([["XX", "YZ"], ["YY", "ZX"]]), #Example III.4
     ([["ZZ", "YX", "XY"],["XX", "YZ", "ZY"],["YY", "ZX", "XZ"]]), #Example III.5
-    (itemgetter("a_2", "a_4")(G_LIE)), #so(n)+so(n)
-    (itemgetter("a_11", "a_16")(G_LIE)), #so(2^n)
-    (itemgetter("a_6", "a_7", "a_10")(G_LIE)), #su(2^(n-1))
-    (itemgetter("a_13", "a_20", "a_15")(G_LIE)), #su(2^(n-1))+su(2^(n-1))
-    (itemgetter("a_12", "a_17", "a_18", "a_19", "a_21", "a_22")(G_LIE)), #su(2^n)
+    (itemgetter("a2", "a4")(G_LIE)), #so(n)+so(n)
+    (itemgetter("a11", "a16")(G_LIE)), #so(2^n)
+    (itemgetter("a6", "a7", "a10")(G_LIE)), #su(2^(n-1))
+    (itemgetter("a13", "a20", "a15")(G_LIE)), #su(2^(n-1))+su(2^(n-1))
+    (itemgetter("a12", "a17", "a18", "a19", "a21", "a22")(G_LIE)), #su(2^n)
 
 ])
 def test_multiple_algebra_equivalences(generators_to_compare):
