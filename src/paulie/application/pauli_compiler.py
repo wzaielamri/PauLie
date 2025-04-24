@@ -1,4 +1,9 @@
-from paulie.common.pauli_string import PauliString
+"""The algorithm is based on `"Optimally generating su(2^N) using Pauli strings" <https://arxiv.org/abs/2408.03294>`_ [1].
+``pauli_compiler`` takes a generator set and a target Pauli string and outputs a
+:math:`\mathcal{O}(N)` length sequence of Pauli strings that generates the target Pauli string via nested commutators.
+"""
+
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_factory import get_identity
 from six.moves import reduce
 

@@ -1,5 +1,5 @@
 """Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
-from paulie.common.pauli_string import PauliString
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from typing import Generator
 

@@ -1,4 +1,4 @@
-from paulie.common.pauli_string import PauliString
+from paulie.common.pauli_string_bitarray import PauliString
 
 def print_vertix(debug, vertix: PauliString, title=""):
     if debug:

@@ -1,8 +1,8 @@
 from itertools import combinations
 
-def get_graph(generators, commutators=[]):
+def get_graph(generators, commutators=[], flag_labels = True):
     """
-    Get graph
+    Get anticommutator graph
     Args:
         generators: Array of PauliString
         commutators: The area of Pauli strings over which to build a graph. If not specified, then that's it
@@ -15,6 +15,10 @@ def get_graph(generators, commutators=[]):
         c = a^b
         if c and (len(commutators) == 0 or c in commutators):
             edges.append((str(a), str(b)))
-            edge_labels[(str(a), str(b))] = str(c)
-    return vertices, edges, edge_labels
+            if flag_labels:
+                edge_labels[(str(a), str(b))] = str(c)
+    if flag_labels:
+        return vertices, edges, edge_labels
+    else:
+        return vertices, edges
 

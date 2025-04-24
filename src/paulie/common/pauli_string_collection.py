@@ -1,7 +1,7 @@
 """
 Collection of Pauli strings
 """
-from paulie.common.pauli_string import PauliString
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.get_graph import get_graph
 import networkx as nx
 from paulie.classifier.classification import Classification
@@ -213,6 +213,19 @@ class PauliStringCollection:
         """
         return get_graph(self.generators, commutators=generators)
 
+    def get_commutator_graph(self):
+        n = self.get_size()
+        I = PauliString(n=n)
+        return get_graph(I.get_commutants(), commutators=self, flag_labels=False)
+
+    def frame_potential(self):
+        vertices, edges = self.get_commutator_graph()
+        graph = nx.Graph()
+        graph.add_nodes_from(vertices)
+        graph.add_edges_from(edges)
+        n_comp= nx.number_connected_components(graph)
+        n_iso =len(list(nx.isolates(graph)))
+        return n_comp*n_iso
 
     def _convert(self, generators: list[str])->"PauliStringCollection":
         """ Convert list of string to List of PauliString"""

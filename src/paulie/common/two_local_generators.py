@@ -30,7 +30,7 @@ G_LIE: dict[str, list[str]] = {
     "b4": ["XX", "XY", "XZ", "XI", "IX", "IY", "IZ"],
 }
 
-# A dictionary of the DLAs
+# A dictionary of the DLAs n>=3
 def two_local_algebras(n):
     return  {
     "a0": f"({n-1})*u(1)",
