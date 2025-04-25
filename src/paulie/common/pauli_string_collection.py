@@ -7,6 +7,7 @@ import networkx as nx
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
+import re
 
 class PauliStringCollection:
     """
@@ -258,6 +259,27 @@ class PauliStringCollection:
         if self.classification is None:
             self.classification = self.classify()
         return self.classification
+
+    def get_algebra(self):
+        classification = self.get_class()
+        return classification.get_algebra()
+
+    def DLA_dim(self):
+        dim_su = lambda n: n**2-1
+        dim_so = lambda n: n*(n-1)/2
+        dim_sp = lambda n: n*(2*n+1)
+        S = self.get_class().get_subalgebras()
+        dim = 0
+        for s in S:
+            n = [int(x) for x in re.split('(|)', s) if x.isdigit()][0]
+            if "su" in s:
+                dim+= dim_su(n)
+            if "sp" in s:
+                dim+= dim_sp(n)
+            if "so" in s:
+                dim+= dim_so(n)
+        return dim
+
 
     def get_dependents(self):
         """Get a list of dependent strings in the collection"""
