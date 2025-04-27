@@ -489,24 +489,13 @@ class MorphFactory(Debug):
               v1 = leg[1]
               if v0 not in lits and v1 not in lits:
                   continue
-              self.print_title("leg")
-              self.print_lit_vertices(leg, lits, title = "leg")
-              self.print_state(lighting)
 
               if v0 in lits and v1 not in lits:
                   lighting = self.lit(lighting, v0)
                   lits.append(v1)
-                  self.print_title("v0")
-                  self.print_state(lighting)
               elif v0 not in lits and v1 in lits:
                   lighting = self.lit(lighting, v1)
                   lits.append(v0)
-                  self.print_title("v1")
-                  self.print_state(lighting)
-                  self.print_lit_vertices(leg, lits, title = "leg")
-
-              self.print_title("after leg")
-              self.print_state(lighting)
 
               if v0 in lits and v1 in lits:
                   center_lits = self.get_lits(lighting, [center])

@@ -30,13 +30,6 @@ class RecordingMorphFactory(Debug):
       def set_debug(self, debug):
           self.debug = debug
 
-      #def recording(self, lighting = None, vertices = None):
-      #     if vertices is None:
-      #         vertices = self.get_vertices()
-      #     if lighting is not None:
-      #        vertices.append(lighting)
-      #     recording_graph(self.record, vertices)
-
       def set_lighting(self, lighting):
            self.lighting = lighting
 
@@ -60,12 +53,6 @@ class RecordingMorphFactory(Debug):
               vertices = self.get_vertices()
           return [v for v in vertices if v != lighting and not lighting|v]
 
-#          lits = []
-#          for v in vertices:
-#              if v != lighting:
-#                  if not lighting.commutes_with(v):
-#                      lits.append(v)
-#          return lits
 
       def is_empty(self):
           return len(self.legs) == 0
@@ -366,6 +353,7 @@ class RecordingMorphFactory(Debug):
               raise AppendedException
  
           if self.is_included(lighting):
+              recording_graph(self.record, lighting=lighting, dependent=lighting, title=f"Dependent: {lighting}")
               raise DependentException
 
           if self.is_empty_legs():
@@ -391,6 +379,13 @@ class RecordingMorphFactory(Debug):
                   if lit != p:
                       replacing.append(lit)
               recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), replacing_vertices=replacing, title=f"Step II: {lighting}")
+
+              for lit in lits:
+                  if lit != p:
+                      v = pq@lit
+                      if self.is_included(v):
+                          recording_graph(self.record, lighting=lighting, dependent=lit, title=f"Dependent: {lighting}")
+                          raise DependentException()
 
               for lit in lits:
                   if lit != p:
@@ -540,11 +535,13 @@ class RecordingMorphFactory(Debug):
               lits = self.get_lits(lighting, leg)
               v0 = leg[0]
               v1 = leg[1]
+              if v0 not in lits and v1 not in lits:
+                  continue
               if v0 in lits and v1 not in lits:
                   lighting = self.lit(lighting, v0)
                   recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step III: {lighting}")
                   lits.append(v1)
-              if v0 not in lits and v1 in lits:
+              elif v0 not in lits and v1 in lits:
                   lighting = self.lit(lighting, v1)
                   recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step III: {lighting}")
                   lits.append(v0)
@@ -648,7 +645,7 @@ class RecordingMorphFactory(Debug):
               first = lit_indexes[0]
               second = lit_indexes[1]
               if first > 0 and first + 1 != second:
-                  for i in range(second, first - 1, -1): ## maybe + 1
+                  for i in range(second, first, -1): ## maybe + 1
                       lighting = self.lit(lighting, long_leg[i])
                       recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step IV: {lighting}")
 
@@ -833,6 +830,10 @@ class RecordingMorphFactory(Debug):
               omega = self.get_one_vertix()
               pq = omega@lighting
               new_g = pq@g
+              if self.is_included(new_g):
+                  recording_graph(self.record, lighting=lighting, dependent=g, title=f"Dependent: {lighting}")
+                  raise DependentException()
+ 
               recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), removing_vertices=[last_v], title=f"Step VI: {lighting}")
 
               self.remove(last_v)
