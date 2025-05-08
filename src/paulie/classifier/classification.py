@@ -57,7 +57,7 @@ class Morph:
               long_vertices += 1
 
           if long_vertices == 0 and two_legs == 0 and one_legs == 1:
-             long_vertices = 0
+             long_vertices = 1
 
           return one_legs, two_legs, long_vertices
 
