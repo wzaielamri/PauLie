@@ -1,3 +1,6 @@
+"""
+Test of charges
+"""
 import pytest
 from paulie.common.two_local_generators import get_lie_algebra
 from paulie.application.charges import non_commuting_charges
@@ -18,13 +21,12 @@ def test_algebras_with_non_commuting_charges(algebra_name, should_have_charges):
     """
     # Get the generators for the specified algebra
     generators = p(get_lie_algebra(algebra_name))
-    
     # Find non-commuting charges
     charges = non_commuting_charges(generators)
-    
     # Check if non-commuting charges exist as expected
     if should_have_charges:
-        assert len(charges) > 0, f"Expected {algebra_name} to have non-commuting charges, but found none"
+        assert len(charges) > 0, (f"Expected {algebra_name} to "
+               "have non-commuting charges, but found none")
     else:
-        assert len(charges) == 0, f"Expected {algebra_name} to have no non-commuting charges, but found {len(charges)}"
-
+        assert len(charges) == 0, (f"Expected {algebra_name} to "
+               f"have no non-commuting charges, but found {len(charges)}")

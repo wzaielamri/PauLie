@@ -30,6 +30,6 @@ jobs:
     - name: Run tests
       run: poetry run pytest
 
-#    - name: Lint
-#      run: pylint $(git ls-files '*.py')
+   - name: Lint
+     run: pylint $(git ls-files '*.py')
 

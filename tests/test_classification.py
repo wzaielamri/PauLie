@@ -1,8 +1,11 @@
+"""
+Test classification
+"""
+from operator import itemgetter
 import pytest
 from paulie.application.classify import get_algebra
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.two_local_generators import G_LIE, two_local_algebras
-from operator import itemgetter
 
 @pytest.mark.parametrize("generators_to_compare", [
     ([["XY", "XZ"], ["IX", "XY"]]), #Example III.1 Wie+24
@@ -21,23 +24,19 @@ def test_multiple_algebra_equivalences(generators_to_compare):
     for generator_set in generators_to_compare:
         algebra.append(get_algebra(p(generator_set, n=4))) # equivalences hold for n>=3
 
-    assert all(x==algebra[0] for x in algebra), f"Expected to represent the same algebra"
+    assert all(x==algebra[0] for x in algebra), "Expected to represent the same algebra"
 
-#TODO consider isomorphisms and improve is_algebra
+#Consider isomorphisms and improve is_algebra
 def test_explicit_algebras():
+    """
+    Test explicit algebras
+    """
     assert p(["XX", "YY", "ZZ", "ZY"]).is_algebra("u(1)+2*so(2)") # Example III.8
     assert p(["XY"]).is_algebra("u(1)") # Example I.4
     assert p(["XY"], n = 3).is_algebra("so(3)")
-    for n in [6,10]:# n>=3 for n = 3 eg. a6 should be su(4) but Theorem 2 does not possibly lead to this result
+    # n>=3 for n = 3 eg. a6 should be su(4)
+    # but Theorem 2 does not possibly lead to this result
+    for n in [6,10]:
         algs = two_local_algebras(n)
         for name in algs.keys():
             assert p(G_LIE[name], n = n).is_algebra(algs[name])
-
-
-
-
-
-
-
-
-

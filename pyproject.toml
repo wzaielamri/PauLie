@@ -56,5 +56,6 @@ disable=[
   'unnecessary-lambda',
   'duplicate-code',
   'too-many-nested-blocks',
-  'too-few-public-methods'
+  'too-few-public-methods',
+  'redefined-outer-name'
 ]

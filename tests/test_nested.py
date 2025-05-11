@@ -1,3 +1,6 @@
+"""
+Test nested
+"""
 import pytest
 from paulie.common.pauli_string_factory import get_pauli_string as p
 
@@ -33,11 +36,9 @@ def check_nested(node):
     nested = node.get_nested()
     # Get the expected nested pairs
     nested_source = NESTED_PAIRS[str(node)]
-    
     # Check that we have the expected number of pairs
     if len(nested) != len(nested_source):
         return False
-
     # Check that all actual pairs are in the expected set
     for pair in nested:
         found = False
@@ -47,7 +48,6 @@ def check_nested(node):
                 break
         if not found:
             return False
-            
     # Check that all expected pairs are in the actual set
     for source_pair in nested_source:
         found = False
@@ -57,7 +57,6 @@ def check_nested(node):
                 break
         if not found:
             return False
-
     return True
 
 @pytest.mark.parametrize("pauli_string", list(NESTED_PAIRS.keys()))
@@ -69,4 +68,5 @@ def test_nested(pauli_string):
         pauli_string: The string representation of a Pauli operator
     """
     pauli_operator = p(pauli_string)
-    assert check_nested(pauli_operator), f"Nested pairs for {pauli_string} do not match expected values"
+    assert check_nested(pauli_operator), (f"Nested pairs for {pauli_string} "
+           "do not match expected values")

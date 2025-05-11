@@ -1,7 +1,12 @@
-from paulie.common.pauli_string_factory import get_pauli_string as p 
-
+"""
+Test k-local
+"""
+from paulie.common.pauli_string_factory import get_pauli_string as p
 
 def test_k_local():
+    """
+    Test k-local
+    """
     generators = p(["XY", "XZ"], n=5)
     assert len(generators) == 8
     assert p("XYIII") in generators
