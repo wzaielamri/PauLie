@@ -57,5 +57,6 @@ disable=[
   'duplicate-code',
   'too-many-nested-blocks',
   'too-few-public-methods',
-  'redefined-outer-name'
+  'redefined-outer-name',
+  'attribute-defined-outside-init'
 ]
