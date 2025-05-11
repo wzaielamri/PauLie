@@ -30,6 +30,7 @@ jobs:
     - name: Run tests
       run: poetry run pytest
 
-   - name: Lint
-     run: poetry run pylint $(git ls-files '*.py')
+    - name: Lint
+      run: poetry run pylint "src/**/*.py"
+      run: poetry run pylint "tests/*.py"
 
