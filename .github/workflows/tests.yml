@@ -31,9 +31,9 @@ jobs:
       run: poetry run pytest
 
     - name: Lint
-      #run: poetry run pylint $(git ls-files '*.py')
-      run: | 
-        poetry run pylint "src/**/*.py"
-        poetry run pylint "tests/*.py"
+      run: poetry run pylint $(git ls-files '*.py')
+      #run: | 
+      #  poetry run pylint "src/**/*.py"
+      #  poetry run pylint "tests/*.py"
 
  
