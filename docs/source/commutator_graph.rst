@@ -17,6 +17,7 @@ We can plot the commutator graph
     vertices, edges = generators.get_commutator_graph()
     plot_graph(vertices, edges)
 
-.. image:: media/commutator_graph.png
+
+.. image:: /media/commutator_graph.png
 
 
