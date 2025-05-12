@@ -15,6 +15,7 @@ Paulistrings.
 
     getting_started
     intro_tutorial
+    commutator_graph
 
 .. toctree::
    :hidden:
