@@ -8,12 +8,14 @@ vertices and there exists and edge :math:`(P,Q)` if there exists a generator :ma
 :math:`[P,G] \prop Q`.
 While the anticommutation graph is isomorphic for generator sets with isomorphic DLA's and only capture the
 long term dynamics, the commutator graph captures short term dynamics.
+We can plot the commutator graph
 
 .. code-block:: python
     from paulie.common.pauli_string_factory import get_pauli_string as p
-    generators = p(["XI", "ZI", "IX", "IZ", "ZZ"], n=3)
+    generators = p(["XI", "ZI", "IX", "IZ", "ZZ"], n=2)
     vertices, edges = generators.get_commutator_graph()
+    plot_graph(vertices, edges)
 
-
+.. image:: media/commutator_graph.png
 
 

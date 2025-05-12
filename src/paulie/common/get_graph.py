@@ -9,7 +9,6 @@ def get_graph(generators, commutators=None, flag_labels = True):
     Args:
         generators: Array of PauliString
         commutators: The area of Pauli strings over which to build a graph. 
-        If not specified, then that's it
     Returns the vertices, edges, and labels of edges
     """
     if not commutators:

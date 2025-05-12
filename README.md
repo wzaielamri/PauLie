@@ -25,12 +25,11 @@ poetry install
 The following code gives an example of usage:
 
 ```python
-    from paulie.application.classify import get_algebra
     from paulie.common.pauli_string_factory import get_pauli_string as p
     
     n_qubits = 6
     generators = p(["XYZX", "ZZYZY"], n = n_qubits)
-    algebra = get_algebra(generators)
+    algebra = generators.get_algebra()
     print(f"number of qubits = {n_qubits}, algebra = {algebra}")
 ```
 

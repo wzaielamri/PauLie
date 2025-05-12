@@ -3,7 +3,6 @@ Test classification
 """
 from operator import itemgetter
 import pytest
-from paulie.application.classify import get_algebra
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.two_local_generators import G_LIE, two_local_algebras
 
@@ -22,7 +21,7 @@ def test_multiple_algebra_equivalences(generators_to_compare):
     """Test algebra equivalences"""
     algebra = []
     for generator_set in generators_to_compare:
-        algebra.append(get_algebra(p(generator_set, n=4))) # equivalences hold for n>=3
+        algebra.append(p(generator_set, n=4).get_algebra()) # equivalences hold for n>=3
 
     assert all(x==algebra[0] for x in algebra), "Expected to represent the same algebra"
 
