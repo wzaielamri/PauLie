@@ -18,6 +18,6 @@ We can plot the commutator graph
     plot_graph(vertices, edges)
 
 
-.. image:: source/media/commutator_graph.png
+.. image:: media/commutator_graph.png
 
 
