@@ -37,30 +37,32 @@ def _a3(n):
     """
     a3 algebra
     """
-    if n % 8 == 0:
-        return f"4*so({2**(n-2)})"
-    if n % 8 == 1 or n % 8 == 7:
-        return f"so({2**(n-1)})"
-    if n % 8 == 2 or n % 8 == 6:
-        return f"2*su({2**(n-2)})"
-    if n % 8 == 3 or n % 8 == 5:
-        return f"sp({2**(n-2)})"
-    if n % 8 == 4:
-        return f"4*sp({2**(n-3)})"
+    match n % 8 :
+        case 0:
+            return f"4*so({2**(n-2)})"
+        case 1 | 7:
+            return f"so({2**(n-1)})"
+        case 2 | 6:
+            return f"2*su({2**(n-2)})"
+        case 3 | 5:
+            return f"sp({2**(n-2)})"
+        case 4:
+            return f"4*sp({2**(n-3)})"
     return None
 
 def _a5(n):
     """
     a5 algebra
     """
-    if n % 6 == 0:
-        return f"4*so({2**(n-2)})"
-    if n % 6 == 1 or n % 6 == 5:
-        return f"so({2**(n-1)})"
-    if n % 6 == 2 or n % 6 == 4:
-        return f"2*su({2**(n-2)})"
-    if n % 6 == 3:
-        return f"sp({2**(n-2)})"
+    match n % 6:
+        case 0:
+            return f"4*so({2**(n-2)})"
+        case 1 | 5:
+            return f"so({2**(n-1)})"
+        case 2 | 4:
+            return f"2*su({2**(n-2)})"
+        case 3:
+            return f"sp({2**(n-2)})"
     return None
 
 def _a6(n):
