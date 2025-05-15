@@ -360,11 +360,11 @@ class PauliString:
 
         return list(nested_pairs)
 
-    def _select_matrix(self, v:Self) -> np.array:
+    def _match_matrix(self, v:Self) -> np.array:
         """
-         Select matrix representation of the string item
-         Args: i - index of PauliString
-         Returns: Matrix representation of the string item 
+         Matching matrix for the string item
+         Args: v - a item of PauliString
+         Returns: Matrix representation for the string item 
         """
         match v:
             case "I":
@@ -375,12 +375,11 @@ class PauliString:
                 return Sy
             case "Z":
                 return Sz
-        return None
 
     def get_matrix(self) -> np.array:
         """
-        Get matrix representation of Pauli string
-        Returns: Matrix representation of the Pauli string
+        Get matrix representation for Pauli string
+        Returns: Matrix representation for the Pauli string
         """
-        return reduce(lambda matrix, v: np.kron(matrix, self._select_matrix(v))
-                      if matrix is not None else self._select_matrix(v), self, None)
+        return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
+                      if matrix is not None else self._match_matrix(v), self, None)
