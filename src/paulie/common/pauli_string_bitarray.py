@@ -13,7 +13,7 @@ CODEC = {
     "Z": bitarray([0, 1]),
 }
 
-Si = np.array([[1,0],[0,1]]) 
+Si = np.array([[1,0],[0,1]])
 Sx = np.array([[0,1],[1,0]])
 Sy = np.array([[0,-1j],[1j,0]])
 Sz = np.array([[1,0],[0,-1]])
