@@ -360,7 +360,7 @@ class PauliString:
 
         return list(nested_pairs)
 
-    def _match_matrix(self, v:Self) -> np.array:
+    def _match_matrix(self, v:str) -> np.array:
         """
          Matching matrix for the string item
          Args: v - a item of PauliString
@@ -382,4 +382,4 @@ class PauliString:
         Returns: Matrix representation for the Pauli string
         """
         return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
-                      if matrix is not None else self._match_matrix(v), self, None)
+                      if matrix is not None else self._match_matrix(v), str(self), None)
