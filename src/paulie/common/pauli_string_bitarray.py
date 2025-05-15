@@ -1,5 +1,7 @@
 """Implementation of a Pauli string on bitarray."""
 from typing import Self, Generator
+from six.moves import reduce
+import numpy as np
 from bitarray import bitarray
 from bitarray.util import count_and
 from paulie.common.pauli_string_parser import pauli_string_parser
@@ -10,6 +12,11 @@ CODEC = {
     "Y": bitarray([1, 1]), 
     "Z": bitarray([0, 1]),
 }
+
+Si = np.array([[1,0],[0,1]]) 
+Sx = np.array([[0,1],[1,0]])
+Sy = np.array([[0,-1j],[1j,0]])
+Sz = np.array([[1,0],[0,-1]])
 
 class PauliString:
     """Implementation of a Pauli string on bitarray."""
@@ -352,3 +359,28 @@ class PauliString:
             nested_pairs.add(canonical_pair)
 
         return list(nested_pairs)
+
+    def _select_matrix(self, v:Self) -> np.array:
+        """
+         Select matrix representation of the string item
+         Args: i - index of PauliString
+         Returns: Matrix representation of the string item 
+        """
+        match v:
+            case "I":
+                return Si
+            case "X":
+                return Sx
+            case "Y":
+                return Sy
+            case "Z":
+                return Sz
+        return None
+
+    def get_matrix(self) -> np.array:
+        """
+        Get matrix representation of Pauli string
+        Returns: Matrix representation of the Pauli string
+        """
+        return reduce(lambda matrix, v: np.kron(matrix, self._select_matrix(v))
+                      if matrix is not None else self._select_matrix(v), self, None)
