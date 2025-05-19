@@ -1,4 +1,4 @@
-"""Implementation of a Pauli string on bitarray."""
+"""Representation of a Pauli string as a bitarray."""
 from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
@@ -19,13 +19,13 @@ Sy = np.array([[0,-1j],[1j,0]])
 Sz = np.array([[1,0],[0,-1]])
 
 class PauliString:
-    """Implementation of a Pauli string on bitarray."""
+    """Representation of a Pauli string as a bitarray."""
 
     def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None) -> None:
         """Initialize a Pauli string.
         
         Args:
-            n: Pauli string length
+            n: length of the Pauli string
             pauli_str: String representation of a Pauli string
             bits: Bit representation of a Pauli string
         """
@@ -48,7 +48,7 @@ class PauliString:
     def create_instance(self, n: int = None, pauli_str: str = None):
         """Create a Pauli string instance.
            Args:
-                n: Pauli string length
+                n: legnth of the Pauli string
                 pauli_str: String representation of a Pauli string
            Returns the intensity of a Pauli string
         """
@@ -62,9 +62,9 @@ class PauliString:
         return other if isinstance(other, PauliString) else PauliString(pauli_str=str(other))
 
     def __eq__(self, other:str|Self) -> bool:
-        """Overloading the equality operator of two Pauli strings.
+        """Overloading the equality operator relating two Pauli strings.
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -72,9 +72,9 @@ class PauliString:
 
     def __lt__(self, other:str|Self) -> bool:
         """
-        Overloading < operator of two Pauli strings
+        Overloading < operator for two Pauli strings
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -84,7 +84,7 @@ class PauliString:
         """
         Overloading <= operator of two Pauli strings
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -94,7 +94,7 @@ class PauliString:
         """
         Overloading > operator of two Pauli strings
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -104,7 +104,7 @@ class PauliString:
         """
         Overloading >= operator of two Pauli strings
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -114,7 +114,7 @@ class PauliString:
         """
         Overloading != operator of two Pauli strings
         Args:
-             other: Comparable Pauli string
+             other: The Pauli string to compare with
         Returns the result of the comparison
         """
         other = self._ensure_pauli_string(other)
@@ -126,7 +126,7 @@ class PauliString:
 
     def __len__(self) -> int:
         """
-        Pauli string length
+        Returns the lenght of the Pauli string
         """
         return len(self.bits) // 2
 
@@ -150,15 +150,15 @@ class PauliString:
 
     def __setitem__(self, position: int, pauli_string: str|Self):
         """
-        Set value to position
+        Sets a specified Pauli at a given position in the Paulistring
         """
-        self.set_subsystem(position, pauli_string)
+        self.set_substring(position, pauli_string)
 
     def __getitem__(self, position: int) -> Self:
         """
-        Get values at position
+        Gets the Pauli at specified position
         """
-        return self.get_subsystem(position)
+        return self.get_substring(position)
 
     def __copy__(self) -> Self:
         """
@@ -167,7 +167,7 @@ class PauliString:
         return PauliString(bits=self.bits)
 
     def copy(self) -> Self:
-        """Copy Pauli string"""
+        """ Copy Pauli string """
         return PauliString(bits=self.bits)
 
     def __add__(self, other:str|Self):
@@ -209,22 +209,30 @@ class PauliString:
         return (count_and(self.bits_even, other.bits_odd) % 2 ==
                count_and(other.bits_even, self.bits_odd) % 2)
 
-    def get_subsystem(self, start: int, length: int = 1) -> Self:
-        """Get a subsystem of this Pauli string"""
+    def get_substring(self, start: int, length: int = 1) -> Self:
+        """
+        Get a substring of Paulis inside the Pauli string
+
+        Args:
+            start: Index to begin extracting the string.
+            length: Length of each substring.
+
+        Returns:
+            substring of the Pauli string.
+        """
         return PauliString(bits=self.bits[2*start:2*start+2*length])
 
-    def set_subsystem(self, position: int, pauli_string:str|Self) -> None:
+    def set_substring(self, start: int, pauli_string:str|Self) -> None:
         """
-        Set subsystem value
+        Set substring starting at position `start`
         """
         pauli_string = self._ensure_pauli_string(pauli_string)
 
-
         for i in range(0, len(pauli_string)):
-            self.bits[2*position + 2*i] = pauli_string.bits[2*i]
-            self.bits[2*position + 2*i + 1] = pauli_string.bits[2*i + 1]
-            self.bits_even[position  + i] = pauli_string.bits_even[i]
-            self.bits_odd[position + i] = pauli_string.bits_odd[i]
+            self.bits[2*start + 2*i] = pauli_string.bits[2*i]
+            self.bits[2*start + 2*i + 1] = pauli_string.bits[2*i + 1]
+            self.bits_even[start  + i] = pauli_string.bits_even[i]
+            self.bits_odd[start + i] = pauli_string.bits_odd[i]
 
     def is_identity(self) -> bool:
         """Check if this Pauli string is the identity"""
@@ -286,19 +294,18 @@ class PauliString:
 
     def expand(self, n: int) -> Self:
         """
-        Increasing the size of the Pauli string
+        Increasing the size of the Pauli string by taking the tensor product
+        with identities in the end
         Args:
             n (int): New Pauli string length
-        Returns the Pauli string extension
+        Returns the Pauli string of extend length
         """
         return self + PauliString(n = n - len(self))
 
     def gen_all_pauli_strings(self) -> Generator[list[Self], None, None]:
         """
         Generate a list of Pauli strings that commute with this string
-        Args:
-          Yields the generated Pauli string
-
+        Yields the commutant of the Pauli string
         """
         n = len(self)
         pauli_string = PauliString(n=n)

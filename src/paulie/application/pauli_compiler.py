@@ -113,8 +113,8 @@ def pauli_compiler(target_p: PauliString, a_set: list[PauliString], a_prime_set:
         List of Pauli strings that generate target_P when nested commutators are applied
     """
     # Extract V and W from target_P = V⊗W
-    v = target_p.get_subsystem(0, k)
-    w = target_p.get_subsystem(k, n-k)
+    v = target_p.get_substring(0, k)
+    w = target_p.get_substring(k, n-k)
     #print(f"Target decomposed: V={V}, W={W}")
     # Try to derive operators directly from the target
     derived_sequence = derive_generating_operators(target_p)
