@@ -92,3 +92,15 @@ def test_average_eq_initial_otoc_for_commutants(generators: list[str]) -> None:
             wmat = w.get_matrix()
             analytical_value = np.trace(wmat @ vmat @ wmat @ vmat) / d
             assert average_otoc(g, v, w) == pytest.approx(analytical_value)
+
+@pytest.mark.parametrize("generators", generators_list)
+def test_operator_average_otoc(generators: list[str]) -> None:
+    g = p(generators)
+    i = get_identity(len(generators[0]))
+    d = 2 ** len(generators[0])
+    all_paulis = i.get_commutants()
+    operator_av = 0
+    for v in all_paulis:
+        for w in all_paulis:
+            operator_av += np.abs(average_otoc(g, v, w))**2
+    assert operator_av == d**2 * g.get_frame_potential()
