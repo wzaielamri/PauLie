@@ -14,12 +14,11 @@ Paulistrings.
 .. toctree::
 
     getting_started
-    intro_tutorial
+    classification
     commutator_graph
     average_graph_complexity
-    average_otoc
-    matrix_decomposition
     second_moment
+    matrix_decomposition
 
 .. toctree::
    :hidden:
