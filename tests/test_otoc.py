@@ -104,3 +104,14 @@ def test_operator_average_otoc(generators: list[str]) -> None:
         for w in all_paulis:
             operator_av += np.abs(average_otoc(g, v, w))**2
     assert operator_av == d**2 * g.get_frame_potential()
+
+def test_su_otoc():
+    for n in range(2, 12):
+        g_su = p(["XX", "XY", "YZ"], n=n)
+        d = 2 ** n
+        min_val = - (d**2-1)**(-1)
+        i = get_identity(n)
+        all_paulis = i.get_commutants()
+        for v in all_paulis:
+            for w in all_paulis:
+                assert min_val == average_otoc(g_su, v, w)
