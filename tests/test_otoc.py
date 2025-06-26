@@ -93,14 +93,15 @@ def test_average_eq_initial_otoc_for_commutants(generators: list[str]) -> None:
             analytical_value = np.trace(wmat @ vmat @ wmat @ vmat) / d
             assert average_otoc(g, v, w) == pytest.approx(analytical_value)
 
-""" 
+
 def test_su_otoc():
-    for n in range(4, 12):
-        g_su = p(["XX", "XY", "YZ"], n=n)
-        d = 2 ** n
-        min_val = - 1/(d**2-1)
-        i = get_identity(n)
-        all_paulis = i.get_commutants()
-        for v, w in zip(all_paulis,all_paulis):
-                assert min_val == average_otoc(g_su, v, w)
-"""
+    #for n in range(4, 12):
+    n=4
+    g_su = p(["XX", "XY", "YZ"], n=n)
+    d = 2 ** n
+    min_val = - 1/(d**2-1)
+    i = get_identity(n)
+    all_paulis = i.get_commutants()
+    del all_paulis[0]
+    for v, w in zip(all_paulis,all_paulis):
+        assert pytest.approx(min_val) == average_otoc(g_su, v, w)
