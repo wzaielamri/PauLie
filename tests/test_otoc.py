@@ -95,7 +95,9 @@ def test_average_eq_initial_otoc_for_commutants(generators: list[str]) -> None:
 
 
 def test_su_otoc():
-    #for n in range(4, 12):
+    """
+    for n in range(4, 12):
+    """
     n=4
     g_su = p(["XX", "XY", "YZ"], n=n)
     d = 2 ** n
