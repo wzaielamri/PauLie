@@ -301,3 +301,23 @@ class Classification:
                        else f"{isomorph_n}*{isomorph_core_algebra}")
             return "None"
         return self.get_isomorphisms()[algebra]
+
+    def get_dla_dim(self) -> int:
+        """
+        Get the dimension of the classified dynamical Lie algebra
+        """
+        dim_su = lambda n: n**2-1
+        dim_so = lambda n: n*(n-1)/2
+        dim_sp = lambda n: n*(2*n+1)
+        dim = 0
+        for morph in self.morphs:
+            result = morph.get_algebra_properties()
+            type_algebra = result[0]
+            n = result[2]
+            if type_algebra == TypeAlgebra.SU:
+                dim+= dim_su(n)
+            if type_algebra == TypeAlgebra.SP:
+                dim+= dim_sp(n)
+            if type_algebra == TypeAlgebra.SO:
+                dim+= dim_so(n)
+        return dim
