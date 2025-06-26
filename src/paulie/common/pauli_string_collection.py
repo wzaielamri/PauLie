@@ -6,6 +6,8 @@ import re
 from typing import Self
 import numpy as np
 import networkx as nx
+from cvxpy import length
+
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
@@ -337,7 +339,7 @@ class PauliStringCollection:
         subgraphs = self.get_class().get_subalgebras()
         dim = 0
         for s in subgraphs:
-            n = [int(x) for x in re.split('(|)', s) if x.isdigit()][0]
+            n = int("".join([x for x in re.split('(|)', s) if x.isdigit()]))
             if "su" in s:
                 dim+= dim_su(n)
             if "sp" in s:
