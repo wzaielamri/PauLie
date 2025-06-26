@@ -5,9 +5,6 @@ from itertools import combinations
 from typing import Self
 import numpy as np
 import networkx as nx
-from astroid.raw_building import attach_const_node
-from cvxpy import length
-
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
