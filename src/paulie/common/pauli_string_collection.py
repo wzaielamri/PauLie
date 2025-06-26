@@ -2,7 +2,6 @@
 Class for a set/collection of Pauli strings with various features
 """
 
-import re
 from typing import Self
 import numpy as np
 import networkx as nx
@@ -333,20 +332,7 @@ class PauliStringCollection:
         """
         Get the dimension of the classified dynamical Lie algebra
         """
-        dim_su = lambda n: n**2-1
-        dim_so = lambda n: n*(n-1)/2
-        dim_sp = lambda n: n*(2*n+1)
-        subgraphs = self.get_class().get_subalgebras()
-        dim = 0
-        for s in subgraphs:
-            n = int("".join([x for x in re.split('(|)', s) if x.isdigit()]))
-            if "su" in s:
-                dim+= dim_su(n)
-            if "sp" in s:
-                dim+= dim_sp(n)
-            if "so" in s:
-                dim+= dim_so(n)
-        return dim
+        return self.get_class().get_dla_dim()
 
     def get_dependents(self) -> Self:
         """Get a list of dependent strings in the collection"""
