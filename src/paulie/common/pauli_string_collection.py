@@ -1,10 +1,11 @@
 """
 Class for a set/collection of Pauli strings with various features
 """
-
+from itertools import combinations
 from typing import Self
 import numpy as np
 import networkx as nx
+from astroid.raw_building import attach_const_node
 from cvxpy import length
 
 from paulie.common.pauli_string_bitarray import PauliString
@@ -196,6 +197,16 @@ class PauliStringCollection:
          given by the bitarray representation """
         self.generators.sort()
         return self
+
+    def get_anticommutation_fraction(self) -> float:
+        """
+        Computes the fraction of anticommuting pairs of generators
+        """
+        anti_commute_count = 0
+        for x,y in combinations(self.generators, r=2):
+            if not x|y:
+                anti_commute_count += 1
+        return anti_commute_count / len(self.generators)
 
     def get_commutants(self) -> 'PauliStringCollection':
         """
