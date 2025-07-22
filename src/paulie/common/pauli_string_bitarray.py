@@ -243,7 +243,7 @@ class PauliString:
         """
         other = self._ensure_pauli_string(other)
         if len(self) != len(other):
-            raise ValueError(f"Pauli arrays must have the same length for multiplication.")
+            raise ValueError("Pauli arrays must have the same length for multiplication.")
 
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.
