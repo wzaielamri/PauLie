@@ -394,7 +394,7 @@ class PauliStringLinear(PauliString):
         """
         Kroniker multiplication pauli string on linear combination
         of Pauli strings
-        Returns a linera comination of PauliString
+        Returns a linera combination of PauliString
         """
         new_combinations = []
         for c in self.combinations:
@@ -501,8 +501,6 @@ class PauliStringLinear(PauliString):
         # Retrieve the Pauli strings that anticommute with self.
         raise PauliStringLinearException("Not implemented")
 
-
-
     def get_matrix(self) -> np.array:
         """
         Get matrix representation for Pauli string
@@ -511,6 +509,10 @@ class PauliStringLinear(PauliString):
 
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
+
+    def exponential(self) -> np.array:
+        matrix = self.get_matrix()
+        return np.exp(matrix)
 
     def simplify(self) -> 'PauliStringLinear':
         """
