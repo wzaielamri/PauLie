@@ -257,7 +257,7 @@ class PauliString:
         # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
 
-    def complex_conj(self: Self) -> tuple[complex, str | PauliString]:
+    def complex_conj(self: Self) -> tuple[complex, str | Self]:
         '''returns the complex conjugate of the Pauli string'''
         ys = count_and(self.bits_odd, self.bits_even)
         return ((-1)**(ys), self)
