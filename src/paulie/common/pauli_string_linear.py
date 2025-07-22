@@ -511,6 +511,11 @@ class PauliStringLinear(PauliString):
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
 
     def exponential(self) -> np.array:
+        """
+        returns the exponential of a linear combination of Paulistrings
+        Returns:
+
+        """
         matrix = self.get_matrix()
         return np.exp(matrix)
 
