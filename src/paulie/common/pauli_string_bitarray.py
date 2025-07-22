@@ -4,6 +4,8 @@ from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
 from bitarray.util import count_and, ba2int
+
+from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_parser import pauli_string_parser
 
 CODEC = {
@@ -242,7 +244,7 @@ class PauliString:
         """
         other = self._ensure_pauli_string(other)
         if len(self) != len(other):
-            raise ValueError("Pauli arrays must have the same length for multiplication.")
+            raise ValueError(f"Pauli arrays must have the same length for multiplication.")
 
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.
@@ -255,6 +257,11 @@ class PauliString:
 
         # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
+
+    def complex_conj(self: Self) -> tuple[complex, str | PauliString]:
+        '''returns the complex conjugate of the Pauli string'''
+        ys = count_and(self.bits_odd, self.bits_even)
+        return ((-1)**(ys), self)
 
     def commutes_with(self, other:str|Self) -> bool:
         """
