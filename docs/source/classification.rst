@@ -88,11 +88,8 @@ We can also animate the transformation to a star graph:
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
-All these applications are to be added as functionalities of :code:`paulie` in the future.
+All these applications are functionalities of :code:`paulie`.
 
-Finding an efficient way to transform the initial graph into a canonical graph is non-trivial.
-The current implementation in worst case has a exponential scaling in the number of independent generators, but we
-hope to improve it to a polynomial scaling.
 
 
 
