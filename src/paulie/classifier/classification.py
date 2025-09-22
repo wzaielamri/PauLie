@@ -326,4 +326,3 @@ class Classification:
             if type_algebra == TypeAlgebra.SO:
                 dim+= dim_so(n)
         return dim
-
