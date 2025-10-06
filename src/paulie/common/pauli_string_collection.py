@@ -209,7 +209,9 @@ class PauliStringCollection:
         for x,y in combinations(self.generators, r=2):
             if not x|y:
                 anti_commute_count += 1
-        return anti_commute_count / len(self.generators)
+        n = len(self.generators)
+        n_com = n*(n-1)/2
+        return anti_commute_count / n_com
 
     def get_commutants(self) -> 'PauliStringCollection':
         """
