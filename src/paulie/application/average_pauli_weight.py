@@ -3,16 +3,16 @@ from paulie.common.pauli_string_bitarray import PauliString
 import numpy as np
 from itertools import product
 
-def quantum_fourier_entropy(O: np.ndarray) -> float:
+def quantum_fourier_entropy(o: np.ndarray) -> float:
     """
     Calculates the quantum Fourier entropy of an operator O.
     H(O) = -sum_P c_P**2 * log(c_P**2)
     """
     # Get the coefficients c_P from the Pauli decomposition
-    c_P = matrix_decomposition(O)
+    c_p = matrix_decomposition(o)
 
     # Calculate the probabilities p_P = c_P^2
-    probs = np.abs(c_P)**2
+    probs = np.abs(c_p)**2
 
     # Filter out zero probabilities to avoid log(0)
     non_zero_probs = probs[probs > 1e-12]
@@ -22,44 +22,44 @@ def quantum_fourier_entropy(O: np.ndarray) -> float:
     return entropy
 
 
-def avg_pauli_weights(O: np.ndarray) -> np.ndarray:
+def avg_pauli_weights(o: np.ndarray) -> np.ndarray:
     """
     Calculate the average Pauli weights of an operator O.
     I(O) = sum_P |P| * c_P**2
     """
     # Get the coefficients c_P from the Pauli decomposition
-    c_Ps = matrix_decomposition(O)
+    c_ps = matrix_decomposition(o)
     # Get the number of qubits from the matrix decomposition
     # 4 Pauli matrices yield 4**n_qubits options
-    dim = c_Ps.shape[0]
+    dim = c_ps.shape[0]
     n_qubits = int(np.emath.logn(4, dim))
     # get all options of Pauli Strings for n_qubits
     pauli_strings = product('IXYZ', repeat=n_qubits)
-    I = 0
+    i = 0
     for pauli_str in pauli_strings:
         pl = PauliString(pauli_str=pauli_str)
-        c_P = pl.get_weight_in_matrix(c_Ps)
-        abs_P = pl.get_count_non_trivially()
-        I += abs(c_P) ** 2 * abs_P
-    return I
+        c_p = pl.get_weight_in_matrix(c_ps)
+        abs_p = pl.get_count_non_trivially()
+        i += abs(c_p) ** 2 * abs_p
+    return i
 
 
-def avg_pauli_weights_from_strings(O: np.ndarray, pauli_strings: list) -> np.ndarray:
+def avg_pauli_weights_from_strings(o: np.ndarray, pauli_strings: list) -> np.ndarray:
     """
     Calculate the average Pauli weights of an operator O, given a list of Pauli strings.: This is useful to reduce the calculation, when testing.
     I(O) = sum_P |P| * c_P**2
     """
     # Get the coefficients c_P from the Pauli decomposition
-    c_Ps = matrix_decomposition(O)
+    c_ps = matrix_decomposition(o)
     # get all options of Pauli Strings for n_qubits
-    I = 0
+    i = 0
     for pauli_str in pauli_strings:
         pauli_str = ''.join(pauli_str)
         pl = PauliString(pauli_str=pauli_str)
-        c_P = pl.get_weight_in_matrix(c_Ps)
-        abs_P = pl.get_count_non_trivially()
-        I += abs(c_P) ** 2 * abs_P
-    return I
+        c_p = pl.get_weight_in_matrix(c_ps)
+        abs_p = pl.get_count_non_trivially()
+        i += abs(c_p) ** 2 * abs_p
+    return i
 
 
 
@@ -85,14 +85,14 @@ def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
         weights[i] = weight
     return weights
 
-def average_pauli_weight(O: np.ndarray, weights: np.ndarray) -> float:
+def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
     """
     Calculates the average Pauli weight (influence) for an operator O.
     I(O) = sum_P |P| * c_P**2
     """
 
     # Get the coefficients c_P from the Pauli decomposition
-    coeffs = matrix_decomposition(O)
+    coeffs = matrix_decomposition(o)
     # For a Hermitian operator O, the coefficients c_P are real.
     # The "probability" of a Pauli term P is c_P^2.
     # Note: sum(|c_P|^2) = 1 due to O^2=I.

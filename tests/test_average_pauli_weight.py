@@ -16,35 +16,35 @@ def generate_hermitian_operator(num_qubits: int) -> np.ndarray:
     # 1. Create a random unitary matrix U (eigenvectors)
     rand_mat = np.random.rand(dim, dim) + 1j * np.random.rand(dim, dim)
     q, _ = np.linalg.qr(rand_mat)
-    U = q
+    u = q
 
     # 2. Create a diagonal matrix D with eigenvalues +-1
     eigenvalues = np.random.choice([-1, 1], size=dim)
-    D = np.diag(eigenvalues)
+    d = np.diag(eigenvalues)
 
     # 3. Construct O = U D U_dagger
-    O = U @ D @ U.conj().T
-    return O
+    o = u @ d @ u.conj().T
+    return o
 
 def compute_c_for_weights(args):
     n_qubits, weights = args
-    O = generate_hermitian_operator(n_qubits)
-    I = average_pauli_weight(O, weights=weights)
-    H = quantum_fourier_entropy(O)
-    if I < 1e-12:
+    o = generate_hermitian_operator(n_qubits)
+    i = average_pauli_weight(o, weights=weights)
+    h = quantum_fourier_entropy(o)
+    if i < 1e-12:
         return None  # Mark as zero
-    return H / I
+    return h / i
 
 
 
 def compute_c_for_operator(args):
     n_qubits, pauli_strings = args
-    O = generate_hermitian_operator(n_qubits)
-    I = avg_pauli_weights_from_strings(O, pauli_strings=pauli_strings)
-    H = quantum_fourier_entropy(O)
-    if I < 1e-12:
+    o = generate_hermitian_operator(n_qubits)
+    i = avg_pauli_weights_from_strings(o, pauli_strings=pauli_strings)
+    h = quantum_fourier_entropy(o)
+    if i < 1e-12:
         return None  # Mark as zero
-    return H / I
+    return h / i
 
 
 if __name__ == "__main__":
